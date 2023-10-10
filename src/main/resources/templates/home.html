@@ -12,8 +12,8 @@
     <!--     home.css読み込み -->
     <link th:href="@{/css/home.css}" rel="stylesheet">
 </head>
-<body class="bg-secondary text-dark bg-opacity-10">
-<header class="p-3 mb-2 bg-secondary bg-gradient text-white">
+<body class="bg-success-subtle bg-gradient">
+<header class="p-3 mb-2 bg-dark bg-gradient text-white">
     <h1 class="headline">
         <a class="title" href="/home">成績管理アプリケーション</a>
     </h1>
@@ -23,14 +23,16 @@
     </ul>
 </header>
 <main>
-    <form th:action="@{/add/class}">
-        <button type="submit" class="btn btn-success">クラスを作成</button>
-        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
+    <form id="addClassForm" ><!-- th:action="@{/add/class}" -->
+        <button id="addClassButton"  type="submit" class="btn btn-success">クラスを作成</button>
+        <input type="hidden" name="dd" /><!-- th:value="${gomap.golist_id}" -->
     </form>
-    <button id="aaa" onclick="copyToDialog(this.parentElement.parentElement);" data-bs-toggle="modal" data-bs-target="#updatedialog" class="btn btn-primary">クラスを選択</button>
-    <form th:action=@{/edit/curriculum}">
-        <button type="submit" class="btn btn-info">教科の編集</button>
-        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
+    <form id="choiceClassForm">
+    <button id="choiceClassButton" onclick="copyToDialog(this.parentElement.parentElement);" data-bs-toggle="modal" data-bs-target="#updatedialog" class="btn btn-primary">クラスを選択</button>
+    </form>
+    <form id="updateCurriculumForm"><!--th:action=@{/update/curriculum}" -->
+        <button id="updateCurriculumButton" type="submit" class="btn btn-info">教科の編集</button>
+        <input type="hidden" name="cc"/><!-- th:value="${gomap.golist_id}" -->
     </form>
 
 

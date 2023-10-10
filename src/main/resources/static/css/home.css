@@ -1,3 +1,6 @@
+*, ::after, ::before {
+    box-sizing: content-box;
+}
 header {
   height: 100px;
   width: 100%;
@@ -7,6 +10,7 @@ header .headline{
     line-height: 50px;
     float: left;
     font-size: 60px;
+    margin-top: 20px;
     }
 .nav-list {
     line-height: 100px;
@@ -21,6 +25,25 @@ header .headline{
 }
 a {
     text-decoration: none;
-    color: #000000; /* 今回は#000000を指定していますが、好きな色を指定できます */
+    color: #FFFFFF; /* 今回は#000000を指定していますが、好きな色を指定できます */
     size: 4in 6in;
+}
+form {
+    float: left;
+    width: 30%;
+}
+button {
+  width: 90%;
+  height:200px;
+  margin: 30px;
+  font-size: 300%;
+}
+#addClassButton{
+  font-size: 300%;
+}
+#choiceClassButton{
+  font-size: 300%;
+}
+#updateCurriculumButton{
+  font-size: 300%;
 }
