@@ -1,36 +1,15 @@
+#mainForm{
+    font-family: arial;
+    margin: 100px;
+    justify-content: center;
+}
+#stDiv{
+ display:flex;
+  flex-wrap:wrap;/* これを指定する */
+}
 #outNameDiv {
-  width: 100%;
-  padding: 8px 16px;
-  margin: 16px auto;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+  width:calc(100%/3);/* 横幅を3等分 */
+  height:auto;
+  display:flex;/* 高さを揃えるための指定 */
+  flex-direction:column;/* 高さを揃えるための指定 */
 }
-
-label {
-  margin-top: 8px;
-}
-
-button {
-  width: 50%;
-  height: 2.5em;
-  margin: 8px auto;
-  padding: 4px 0;
-  border-radius: 4px;
-  background-color: blue;
-  color: white;
-}
-
-button:hover {
-  opacity: .7;
-}
-
-#people {
-    float: left;
-}
-#stCount {
-    float: left;
-}
-.row>* {
-    flex-shrink: 0;
-    /* width: 100%;

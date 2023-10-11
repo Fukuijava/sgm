@@ -1,24 +1,21 @@
 var thisCount;
+var countEvent;
 
 $(function() {
+
     thisCount = $("#nameLabel").html();
     thisCount = Number(thisCount);
     $("#count").html(thisCount);
-    thisCount = Math.max(0, thisCount);
-    thisCount = Math.min(50, thisCount);
-
-
-
-
-
 
     $('button#plus1').click(function(){
+        if(thisCount >= 50){
+            return false;
+        }
         thisCount = thisCount + 1;
-//        Math.max(minNum, Math.min(maxNum, thisCount + 40));
         var nameText = '' +
         '<div class="row mb-3" id="inNameDiv">' +
         '<label for="nameText" class="col-sm-1 col-form-label">(' + thisCount +')</label>' +
-        '<div class="col-sm-6">' +
+        '<div class="col-sm-4">' +
         '<input type="text" class="form-control" id="nameText">' +
         '</div>' +
         '</div>';
@@ -26,12 +23,14 @@ $(function() {
     });
     $('button#plus5').click(function(){
         for (let i = 0; i < 5; i++) {
+        if(thisCount >= 50){
+            return false;
+        }
         thisCount = thisCount + 1;
-//        Math.max(minNum, Math.min(maxNum, thisCount + 40));
         var nameText = '' +
         '<div class="row mb-3" id="inNameDiv">' +
         '<label for="nameText" class="col-sm-1 col-form-label">(' + thisCount +')</label>' +
-        '<div class="col-sm-6">' +
+        '<div class="col-sm-4">' +
         '<input type="text" class="form-control" id="nameText">' +
         '</div>' +
         '</div>';
@@ -40,12 +39,14 @@ $(function() {
     });
     $('button#plus10').click(function(){
         for (let i = 0; i < 10; i++) {
+        if(thisCount >= 50){
+            return false;
+        }
         thisCount = thisCount + 1;
-//        Math.max(minNum, Math.min(maxNum, thisCount + 40));
         var nameText = '' +
         '<div class="row mb-3" id="inNameDiv">' +
         '<label for="nameText" class="col-sm-1 col-form-label">(' + thisCount +')</label>' +
-        '<div class="col-sm-6">' +
+        '<div class="col-sm-4">' +
         '<input type="text" class="form-control" id="nameText">' +
         '</div>' +
         '</div>';
@@ -54,12 +55,14 @@ $(function() {
     });
     $('button#plus30').click(function(){
         for (let i = 0; i < 30; i++) {
+        if(thisCount >= 50){
+            return false;
+        }
         thisCount = thisCount + 1;
-//        Math.max(minNum, Math.min(maxNum, thisCount + 40));
         var nameText = '' +
         '<div class="row mb-3" id="inNameDiv">' +
         '<label for="nameText" class="col-sm-1 col-form-label">(' + thisCount +')</label>' +
-        '<div class="col-sm-6">' +
+        '<div class="col-sm-4">' +
         '<input type="text" class="form-control" id="nameText">' +
         '</div>' +
         '</div>';
@@ -67,37 +70,37 @@ $(function() {
         }
     });
     $('button#minus1').click(function(){
-    thisCount = thisCount - 1;
-//    Math.max(minNum, Math.min(maxNum, thisCount - 40));
-    $('div').remove('#inNameDiv:last');
+        if(thisCount <= 0){
+            return false;
+        }
+        thisCount = thisCount - 1;
+        $('div').remove('#inNameDiv:last');
     });
     $('button#minus5').click(function(){
         for (let i = 0; i < 5; i++) {
+        if(thisCount <= 0){
+            return false;
+        }
         thisCount = thisCount - 1;
-//        Math.max(minNum, Math.min(maxNum, thisCount - 40));
         $('div').remove('#inNameDiv:last');
         }
     });
     $('button#minus10').click(function(){
         for (let i = 0; i < 10; i++) {
+        if(thisCount <= 0){
+            return false;
+        }
         thisCount = thisCount - 1;
-//        Math.max(minNum, Math.min(maxNum, thisCount - 40));
         $('div').remove('#inNameDiv:last');
         }
     });
     $('button#minus30').click(function(){
         for (let i = 0; i < 30; i++) {
+        if(thisCount <= 0){
+            return false;
+        }
         thisCount = thisCount - 1;
-//        Math.max(minNum, Math.min(maxNum, thisCount - 40));
         $('div').remove('#inNameDiv:last');
         }
     });
 });
-
-function countCheck(thisCount) {
-    if(thisCount <){
-
-    }
-
-}
-
