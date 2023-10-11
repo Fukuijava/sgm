@@ -1,0 +1,30 @@
+header, ::after, ::before {
+    box-sizing: content-box;
+}
+header {
+  height: 100px;
+  width: 100%;
+  padding: 0px;
+}
+header .headline{
+    line-height: 50px;
+    float: left;
+    font-size: 60px;
+    margin-top: 20px;
+    }
+.nav-list {
+    line-height: 100px;
+    float: left;
+    margin-left: 30px;
+    list-style: none;
+}
+.nav-list-item {
+  list-style: none;
+  display: inline-block;
+  margin: 0 20px;
+}
+a {
+    text-decoration: none;
+    color: #FFFFFF;
+    size: 4in 6in;
+}

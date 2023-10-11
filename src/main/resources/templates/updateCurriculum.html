@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>SGM-ホーム</title>
+    <title>SGM-教科の編集</title>
     <!-- Bootstrap(head記述) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <!-- JQuery -->
@@ -11,7 +11,6 @@
     <script th:src="@{/js/home.js}"></script>
     <!--     css読み込み -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
-    <link th:href="@{/css/home.css}" rel="stylesheet">
 </head>
 <body class="bg-success-subtle bg-gradient">
 <header class="p-3 mb-2 bg-dark bg-gradient text-white">
@@ -23,21 +22,7 @@
         <li class="nav-list-item">???</li>
     </ul>
 </header>
-<main>
-    <form id="addClassForm" action="/home/addClass">
-        <button id="addClassButton"  type="submit" class="btn btn-success">クラスを作成</button>
-        <input type="hidden" name="dd" /><!-- th:value="${gomap.golist_id}" -->
-    </form>
-    <form id="choiceClassForm">
-    <button id="choiceClassButton" onclick="copyToDialog(this.parentElement.parentElement);" data-bs-toggle="modal" data-bs-target="#updatedialog" class="btn btn-primary">クラスを選択</button>
-    </form>
-    <form id="updateCurriculumForm" action="/home/updateCurriculum">
-        <button id="updateCurriculumButton" type="submit" class="btn btn-info">教科の編集</button>
-        <input type="hidden" name="cc"/><!-- th:value="${gomap.golist_id}" -->
-    </form>
 
-
-</main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
