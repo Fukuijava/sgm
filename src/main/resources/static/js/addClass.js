@@ -1,6 +1,6 @@
 var thisCount;
 var countEvent;
-
+var nameArray = new Array();
 $(function() {
 
     thisCount = $("#nameLabel").html();
@@ -103,4 +103,26 @@ $(function() {
         $('div').remove('#inNameDiv:last');
         }
     });
+
+
+//    $('button#submitButton').click(function(){
+//    var resArray = document.getElementById('sampleCommaInput').value.split(",");
+//    var resArray = document.getElementById('nameText').value;
+//    var resArray = $("#nameText").get(0).text;
+//    alert(resArray);
+//    var resArray = TargetString.split(",");
+//
+//    });
+
+
 });
+
+function creatNameArray(){
+    const ItemList = document.getElementsByClassName("form-control");
+    for(let i = 0; i < ItemList.length; i++) {
+    nameArray[i] = ItemList.item(i).value;
+    }
+    console.log(nameArray);
+
+    document.getElementById("out").innerHTML = '<label><input name="studentNames" value="'+nameArray+'"></label>';
+}

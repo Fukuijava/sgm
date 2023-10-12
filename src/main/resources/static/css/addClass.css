@@ -3,13 +3,3 @@
     margin: 100px;
     justify-content: center;
 }
-#stDiv{
- display:flex;
-  flex-wrap:wrap;/* これを指定する */
-}
-#outNameDiv {
-  width:calc(100%/3);/* 横幅を3等分 */
-  height:auto;
-  display:flex;/* 高さを揃えるための指定 */
-  flex-direction:column;/* 高さを揃えるための指定 */
-}

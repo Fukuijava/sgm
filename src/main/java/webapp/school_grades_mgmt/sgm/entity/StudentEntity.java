@@ -11,7 +11,12 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne()
+    @JoinColumn(name = "class_id", referencedColumnName = "id")
+    private ClassEntity classEntity;
+
     private Integer number;
+
     private String name;
 
 }
