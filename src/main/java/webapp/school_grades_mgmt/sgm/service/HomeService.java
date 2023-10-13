@@ -7,6 +7,8 @@ import webapp.school_grades_mgmt.sgm.entity.StudentEntity;
 import webapp.school_grades_mgmt.sgm.repository.ClassRepository;
 import webapp.school_grades_mgmt.sgm.repository.StudentRepository;
 
+import java.util.List;
+
 @Service
 public class HomeService {
 
@@ -19,26 +21,26 @@ public class HomeService {
         this.studentRepository = studentRepository;
     }
 
-    public String addClass(Integer schoolYear, Integer classNumber){
-        ClassEntity entity  = new ClassEntity();
+    public Integer addClass(Integer schoolYear, Integer classNumber) {
+        ClassEntity entity = new ClassEntity();
         entity.setSchoolYear(schoolYear);
         entity.setClassNumber(classNumber);
         classRepository.save(entity);
-        return "seikou";
+        return entity.getId();
     }
 
-    public String addStudent(String[] stNames){
-        StudentEntity entity  = new StudentEntity();
-        classRepository.findById(1).get().getName();
-        for(int i = 1; i < stNames.length; i++){
-
-            entity.setClassEntity();
-            entity.setNumber(i);
-
+    public void addStudent(Integer classId, String[] stNames) {
+        for (int i = 0; i < stNames.length; i++) {
+            StudentEntity entity = new StudentEntity();
+            entity.setClassEntity(classRepository.getReferenceById(classId));
+            entity.setNumber(i + 1);
+            entity.setName(stNames[i]);
+            studentRepository.save(entity);
         }
+    }
 
-        studentRepository.save(entity);
-        return ;
+    public List<ClassEntity> findAll(){
+        return classRepository.findAll();
     }
 
 }

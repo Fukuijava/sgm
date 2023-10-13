@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import webapp.school_grades_mgmt.sgm.entity.ClassEntity;
 import webapp.school_grades_mgmt.sgm.service.HomeService;
 
 import java.util.ArrayList;
@@ -21,8 +22,11 @@ public class HomeController {
     @Autowired
     private HomeService service;
 
+
     @GetMapping("/")
     public String home(Model model) {
+        List<ClassEntity> classList = service.findAll();
+        model.addAttribute("ClassList", classList);
         return "home";
     }
 
@@ -42,20 +46,14 @@ public class HomeController {
     @PostMapping("/addClass/function")
     public String addClassFunction(@RequestParam("schoolYear") Integer schoolYear,
                                    @RequestParam("classNumber") Integer classNumber,
-                                   @RequestParam("studentNames") String  nameList
-                                   ){
+                                   @RequestParam("studentNames") String  nameList,
+                                   Model model){
         String[] stNames = nameList.split(",", -1);
         Arrays.sort(stNames);
-        service.addClass(schoolYear,classNumber);
-        service.addStudent(stNames);
-
-
-
-//        service.addStudent();
-
-
-
-        return "redirect:/home/addClass";
+        Integer classId = service.addClass(schoolYear,classNumber);
+        service.addStudent(classId,stNames);
+        model.addAttribute("classRegistered","登録完了");
+        return "addClass";
     }
 
 

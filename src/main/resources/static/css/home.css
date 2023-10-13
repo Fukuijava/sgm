@@ -2,18 +2,25 @@ form {
     float: left;
     width: 30%;
 }
-button {
+#choiceClassDiv{
+    float: left;
+    width: 30%;
+}
+#addClassButton{
   width: 90%;
   height:200px;
   margin: 30px;
   font-size: 300%;
 }
-#addClassButton{
-  font-size: 300%;
-}
 #choiceClassButton{
+  width: 90%;
+  height:200px;
+  margin: 30px;
   font-size: 300%;
 }
 #updateCurriculumButton{
+  width: 90%;
+  height:200px;
+  margin: 30px;
   font-size: 300%;
 }

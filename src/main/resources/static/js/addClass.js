@@ -103,18 +103,6 @@ $(function() {
         $('div').remove('#inNameDiv:last');
         }
     });
-
-
-//    $('button#submitButton').click(function(){
-//    var resArray = document.getElementById('sampleCommaInput').value.split(",");
-//    var resArray = document.getElementById('nameText').value;
-//    var resArray = $("#nameText").get(0).text;
-//    alert(resArray);
-//    var resArray = TargetString.split(",");
-//
-//    });
-
-
 });
 
 function creatNameArray(){
