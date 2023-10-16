@@ -3,10 +3,10 @@ package webapp.school_grades_mgmt.sgm.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Table(name = "class")
+@Table(name = "schoolYear")
 @Data
 @Entity
-public class ClassEntity {
+public class SchoolYearEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,9 +16,8 @@ public class ClassEntity {
     @JoinColumn(name = "curriculum_id", referencedColumnName = "id")
     private CurriculumEntity curriculumEntity;
 
-    private Integer schoolYear;
-
-    private Integer classNumber;
-
+    private Integer schoolYear1;
+    private Integer schoolYear2;
+    private Integer schoolYear3;
 
 }
