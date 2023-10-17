@@ -7,15 +7,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
-
     <!-- JQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
     <!--  js読み込み  -->
 <!--    <script th:src="@{/js/home.js}"></script>-->
     <!--     css読み込み -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/classDetail.css}" rel="stylesheet">
 </head>
+
 <body class="bg-success-subtle bg-gradient">
 <header class="p-3 mb-2 bg-dark bg-gradient text-white">
     <h1 class="headline">
@@ -27,7 +27,46 @@
     </ul>
 </header>
 <main>
+    <div class="list_form">
+        <h2>成績一覧</h2>
+        <i class="fa-solid fa-shield-halved"></i>
+        <table class="table table-striped" id="listform">
+            <thead>
+            <tr>
+                <th>出席番号</th>
+                <th>名前</th>
+                <th>国語</th>
+                <th>数学</th>
+                <th>英語</th>
+                <th>物理</th>
+                <th>化学</th>
+                <th>地理</th>
+                <th>歴史</th>
+                <th>公民</th>
+                <th>美術</th>
+                <th>家庭科</th>
+                <th>保健</th>
+                <th>体育</th>
+                <th>実習</th>
+                <th>電気回路</th>
+                <th>電子技術</th>
+                <th>プログラミング技術</th>
+                <th>ハードウェア技術</th>
+                <th>評価の編集</th>
+            </tr>
+            </thead>
 
+            <tbody>
+            <tr th:each="gomap : ${gomapList}">
+                <td th:text="${gomap.golist_id}" class="hidden" ></td>
+                <td th:text="${gomap.pref}"></td>
+                <td th:text="${gomap.city}"></td>
+                <td th:text="${gomap.genre}"></td>
+                <td th:text="${gomap.move_means}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
 
 

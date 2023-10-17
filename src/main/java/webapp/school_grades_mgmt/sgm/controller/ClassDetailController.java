@@ -19,12 +19,12 @@ public class ClassDetailController {
     @Autowired
     private ClassDetailService service;
 
-//    @GetMapping("/classDetail/{classId}}")
-//    public String classDetail(@PathParam("classId") Integer classId,
-//                              Model model) {
+    @GetMapping("/classDetail/{classId}")
+    public String classDetail(@PathParam("classId") Integer classId,
+                              Model model) {
 //        List<StudentEntity> selectClass = service.findClass(classId);
 //        model.addAttribute("gomapList", goListItems);
 //        model.addAttribute("my_home_List", myHomeItems);
-//        return "classDetail";
-//    }
+        return "classDetail";
+    }
 }

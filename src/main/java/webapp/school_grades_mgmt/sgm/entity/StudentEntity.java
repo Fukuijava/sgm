@@ -15,8 +15,11 @@ public class StudentEntity {
     @JoinColumn(name = "class_id", referencedColumnName = "id")
     private ClassEntity classEntity;
 
-    private Integer number;
+    private Integer number;               //出席番号
 
     private String name;
+
+
+
 
 }
