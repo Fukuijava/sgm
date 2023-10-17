@@ -1,4 +1,4 @@
-package webapp.school_grades_mgmt.sgm.entity;
+package webapp.school_grades_mgmt.sgm.entity.table;
 
 import jakarta.persistence.*;
 import lombok.Data;
