@@ -1,4 +1,4 @@
-package webapp.school_grades_mgmt.sgm.entity;
+package webapp.school_grades_mgmt.sgm.entity.master;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,8 +9,8 @@ import lombok.Data;
 public class CurriculumEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String curriculumName;
+    private String name;
 }

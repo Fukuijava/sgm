@@ -29,30 +29,18 @@
 <main>
     <div class="list_form">
         <h2>成績一覧</h2>
-        <i class="fa-solid fa-shield-halved"></i>
         <table class="table table-striped" id="listform">
             <thead>
-            <tr>
-                <th>出席番号</th>
-                <th>名前</th>
-                <th>国語</th>
-                <th>数学</th>
-                <th>英語</th>
-                <th>物理</th>
-                <th>化学</th>
-                <th>地理</th>
-                <th>歴史</th>
-                <th>公民</th>
-                <th>美術</th>
-                <th>家庭科</th>
-                <th>保健</th>
-                <th>体育</th>
-                <th>実習</th>
-                <th>電気回路</th>
-                <th>電子技術</th>
-                <th>プログラミング技術</th>
-                <th>ハードウェア技術</th>
-                <th>評価の編集</th>
+            <tr th:each="gomap : ${gomapList}">
+                <th th:text="${gomap.golist_id}"></th>
+                <th th:text="${gomap.golist_id}"></th>
+                <th th:text="${gomap.golist_id}"></th>
+                <th th:text="${gomap.golist_id}"></th>
+                <th th:text="${gomap.golist_id}"></th>
+                <th th:text="${gomap.golist_id}"></th>
+                <th th:text="${gomap.golist_id}"></th>
+                <th th:text="${gomap.golist_id}"></th>
+                <th th:text="${gomap.golist_id}"></th>
             </tr>
             </thead>
 
@@ -63,14 +51,25 @@
                 <td th:text="${gomap.city}"></td>
                 <td th:text="${gomap.genre}"></td>
                 <td th:text="${gomap.move_means}"></td>
+                <td>
+                    <form th:action="@{/gomap/map/{gomap.golist_id}}">
+                        <button type="submit" class="btn btn-success">マップへ</button>
+                        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
+                    </form>
+                </td>
+                <td>
+                    <button id="update_bu" onclick="copyToDialog(this.parentElement.parentElement);" data-bs-toggle="modal" data-bs-target="#updatedialog" class="btn btn-primary">更新する</button>
+                </td>
+                <td>
+                    <form th:action="@{/gomap/delete}">
+                        <button type="submit" class="btn btn-secondary">削除する</button>
+                        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
-
-
-
-
 </main>
 </body>
 </html>

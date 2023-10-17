@@ -105,7 +105,7 @@ $(function() {
     });
 });
 
-function creatNameArray(){
+function createNameArray(){
     const ItemList = document.getElementsByClassName("form-control");
     for(let i = 0; i < ItemList.length; i++) {
     nameArray[i] = ItemList.item(i).value;
