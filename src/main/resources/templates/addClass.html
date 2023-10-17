@@ -29,8 +29,6 @@
 </header>
 
 <h1 th:text="${classRegistered}"></h1>
-
-
 <button id="testFunction">テスト用</button>
 
 <div class="row mb-3" hidden="" id="inNameDiv">
@@ -40,53 +38,58 @@
     </div>
 </div>
 
+<div class="col-12" id="studentButton">
+    <button class="btn btn-primary" id="plus1">+1</button>
+    <button class="btn btn-primary" id="plus5">+5</button>
+    <button class="btn btn-primary" id="plus10">+10</button>
+    <button class="btn btn-primary" id="plus30">+30</button>
+    <button class="btn btn-secondary" id="minus1">-1</button>
+    <button class="btn btn-secondary" id="minus5">-5</button>
+    <button class="btn btn-secondary" id="minus10">-10</button>
+    <button class="btn btn-secondary" id="minus30">-30</button>
+</div>
+
 <main id="mainForm">
     <h2><i class="bi bi-pencil"></i>クラスの登録</h2>
-    <div class="col-12">
-        <button class="btn btn-primary" id="plus1">+1</button>
-        <button class="btn btn-primary" id="plus5">+5</button>
-        <button class="btn btn-primary" id="plus10">+10</button>
-        <button class="btn btn-primary" id="plus30">+30</button>
-        <button class="btn btn-secondary" id="minus1">-1</button>
-        <button class="btn btn-secondary" id="minus5">-5</button>
-        <button class="btn btn-secondary" id="minus10">-10</button>
-        <button class="btn btn-secondary" id="minus30">-30</button>
-    </div>
-    <div id="stDiv">
     <form  class="row g-3" action="/home/addClass/function" method="post" id="formId">
+
         <div class="col mb-3">
-            <label for="schoolYear" class="form-label">学年</label>
-            <div class="col-sm-4">
-                <input type="number" id="schoolYear" name="schoolYear" min="1" max="3" placeholder="学年を入力してください">
-            </div>
+            <label class="form-label">学年</label>
+            <select class="form-select">
+                <option th:each="schoolYear : ${SchoolYearList}"
+                        th:value="${schoolYear.id}"
+                        th:text="${schoolYear.number}">
+                </option>
+            </select>
         </div>
 
         <div class="col mb-3">
             <label class="form-label">学科</label>
-            <div class="col-sm-4">
-                <select th:field="*{selectedValue}">
-                    <option th:each="option : *{options()}"
-                            th:value="${option.key}"
-                            th:text="${option.value}">
-                    </option>
-                </select>
-            </div>
+            <select class="form-select">
+                <option th:each="deptList : ${DepartmentList}"
+                        th:value="${deptList.id}"
+                        th:text="${deptList.name}">
+                </option>
+            </select>
         </div>
 
         <div class="col mb-3">
-            <label for="classNumber" class="form-label">クラス</label>
-            <div class="col-sm-4">
-                <input type="number" id="classNumber" name="classNumber" min="1" max="4" placeholder="クラスを入力してください">
-            </div>
+            <label class="form-label">クラス</label>
+            <select class="form-select">
+                <option th:each="classNumber : ${ClassNumberList}"
+                        th:value="${classNumber.id}"
+                        th:text="${classNumber.number}">
+                </option>
+            </select>
         </div>
 
     <h2 id="stCount"><i class="bi bi-people"></i>生徒数</h2>
+        <div id="space"></div>
         <h3>　　　名前</h3>
     <div id="outNameDiv"></div>
         <div id="out" hidden=""></div>
-        <button type="submit" class="btn btn-primary" onclick="creatNameArray();">クラス登録</button>
+        <button type="submit" class="btn btn-primary" onclick="createNameArray();">クラス登録</button>
     </form>
-    </div>
 </main>
 </body>
 </html>

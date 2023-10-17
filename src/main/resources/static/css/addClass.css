@@ -1,5 +1,22 @@
 #mainForm{
     font-family: arial;
-    margin: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 30px;
+    margin-top: 10px;
     justify-content: center;
+    position: relative;
+    z-index: 0;
+}
+#studentButton {
+    height: 100px;
+    width: 70%;
+    position: absolute;
+    left: 100px;
+    top: 360px;
+    z-index: 1;
+}
+#space {
+    float:left;
+    margin:20px;
 }

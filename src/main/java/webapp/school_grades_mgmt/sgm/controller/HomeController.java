@@ -5,7 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import webapp.school_grades_mgmt.sgm.entity.master.ClassNumberEntity;
+import webapp.school_grades_mgmt.sgm.entity.master.DepartmentEntity;
+import webapp.school_grades_mgmt.sgm.entity.master.SchoolYearEntity;
 import webapp.school_grades_mgmt.sgm.service.HomeService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/home")
@@ -25,6 +30,15 @@ public class HomeController {
 
     @GetMapping("/addClass")
     public String addClass(Model model) {
+        List<SchoolYearEntity> schoolYearList = service.findSchoolYear();
+        List<DepartmentEntity> departmentList = service.findDepartment();
+        List<ClassNumberEntity> classNumberList = service.findClassNumber();
+        model.addAttribute("SchoolYearList", schoolYearList);
+        model.addAttribute("DepartmentList", departmentList);
+        model.addAttribute("ClassNumberList", classNumberList);
+
+
+
         return "addClass";
     }
 
