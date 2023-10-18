@@ -16,9 +16,14 @@ public class GradesEntity {
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private StudentEntity studentEntity;
 
-    private Integer  class_attitude;
-    private Integer  submission_final_eval;
-    private Integer  test_final_eval;
+    @Column(name="class_attitude")
+    private Integer  classAttitude;
+
+    @Column(name="submission_final_eval")
+    private Integer  submissionFinalEval;
+
+    @Column(name="test_final_eval")
+    private Integer  testFinalEval;
 
 
 

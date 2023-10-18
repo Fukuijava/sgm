@@ -12,5 +12,6 @@ public class ClassNumberEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer number;
+    @Column(name="class_number")
+    private Integer classNumber;
 }

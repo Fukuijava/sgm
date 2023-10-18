@@ -51,44 +51,58 @@
 
 <main id="mainForm">
     <h2><i class="bi bi-pencil"></i>クラスの登録</h2>
-    <form  class="row g-3" action="/home/addClass/function" method="post" id="formId">
-
-        <div class="col mb-3">
+    <form  class="row g-3" th:action="@{/home/addClass/function}" method="post" id="formId">
+    <div class="row">
+        <div class="col mb-4">
             <label class="form-label">学年</label>
-            <select class="form-select">
+            <select class="form-select" name="schoolYear">
                 <option th:each="schoolYear : ${SchoolYearList}"
                         th:value="${schoolYear.id}"
-                        th:text="${schoolYear.number}">
+                        th:text="${schoolYear.schoolYearNumber}">
                 </option>
             </select>
         </div>
 
-        <div class="col mb-3">
+        <div class="col mb-4">
             <label class="form-label">学科</label>
-            <select class="form-select">
+            <select class="form-select" name="department">
                 <option th:each="deptList : ${DepartmentList}"
                         th:value="${deptList.id}"
-                        th:text="${deptList.name}">
+                        th:text="${deptList.departmentName}">
                 </option>
             </select>
         </div>
 
-        <div class="col mb-3">
+        <div class="col mb-4">
             <label class="form-label">クラス</label>
-            <select class="form-select">
+            <select class="form-select" name="classNumber">
                 <option th:each="classNumber : ${ClassNumberList}"
                         th:value="${classNumber.id}"
-                        th:text="${classNumber.number}">
+                        th:text="${classNumber.classNumber}">
                 </option>
             </select>
         </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2><i class="bi bi-people"></i>登録生徒</h2>
+                <div class="space"></div>
+                <h3>　　　名前</h3>
+            <div id="outNameDiv"></div>
+                <div id="out" hidden=""></div>
+        </div>
 
-    <h2 id="stCount"><i class="bi bi-people"></i>生徒数</h2>
-        <div id="space"></div>
-        <h3>　　　名前</h3>
-    <div id="outNameDiv"></div>
-        <div id="out" hidden=""></div>
-        <button type="submit" class="btn btn-primary" onclick="createNameArray();">クラス登録</button>
+        <div class="col">
+            <h2><i class="bi bi-book"></i>登録科目</h2>
+            <div class="space"></div>
+            <h3>　　　科目名</h3>
+            <div th:each="curriculum : ${CurriculumList}" class="form-check">
+                <input  class="form-check-input" th:value="${curriculum.id}" type="checkbox" name="curriculums"/>
+                <label  class="form-check-label" th:text="${curriculum.curriculumName}"></label>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" onclick="createNameArray();">クラス登録</button>
     </form>
 </main>
 </body>

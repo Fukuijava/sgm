@@ -12,5 +12,6 @@ public class CurriculumEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    @Column(name="curriculum_name")
+    private String CurriculumName;
 }

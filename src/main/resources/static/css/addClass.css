@@ -13,10 +13,15 @@
     width: 70%;
     position: absolute;
     left: 100px;
-    top: 360px;
+    top: 345px;
     z-index: 1;
 }
-#space {
-    float:left;
-    margin:20px;
+.space {
+    margin:60px;
+}
+.form-check {
+margin-bottom: 10.4px;
+}
+input[type=checkbox] {
+  transform: scale(2);
 }

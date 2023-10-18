@@ -1,12 +1,12 @@
 INSERT IGNORE INTO sgmdb.school_year
-(id,number)
+(id,school_year_number)
 VALUES
  (1,1)
 ,(2,2)
 ,(3,3);
 
 INSERT IGNORE INTO sgmdb.department
-(id,name)
+(id,department_name)
 VALUES
  (1,'機械科')
 ,(2,'機械システム科')
@@ -16,7 +16,7 @@ VALUES
 ,(6,'建築科');
 
 INSERT IGNORE INTO sgmdb.class_number
-(id,number)
+(id,class_number)
 VALUES
  (1,1)
 ,(2,2)
@@ -26,7 +26,7 @@ VALUES
 ,(6,6);
 
 INSERT IGNORE INTO sgmdb.curriculum
-(id,name)
+(id,curriculum_name)
 VALUES
  (1,'言語文化')
 ,(2,'現代の国語')

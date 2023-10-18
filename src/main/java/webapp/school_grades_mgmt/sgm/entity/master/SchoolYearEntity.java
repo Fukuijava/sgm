@@ -12,5 +12,6 @@ public class SchoolYearEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer number;
+    @Column(name="school_year_number")
+    private Integer schoolYearNumber;
 }

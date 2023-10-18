@@ -15,7 +15,9 @@ public class TestScoreEntity {
     @JoinColumn(name = "grades_id", referencedColumnName = "id")
     private GradesEntity gradesEntity;
 
-    private Integer name;
-    private Integer score;
+    @Column(name="curriculum_name")
+    private Integer curriculumName;
 
+    @Column(name="test_score")
+    private Integer testScore;
 }
