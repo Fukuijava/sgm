@@ -10,10 +10,11 @@ public class GradesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="grades_id")
     private Integer id;
 
     @OneToOne()
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    @JoinColumn(name = "student_id")
     private StudentEntity studentEntity;
 
     @Column(name="class_attitude")

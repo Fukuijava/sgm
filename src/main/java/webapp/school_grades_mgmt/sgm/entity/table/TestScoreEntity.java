@@ -9,13 +9,14 @@ import lombok.Data;
 public class TestScoreEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="test_score_id")
     private Integer id;
 
     @ManyToOne()
-    @JoinColumn(name = "grades_id", referencedColumnName = "id")
+    @JoinColumn(name = "grades_id")
     private GradesEntity gradesEntity;
 
-    @Column(name="curriculum_name")
+    @Column(name="test_curriculum_name")
     private Integer curriculumName;
 
     @Column(name="test_score")

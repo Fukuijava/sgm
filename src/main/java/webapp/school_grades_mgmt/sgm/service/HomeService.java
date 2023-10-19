@@ -6,7 +6,9 @@ import webapp.school_grades_mgmt.sgm.entity.master.ClassNumberEntity;
 import webapp.school_grades_mgmt.sgm.entity.master.CurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.master.DepartmentEntity;
 import webapp.school_grades_mgmt.sgm.entity.master.SchoolYearEntity;
+import webapp.school_grades_mgmt.sgm.entity.table.ClassCurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
+import webapp.school_grades_mgmt.sgm.entity.table.StudentEntity;
 import webapp.school_grades_mgmt.sgm.repository.*;
 
 import java.util.List;
@@ -19,16 +21,21 @@ public class HomeService {
     private final DepartmentRepository departmentRepository;
     private final ClassNumberRepository classNumberRepository;
     private final ClassRepository classRepository;
+    private final StudentRepository studentRepository;
+    private final ClassCurriculumRepository classCurriculumRepository;
 
     @Autowired
     public HomeService(CurriculumRepository curriculumRepository, SchoolYearRepository schoolYearRepository,
                        DepartmentRepository departmentRepository, ClassNumberRepository classNumberRepository,
-                       ClassRepository classRepository) {
+                       ClassRepository classRepository, StudentRepository studentRepository,
+                       ClassCurriculumRepository classCurriculumRepository) {
         this.curriculumRepository = curriculumRepository;
         this.schoolYearRepository = schoolYearRepository;
         this.departmentRepository = departmentRepository;
         this.classNumberRepository = classNumberRepository;
         this.classRepository = classRepository;
+        this.studentRepository = studentRepository;
+        this.classCurriculumRepository = classCurriculumRepository;
     }
 
     public List<SchoolYearEntity> findSchoolYear(){
@@ -44,26 +51,35 @@ public class HomeService {
         return curriculumRepository.findAll();
     }
 
-
-
-
-
-    public Integer addClass(Integer schoolYear, Integer classNumber) {
-        ClassEntity entity = new ClassEntity();
-        entity.setSchoolYearEntity();
-        entity.setClassNumber(classNumber);
-        classRepository.save(entity);
-        return entity.getId();
+    public List<ClassEntity> findClass(){
+        return classRepository.findAll();
     }
 
-//    public void addStudent(Integer classId, String[] stNames) {
-//        for (int i = 0; i < stNames.length; i++) {
-//            StudentEntity entity = new StudentEntity();
-//            entity.setClassEntity(classRepository.getReferenceById(classId));
-//            entity.setNumber(i + 1);
-//            entity.setName(stNames[i]);
-//            studentRepository.save(entity);
-//        }
-//    }
+    public Integer addClass(Integer schoolYear, Integer department, Integer classNumber) {
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setSchoolYearEntity(schoolYearRepository.getReferenceById(schoolYear));
+        classEntity.setDepartmentEntity(departmentRepository.getReferenceById(department));
+        classEntity.setClassNumberEntity(classNumberRepository.getReferenceById(classNumber));
+        classRepository.saveAndFlush(classEntity);
+        return classEntity.getId();
+    }
 
+    public void addClassCurriculum(Integer classId, Integer[] classCurriculums) {
+        for (Integer classCurriculum : classCurriculums) {
+            ClassCurriculumEntity classCurriculumEntity = new ClassCurriculumEntity();
+            classCurriculumEntity.setClassEntity(classRepository.getReferenceById(classId));
+            classCurriculumEntity.setCurriculumEntity(curriculumRepository.getReferenceById(classCurriculum));
+            classCurriculumRepository.saveAndFlush(classCurriculumEntity);
+        }
+    }
+
+    public void addStudent(Integer classId, String[] stNames) {
+        for (int i = 0; i < stNames.length; i++) {
+            StudentEntity entity = new StudentEntity();
+            entity.setClassEntity(classRepository.getReferenceById(classId));
+            entity.setAttendanceNumber(i + 1);
+            entity.setStudentName(stNames[i]);
+            studentRepository.saveAndFlush(entity);
+        }
+    }
 }

@@ -10,6 +10,7 @@ public class SchoolYearEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="school_year_id")
     private Integer id;
 
     @Column(name="school_year_number")

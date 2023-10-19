@@ -11,7 +11,7 @@ import webapp.school_grades_mgmt.sgm.entity.master.ClassNumberEntity;
 import webapp.school_grades_mgmt.sgm.entity.master.CurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.master.DepartmentEntity;
 import webapp.school_grades_mgmt.sgm.entity.master.SchoolYearEntity;
-import webapp.school_grades_mgmt.sgm.service.ClassCurriculumService;
+import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
 import webapp.school_grades_mgmt.sgm.service.HomeService;
 
 import java.util.Arrays;
@@ -20,23 +20,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/home")
 public class HomeController {
-
-    public record ClassCurriculum(
-            String curriculum){
-    }
-
-    //クラスの教科呼ぶやつ
-    //List<ClassCurriculum> classCurriculum = classCurriculumservice.findClassCurriculum(curriculumList);
-
     @Autowired
     private HomeService homeService;
-    private ClassCurriculumService classCurriculumservice;
-
 
     @GetMapping("/")
     public String home(Model model) {
-//        List<ClassEntity> classList = service.findAll();
-//        model.addAttribute("ClassList", classList);
+        List<ClassEntity> classList = homeService.findClass();
+        model.addAttribute("ClassList", classList);
         return "home";
     }
 
@@ -55,18 +45,26 @@ public class HomeController {
 
     @PostMapping("/addClass/function")
     public String addClassFunction(@RequestParam("schoolYear") Integer schoolYear,
-                                   @RequestParam("department") String department,
+                                   @RequestParam("department") Integer department,
                                    @RequestParam("classNumber") Integer classNumber,
                                    @RequestParam("studentNames") String  nameList,
                                    @RequestParam("curriculums") String  curriculumList,
                                    Model model){
-        //生徒とクラス教科を配列に直す
+        //生徒を配列に直す
         String[] stNames = nameList.split(",", -1);
         Arrays.sort(stNames);
+        //クラス教科を配列に直す
+        String[] CurriculumList = curriculumList.split(",", -1);
+        Integer[] classCurriculums = new Integer[CurriculumList.length];
+        for(int i = 0; i < CurriculumList.length; i++){
+            classCurriculums[i] = Integer.parseInt(CurriculumList[i]);
+        }
+
         Integer classId = homeService.addClass(schoolYear,department,classNumber);
-        service.addStudent(classId,stNames);
+        homeService.addClassCurriculum(classId, classCurriculums);
+        homeService.addStudent(classId,stNames);
         model.addAttribute("classRegistered","登録完了");
-        return "addClass";
+        return "home";
     }
 
 

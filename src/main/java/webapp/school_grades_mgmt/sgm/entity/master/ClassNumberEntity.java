@@ -10,6 +10,7 @@ public class ClassNumberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="class_number_id")
     private Integer id;
 
     @Column(name="class_number")
