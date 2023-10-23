@@ -8,6 +8,7 @@ import webapp.school_grades_mgmt.sgm.entity.master.DepartmentEntity;
 import webapp.school_grades_mgmt.sgm.entity.master.SchoolYearEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassCurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
+import webapp.school_grades_mgmt.sgm.entity.table.GradesEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.StudentEntity;
 import webapp.school_grades_mgmt.sgm.repository.*;
 
@@ -76,6 +77,16 @@ public class HomeService {
     public void addStudent(Integer classId, String[] stNames) {
         for (int i = 0; i < stNames.length; i++) {
             StudentEntity entity = new StudentEntity();
+            entity.setClassEntity(classRepository.getReferenceById(classId));
+            entity.setAttendanceNumber(i + 1);
+            entity.setStudentName(stNames[i]);
+            studentRepository.saveAndFlush(entity);
+        }
+    }
+
+    public void addGrades(Integer classId) {
+        for (int i = 0; i < stNames.length; i++) {
+            GradesEntity entity = new GradesEntity();
             entity.setClassEntity(classRepository.getReferenceById(classId));
             entity.setAttendanceNumber(i + 1);
             entity.setStudentName(stNames[i]);

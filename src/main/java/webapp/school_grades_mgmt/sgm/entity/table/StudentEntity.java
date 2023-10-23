@@ -22,7 +22,4 @@ public class StudentEntity {
     @Column(name="student_name")
     private String studentName;
 
-
-
-
 }

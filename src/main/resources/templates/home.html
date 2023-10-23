@@ -47,7 +47,13 @@
                 <table id="listform">
                     <tbody>
                     <tr th:each="class : ${ClassList}">
-                        <td><a th:href="@{/classDetail/{class.id}}" th:text="${class.schoolYearEntity.schoolYearNumber} + '-' + ${class.classNumberEntity.classNumber}"></a></td>
+                        <form th:action="@{/classDetail/{class.id}}">
+
+                            <button type="submit"
+                                    th:text="${class.schoolYearEntity.schoolYearNumber} + '-' + ${class.classNumberEntity.classNumber}">
+                            </button>
+                            <input type="hidden" name="classId" th:value="${class.id}" />
+                        </form>
                     </tr>
                     </tbody>
                 </table>

@@ -27,45 +27,40 @@
     </ul>
 </header>
 <main>
+    <div>
+        <h2 th:text="${classInfo.schoolYearEntity.schoolYearNumber} + '-' + ${classInfo.classNumberEntity.classNumber}"></h2>
+        <h2 th:text="${classInfo.departmentEntity.departmentName}"></h2>
+    </div>
+<div>
+    <form th:action="@{/classDetail/{class.id}}">
+        <button type="submit" class="btn btn-success">マップへ</button>
+        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
+    </form>
+</div>
     <div class="list_form">
         <h2>成績一覧</h2>
         <table class="table table-striped" id="listform">
             <thead>
-            <tr th:each="gomap : ${gomapList}">
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
+            <tr>
+                <th>出席番号</th>
+                <th>名前</th>
+                <th th:each="curriculumName : ${classCurriculum}">[[${curriculumName}]]</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="gomap : ${gomapList}">
-                <td th:text="${gomap.golist_id}" class="hidden" ></td>
-                <td th:text="${gomap.pref}"></td>
-                <td th:text="${gomap.city}"></td>
-                <td th:text="${gomap.genre}"></td>
-                <td th:text="${gomap.move_means}"></td>
-                <td>
-                    <form th:action="@{/gomap/map/{gomap.golist_id}}">
-                        <button type="submit" class="btn btn-success">マップへ</button>
-                        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
-                    </form>
-                </td>
-                <td>
-                    <button id="update_bu" onclick="copyToDialog(this.parentElement.parentElement);" data-bs-toggle="modal" data-bs-target="#updatedialog" class="btn btn-primary">更新する</button>
-                </td>
-                <td>
-                    <form th:action="@{/gomap/delete}">
-                        <button type="submit" class="btn btn-secondary">削除する</button>
-                        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
-                    </form>
-                </td>
+            <tr th:each="student : ${studentList}">
+                <td th:text="${student.attendanceNumber}"></td>
+                <td th:text="${student.studentName}"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
             </tbody>
         </table>
