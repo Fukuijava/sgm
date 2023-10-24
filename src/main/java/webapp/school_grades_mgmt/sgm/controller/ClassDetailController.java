@@ -26,11 +26,11 @@ public class ClassDetailController {
         ClassEntity selectClass = service.findClass(classId);
         List<studentsRecord>  selectStudents = service.findStudents(classId);
         List<String > selectClassCurriculum = service.findClassCurriculum(classId);
-        List<String > gradeslist = service.findGrades(classId);
+//        List<String > gradeslist = service.findGrades(classId);
         model.addAttribute("classInfo", selectClass);
         model.addAttribute("studentList", selectStudents);
         model.addAttribute("classCurriculum", selectClassCurriculum);
-        model.addAttribute("gradesList", gradeslist);
+//        model.addAttribute("gradesList", gradeslist);
         return "classDetail";
     }
 

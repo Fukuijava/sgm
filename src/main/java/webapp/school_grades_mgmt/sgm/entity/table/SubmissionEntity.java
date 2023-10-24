@@ -20,6 +20,6 @@ public class SubmissionEntity {
     private String submissionName;
 
     @Column(name="submission_evaluation")
-    private String submissionEvaluation;
+    private Integer submissionEvaluation;
 
 }

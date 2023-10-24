@@ -7,9 +7,10 @@ import lombok.Data;
 @Data
 @Entity
 public class TestEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="test_if")
+    @Column(name="test_id")
     private Integer id;
 
     @Column(name="test_name")

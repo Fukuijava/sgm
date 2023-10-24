@@ -19,6 +19,6 @@ public class ClassAttitudeEntity {
     private String curriculumName;
 
     @Column(name="class_attitude")
-    private String classAttitude;
+    private Integer classAttitude;
 
 }

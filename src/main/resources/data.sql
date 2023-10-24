@@ -86,6 +86,6 @@ VALUES
 INSERT IGNORE INTO sgmdb.test
 (test_id,test_name)
 VALUES
- (1,'中間テスト')
-,(2,'期末テスト')
-,(3,'学年末テスト');
+ (1,"中間テスト")
+,(2,"期末テスト")
+,(3,"学年末テスト");
