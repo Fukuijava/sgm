@@ -2,6 +2,7 @@ package webapp.school_grades_mgmt.sgm.entity.table;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import webapp.school_grades_mgmt.sgm.entity.master.TestEntity;
 
 @Table(name = "test_score")
 @Data
@@ -13,8 +14,12 @@ public class TestScoreEntity {
     private Integer id;
 
     @ManyToOne()
-    @JoinColumn(name = "grades_id")
-    private GradesEntity gradesEntity;
+    @JoinColumn(name = "grades_by_semester_id")
+    private GradesBySemesterEntity gradesBySemesterEntity;
+
+    @ManyToOne()
+    @JoinColumn(name = "test_id(FK)")
+    private TestEntity testEntity;
 
     @Column(name="test_curriculum_name")
     private Integer curriculumName;

@@ -4,16 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import webapp.school_grades_mgmt.sgm.controller.ClassDetailController;
-import webapp.school_grades_mgmt.sgm.entity.table.ClassCurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
-import webapp.school_grades_mgmt.sgm.entity.table.StudentEntity;
-import webapp.school_grades_mgmt.sgm.repository.*;
+import webapp.school_grades_mgmt.sgm.repository.table.ClassCurriculumRepository;
+import webapp.school_grades_mgmt.sgm.repository.table.ClassRepository;
+import webapp.school_grades_mgmt.sgm.repository.table.StudentRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -60,4 +57,5 @@ public class ClassDetailService {
     public List<String > findClassCurriculum(Integer classId){
         return classCurriculumRepository.findClassIdCurriculum(classId);
     }
+
 }

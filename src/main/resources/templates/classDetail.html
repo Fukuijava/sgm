@@ -15,6 +15,7 @@
     <link th:href="@{/css/header.css}" rel="stylesheet">
     <link th:href="@{/css/classDetail.css}" rel="stylesheet">
 </head>
+<!--<th th:each="curriculumName : ${classCurriculum}">[[${curriculumName}]]</th>-->
 
 <body class="bg-success-subtle bg-gradient">
 <header class="p-3 mb-2 bg-dark bg-gradient text-white">
@@ -31,10 +32,10 @@
         <h2 th:text="${classInfo.schoolYearEntity.schoolYearNumber} + '-' + ${classInfo.classNumberEntity.classNumber}"></h2>
         <h2 th:text="${classInfo.departmentEntity.departmentName}"></h2>
     </div>
-<div>
-    <form th:action="@{/classDetail/{class.id}}">
-        <button type="submit" class="btn btn-success">マップへ</button>
-        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
+<div >
+    <form th:action="@{/classDetail/{classInfo.id}}">
+        <button type="submit" class="btn btn-success">提出物管理</button>
+        <input type="hidden" name="submission" th:value="${classInfo.id}" />
     </form>
 </div>
     <div class="list_form">
@@ -44,7 +45,9 @@
             <tr>
                 <th>出席番号</th>
                 <th>名前</th>
-                <th th:each="curriculumName : ${classCurriculum}">[[${curriculumName}]]</th>
+                <th>評定平均</th>
+                <th>クラス内順位</th>
+                <th>成績画面</th>
             </tr>
             </thead>
 
@@ -54,13 +57,12 @@
                 <td th:text="${student.studentName}"></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>
+                    <form th:action="@{/classDetail/studentGrades/{classInfo.id}}">
+                        <button type="submit" class="btn btn-success">提出物管理</button>
+                        <input type="hidden" name="submission" th:value="${classInfo.id}" />
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

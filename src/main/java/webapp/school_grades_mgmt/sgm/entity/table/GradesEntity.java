@@ -17,17 +17,7 @@ public class GradesEntity {
     @JoinColumn(name = "student_id")
     private StudentEntity studentEntity;
 
-    @Column(name="class_attitude")
-    private Integer  classAttitude;
 
-    @Column(name="submission_final_eval")
-    private Integer  submissionFinalEval;
-
-    @Column(name="test_final_eval")
-    private Integer  testFinalEval;
-
-
-
-
-
+    @Column(name="average_grade")
+    private Integer averageGrade;
 }

@@ -10,7 +10,14 @@ import webapp.school_grades_mgmt.sgm.entity.table.ClassCurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.GradesEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.StudentEntity;
-import webapp.school_grades_mgmt.sgm.repository.*;
+import webapp.school_grades_mgmt.sgm.repository.master.ClassNumberRepository;
+import webapp.school_grades_mgmt.sgm.repository.master.CurriculumRepository;
+import webapp.school_grades_mgmt.sgm.repository.master.DepartmentRepository;
+import webapp.school_grades_mgmt.sgm.repository.master.SchoolYearRepository;
+import webapp.school_grades_mgmt.sgm.repository.table.ClassCurriculumRepository;
+import webapp.school_grades_mgmt.sgm.repository.table.ClassRepository;
+import webapp.school_grades_mgmt.sgm.repository.table.GradesRepository;
+import webapp.school_grades_mgmt.sgm.repository.table.StudentRepository;
 
 import java.util.List;
 
@@ -24,12 +31,13 @@ public class HomeService {
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
     private final ClassCurriculumRepository classCurriculumRepository;
+    private final GradesRepository gradesRepository;
 
     @Autowired
     public HomeService(CurriculumRepository curriculumRepository, SchoolYearRepository schoolYearRepository,
                        DepartmentRepository departmentRepository, ClassNumberRepository classNumberRepository,
                        ClassRepository classRepository, StudentRepository studentRepository,
-                       ClassCurriculumRepository classCurriculumRepository) {
+                       ClassCurriculumRepository classCurriculumRepository, GradesRepository gradesRepository) {
         this.curriculumRepository = curriculumRepository;
         this.schoolYearRepository = schoolYearRepository;
         this.departmentRepository = departmentRepository;
@@ -37,6 +45,7 @@ public class HomeService {
         this.classRepository = classRepository;
         this.studentRepository = studentRepository;
         this.classCurriculumRepository = classCurriculumRepository;
+        this.gradesRepository = gradesRepository;
     }
 
     public List<SchoolYearEntity> findSchoolYear(){
@@ -76,21 +85,15 @@ public class HomeService {
 
     public void addStudent(Integer classId, String[] stNames) {
         for (int i = 0; i < stNames.length; i++) {
-            StudentEntity entity = new StudentEntity();
-            entity.setClassEntity(classRepository.getReferenceById(classId));
-            entity.setAttendanceNumber(i + 1);
-            entity.setStudentName(stNames[i]);
-            studentRepository.saveAndFlush(entity);
-        }
-    }
-
-    public void addGrades(Integer classId) {
-        for (int i = 0; i < stNames.length; i++) {
-            GradesEntity entity = new GradesEntity();
-            entity.setClassEntity(classRepository.getReferenceById(classId));
-            entity.setAttendanceNumber(i + 1);
-            entity.setStudentName(stNames[i]);
-            studentRepository.saveAndFlush(entity);
+            StudentEntity studentEntity = new StudentEntity();
+            GradesEntity gradesEntity = new GradesEntity();
+            studentEntity.setClassEntity(classRepository.getReferenceById(classId));
+            studentEntity.setAttendanceNumber(i + 1);
+            studentEntity.setStudentName(stNames[i]);
+            studentRepository.saveAndFlush(studentEntity);
+            int studentId = studentEntity.getId();
+            gradesEntity.setStudentEntity(studentRepository.getReferenceById(studentId));
+            gradesRepository.saveAndFlush(gradesEntity);
         }
     }
 }

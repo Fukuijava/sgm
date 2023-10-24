@@ -1,19 +1,14 @@
 package webapp.school_grades_mgmt.sgm.controller;
 
 import org.springframework.ui.Model;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import webapp.school_grades_mgmt.sgm.entity.table.ClassCurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
-import webapp.school_grades_mgmt.sgm.entity.table.StudentEntity;
-import webapp.school_grades_mgmt.sgm.repository.StudentRepository;
 import webapp.school_grades_mgmt.sgm.service.ClassDetailService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ClassDetailController {
@@ -31,9 +26,11 @@ public class ClassDetailController {
         ClassEntity selectClass = service.findClass(classId);
         List<studentsRecord>  selectStudents = service.findStudents(classId);
         List<String > selectClassCurriculum = service.findClassCurriculum(classId);
+        List<String > gradeslist = service.findGrades(classId);
         model.addAttribute("classInfo", selectClass);
         model.addAttribute("studentList", selectStudents);
         model.addAttribute("classCurriculum", selectClassCurriculum);
+        model.addAttribute("gradesList", gradeslist);
         return "classDetail";
     }
 
