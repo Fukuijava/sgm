@@ -32,12 +32,7 @@
         <h2 th:text="${classInfo.schoolYearEntity.schoolYearNumber} + '-' + ${classInfo.classNumberEntity.classNumber}"></h2>
         <h2 th:text="${classInfo.departmentEntity.departmentName}"></h2>
     </div>
-<div >
-    <form th:action="@{/classDetail/{classInfo.id}}">
-        <button type="submit" class="btn btn-success">提出物管理</button>
-        <input type="hidden" name="submission" th:value="${classInfo.id}" />
-    </form>
-</div>
+
     <div class="list_form">
         <h2>成績一覧</h2>
         <table class="table table-striped" id="listform">
@@ -59,13 +54,30 @@
                 <td></td>
                 <td>
                     <form th:action="@{/classDetail/studentGrades/{classInfo.id}}">
-                        <button type="submit" class="btn btn-success">提出物管理</button>
+                        <button type="submit" class="btn btn-primary">成績</button>
                         <input type="hidden" name="submission" th:value="${classInfo.id}" />
                     </form>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <div id="buttonForm">
+        <form th:action="@{/classDetail/{classInfo.id}/classAttitude}">
+            <button id="classAttitudeButton" type="submit" class="btn btn-success">授業態度管理</button>
+            <input type="hidden" name="classId" th:value="${classInfo.id}" />
+        </form>
+
+        <form th:action="@{/classDetail/{classInfo.id}/submission}">
+            <button id="submissionButton" type="submit" class="btn btn-success">提出物管理</button>
+            <input type="hidden" name="classId" th:value="${classInfo.id}" />
+        </form>
+
+        <form th:action="@{/classDetail/{classInfo.id}/testScore}">
+            <button id="testScoreButton" type="submit" class="btn btn-success">テスト管理</button>
+            <input type="hidden" name="classId" th:value="${classInfo.id}" />
+        </form>
     </div>
 </main>
 </body>

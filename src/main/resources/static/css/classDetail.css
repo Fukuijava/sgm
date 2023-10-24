@@ -1,4 +1,20 @@
 .list_form {
     width: 70%;
     height:auto;
+    float: left;
+}
+#buttonForm{
+    float: right
+}
+#classAttitudeButton {
+    font-size: 300%;
+    margin: 20px;
+}
+#submissionButton {
+    font-size: 300%;
+    margin: 20px;
+}
+#testScoreButton {
+    font-size: 300%;
+    margin: 20px;
 }

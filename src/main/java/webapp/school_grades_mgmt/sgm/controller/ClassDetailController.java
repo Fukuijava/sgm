@@ -46,4 +46,28 @@ public class ClassDetailController {
         return "classDetail";
     }
 
+    @GetMapping("/classDetail/{classInfo.id}/classAttitude")
+    public String submission(@RequestParam("classId") Integer classId,
+                             Model model) {
+        ClassEntity selectClass = service.findClass(classId);
+        List<studentsRecord>  selectStudents = service.findStudents(classId);
+        List<String > selectClassCurriculum = service.findClassCurriculum(classId);
+        model.addAttribute("classInfo", selectClass);
+        model.addAttribute("studentList", selectStudents);
+        model.addAttribute("classCurriculum", selectClassCurriculum);
+        return "classDetail";
+    }
+
+    @GetMapping("/classDetail/{classInfo.id}/testScore")
+    public String submission(@RequestParam("classId") Integer classId,
+                             Model model) {
+        ClassEntity selectClass = service.findClass(classId);
+        List<studentsRecord>  selectStudents = service.findStudents(classId);
+        List<String > selectClassCurriculum = service.findClassCurriculum(classId);
+        model.addAttribute("classInfo", selectClass);
+        model.addAttribute("studentList", selectStudents);
+        model.addAttribute("classCurriculum", selectClassCurriculum);
+        return "classDetail";
+    }
+
 }
