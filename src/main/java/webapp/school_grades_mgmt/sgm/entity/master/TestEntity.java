@@ -1,4 +1,4 @@
-package webapp.school_grades_mgmt.sgm.entity.table;
+package webapp.school_grades_mgmt.sgm.entity.master;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,13 +13,7 @@ public class TestEntity {
     @Column(name="test_id")
     private Integer id;
 
-    @ManyToOne()
-    @JoinColumn(name = "grades_id")
-    private GradesEntity gradesEntity;
-
     @Column(name="test_name")
-    private Integer test_name;
+    private String  testName;
 
-    @Column(name="test_evaluation")
-    private Integer testEvaluation;
 }

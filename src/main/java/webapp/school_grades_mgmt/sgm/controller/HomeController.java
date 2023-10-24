@@ -21,21 +21,21 @@ import java.util.List;
 @RequestMapping("/home")
 public class HomeController {
     @Autowired
-    private HomeService homeService;
+    private HomeService service;
 
     @GetMapping("/")
     public String home(Model model) {
-        List<ClassEntity> classList = homeService.findClass();
+        List<ClassEntity> classList = service.findClass();
         model.addAttribute("ClassList", classList);
         return "home";
     }
 
     @GetMapping("/addClass")
     public String addClass(Model model) {
-        List<SchoolYearEntity> schoolYearList = homeService.findSchoolYear();
-        List<DepartmentEntity> departmentList = homeService.findDepartment();
-        List<ClassNumberEntity> classNumberList = homeService.findClassNumber();
-        List<CurriculumEntity> curriculumList = homeService.findCurriculum();
+        List<SchoolYearEntity> schoolYearList = service.findSchoolYear();
+        List<DepartmentEntity> departmentList = service.findDepartment();
+        List<ClassNumberEntity> classNumberList = service.findClassNumber();
+        List<CurriculumEntity> curriculumList = service.findCurriculum();
         model.addAttribute("SchoolYearList", schoolYearList);
         model.addAttribute("DepartmentList", departmentList);
         model.addAttribute("ClassNumberList", classNumberList);
@@ -59,11 +59,12 @@ public class HomeController {
         for(int i = 0; i < CurriculumList.length; i++){
             classCurriculums[i] = Integer.parseInt(CurriculumList[i]);
         }
-        Integer classId = homeService.addClass(schoolYear,department,classNumber);
-        homeService.addClassCurriculum(classId, classCurriculums);
-        homeService.addStudent(classId,stNames);
+        Integer classId = service.addClass(schoolYear,department,classNumber);
+        service.addClassCurriculum(classId, classCurriculums);
+        service.addStudent(classId,stNames);
         model.addAttribute("classRegistered","登録完了");
-        List<ClassEntity> classList = homeService.findClass();
+        //ホーム画面に登録されてるクラスの一覧を表示させる
+        List<ClassEntity> classList = service.findClass();
         model.addAttribute("ClassList", classList);
         return "home";
     }

@@ -75,3 +75,17 @@ VALUES
 ,(45,'建築構造設計')
 ,(46,'建築法規')
 ,(47,'建築施工');
+
+INSERT IGNORE INTO sgmdb.semester
+(semester_id,semester_number)
+VALUES
+ (1,1)
+,(2,2)
+,(3,3);
+
+INSERT IGNORE INTO sgmdb.test
+(test_id,test_name)
+VALUES
+ (1,"中間テスト")
+,(2,"期末テスト")
+,(3,"学年末テスト");

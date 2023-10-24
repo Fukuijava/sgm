@@ -15,6 +15,7 @@
     <link th:href="@{/css/header.css}" rel="stylesheet">
     <link th:href="@{/css/classDetail.css}" rel="stylesheet">
 </head>
+<!--<th th:each="curriculumName : ${classCurriculum}">[[${curriculumName}]]</th>-->
 
 <body class="bg-success-subtle bg-gradient">
 <header class="p-3 mb-2 bg-dark bg-gradient text-white">
@@ -27,48 +28,56 @@
     </ul>
 </header>
 <main>
+    <div>
+        <h2 th:text="${classInfo.schoolYearEntity.schoolYearNumber} + '-' + ${classInfo.classNumberEntity.classNumber}"></h2>
+        <h2 th:text="${classInfo.departmentEntity.departmentName}"></h2>
+    </div>
+
     <div class="list_form">
         <h2>成績一覧</h2>
         <table class="table table-striped" id="listform">
             <thead>
-            <tr th:each="gomap : ${gomapList}">
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
-                <th th:text="${gomap.golist_id}"></th>
+            <tr>
+                <th>出席番号</th>
+                <th>名前</th>
+                <th>評定平均</th>
+                <th>クラス内順位</th>
+                <th>成績画面</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="gomap : ${gomapList}">
-                <td th:text="${gomap.golist_id}" class="hidden" ></td>
-                <td th:text="${gomap.pref}"></td>
-                <td th:text="${gomap.city}"></td>
-                <td th:text="${gomap.genre}"></td>
-                <td th:text="${gomap.move_means}"></td>
+            <tr th:each="student : ${studentList}">
+                <td th:text="${student.attendanceNumber}"></td>
+                <td th:text="${student.studentName}"></td>
+                <td></td>
+                <td></td>
                 <td>
-                    <form th:action="@{/gomap/map/{gomap.golist_id}}">
-                        <button type="submit" class="btn btn-success">マップへ</button>
-                        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
-                    </form>
-                </td>
-                <td>
-                    <button id="update_bu" onclick="copyToDialog(this.parentElement.parentElement);" data-bs-toggle="modal" data-bs-target="#updatedialog" class="btn btn-primary">更新する</button>
-                </td>
-                <td>
-                    <form th:action="@{/gomap/delete}">
-                        <button type="submit" class="btn btn-secondary">削除する</button>
-                        <input type="hidden" name="golist_id" th:value="${gomap.golist_id}" />
+                    <form th:action="@{/classDetail/studentGrades/{classInfo.id}}">
+                        <button type="submit" class="btn btn-primary">成績</button>
+                        <input type="hidden" name="submission" th:value="${classInfo.id}" />
                     </form>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <div id="buttonForm">
+        <form th:action="@{/classDetail/{classInfo.id}/classAttitude}">
+            <button id="classAttitudeButton" type="submit" class="btn btn-success">授業態度管理</button>
+            <input type="hidden" name="classId" th:value="${classInfo.id}" />
+        </form>
+
+        <form th:action="@{/classDetail/{classInfo.id}/submission}">
+            <button id="submissionButton" type="submit" class="btn btn-success">提出物管理</button>
+            <input type="hidden" name="classId" th:value="${classInfo.id}" />
+        </form>
+
+        <form th:action="@{/classDetail/{classInfo.id}/testScore}">
+            <button id="testScoreButton" type="submit" class="btn btn-success">テスト管理</button>
+            <input type="hidden" name="classId" th:value="${classInfo.id}" />
+        </form>
     </div>
 </main>
 </body>

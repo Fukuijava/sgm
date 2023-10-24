@@ -2,24 +2,23 @@ package webapp.school_grades_mgmt.sgm.entity.table;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-@Table(name = "submission")
+@Table(name = "class_attitude")
 @Data
 @Entity
-public class SubmissionEntity {
+public class ClassAttitudeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="submission_id")
+    @Column(name="class_attitude_id")
     private Integer id;
 
     @ManyToOne()
     @JoinColumn(name = "grades_by_semester_id")
     private GradesBySemesterEntity gradesBySemesterEntity;
 
-    @Column(name="submission_name")
-    private String submissionName;
+    @Column(name="curriculum_name")
+    private String curriculumName;
 
-    @Column(name="submission_evaluation")
-    private Integer submissionEvaluation;
+    @Column(name="class_attitude")
+    private Integer classAttitude;
 
 }
