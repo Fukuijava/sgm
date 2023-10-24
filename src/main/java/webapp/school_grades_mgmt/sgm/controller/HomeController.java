@@ -63,6 +63,7 @@ public class HomeController {
         service.addClassCurriculum(classId, classCurriculums);
         service.addStudent(classId,stNames);
         model.addAttribute("classRegistered","登録完了");
+        //ホーム画面に登録されてるクラスの一覧を表示させる
         List<ClassEntity> classList = service.findClass();
         model.addAttribute("ClassList", classList);
         return "home";

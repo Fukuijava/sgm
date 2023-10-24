@@ -1,0 +1,8 @@
+package webapp.school_grades_mgmt.sgm.repository.table;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
+
+public interface SemesterRepository extends JpaRepository<SemesterEntity,Integer> {
+
+}
