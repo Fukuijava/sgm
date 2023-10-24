@@ -59,11 +59,12 @@ public class HomeController {
         for(int i = 0; i < CurriculumList.length; i++){
             classCurriculums[i] = Integer.parseInt(CurriculumList[i]);
         }
-
         Integer classId = homeService.addClass(schoolYear,department,classNumber);
         homeService.addClassCurriculum(classId, classCurriculums);
         homeService.addStudent(classId,stNames);
         model.addAttribute("classRegistered","登録完了");
+        List<ClassEntity> classList = homeService.findClass();
+        model.addAttribute("ClassList", classList);
         return "home";
     }
 
