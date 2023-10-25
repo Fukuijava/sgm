@@ -25,13 +25,15 @@ public class HomeService {
     private final GradesRepository gradesRepository;
     private final GradesBySemesterRepository gradesBySemesterRepository;
     private final SemesterRepository semesterRepository;
+    private final ClassAttitudeRepository classAttitudeRepository;
 
     @Autowired
     public HomeService(CurriculumRepository curriculumRepository, SchoolYearRepository schoolYearRepository,
                        DepartmentRepository departmentRepository, ClassNumberRepository classNumberRepository,
                        ClassRepository classRepository, StudentRepository studentRepository,
                        ClassCurriculumRepository classCurriculumRepository, GradesRepository gradesRepository,
-                       GradesBySemesterRepository gradesBySemesterRepository, SemesterRepository semesterRepository) {
+                       GradesBySemesterRepository gradesBySemesterRepository, SemesterRepository semesterRepository,
+                       ClassAttitudeRepository classAttitudeRepository) {
         this.curriculumRepository = curriculumRepository;
         this.schoolYearRepository = schoolYearRepository;
         this.departmentRepository = departmentRepository;
@@ -42,6 +44,7 @@ public class HomeService {
         this.gradesRepository = gradesRepository;
         this.gradesBySemesterRepository = gradesBySemesterRepository;
         this.semesterRepository = semesterRepository;
+        this.classAttitudeRepository = classAttitudeRepository;
     }
 
     public List<SchoolYearEntity> findSchoolYear(){
@@ -92,13 +95,25 @@ public class HomeService {
             int studentId = studentEntity.getId();
             gradesEntity.setStudentEntity(studentRepository.getReferenceById(studentId));
             gradesRepository.saveAndFlush(gradesEntity);
-            //学期別成績テーブル
+            //学期別成績・授業態度・提出物・テストテーブル
             int gradesId = gradesEntity.getId();
-            for(int count2 = 0; count2 < 3; count2++){
+            for(int count2 = 0; count2 < 3; count2++){//3は学期数が3だから
+                //学期別成績テーブル
                 GradesBySemesterEntity gradesBySemesterEntity = new GradesBySemesterEntity();
                 gradesBySemesterEntity.setGradesEntity(gradesRepository.getReferenceById(gradesId));
                 gradesBySemesterEntity.setSemesterEntity(semesterRepository.getReferenceById(count2 + 1));
                 gradesBySemesterRepository.saveAndFlush(gradesBySemesterEntity);
+                //授業態度テーブル
+                int gradesBySemesterId = gradesBySemesterEntity.getId();
+                List<Integer > classCurriculumId = classCurriculumRepository.findClassCurriculumId(classId);
+                //クラス教科の分だけ回す
+                for(int i = 0; i < classCurriculumId.size(); i++){
+                    ClassAttitudeEntity classAttitudeEntity = new ClassAttitudeEntity();
+                    classAttitudeEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
+                    classAttitudeEntity.setClassCurriculumEntity(classCurriculumRepository.getReferenceById(classCurriculumId.get(i)));
+                    classAttitudeEntity.setClassAttitude(5);
+                    classAttitudeRepository.saveAndFlush(classAttitudeEntity);
+                }
             }
         }
     }
