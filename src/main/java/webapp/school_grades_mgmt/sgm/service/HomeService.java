@@ -22,7 +22,7 @@ public class HomeService {
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
     private final ClassCurriculumRepository classCurriculumRepository;
-    private final GradesRepository gradesRepository;
+
     private final GradesBySemesterRepository gradesBySemesterRepository;
     private final SemesterRepository semesterRepository;
     private final ClassAttitudeRepository classAttitudeRepository;
@@ -31,8 +31,8 @@ public class HomeService {
     public HomeService(CurriculumRepository curriculumRepository, SchoolYearRepository schoolYearRepository,
                        DepartmentRepository departmentRepository, ClassNumberRepository classNumberRepository,
                        ClassRepository classRepository, StudentRepository studentRepository,
-                       ClassCurriculumRepository classCurriculumRepository, GradesRepository gradesRepository,
-                       GradesBySemesterRepository gradesBySemesterRepository, SemesterRepository semesterRepository,
+                       ClassCurriculumRepository classCurriculumRepository, SemesterRepository semesterRepository,
+                       GradesBySemesterRepository gradesBySemesterRepository,
                        ClassAttitudeRepository classAttitudeRepository) {
         this.curriculumRepository = curriculumRepository;
         this.schoolYearRepository = schoolYearRepository;
@@ -41,7 +41,6 @@ public class HomeService {
         this.classRepository = classRepository;
         this.studentRepository = studentRepository;
         this.classCurriculumRepository = classCurriculumRepository;
-        this.gradesRepository = gradesRepository;
         this.gradesBySemesterRepository = gradesBySemesterRepository;
         this.semesterRepository = semesterRepository;
         this.classAttitudeRepository = classAttitudeRepository;
@@ -82,38 +81,34 @@ public class HomeService {
         }
     }
 
-    public void addStudent(Integer classId, String[] stNames) {
-        for (int count1 = 0; count1 < stNames.length; count1++) {
+    public void addStudent(Integer classId, String[] studentNames) {
+        for (int studentNumber = 0; studentNumber < studentNames.length; studentNumber++) {
             StudentEntity studentEntity = new StudentEntity();
-            GradesEntity gradesEntity = new GradesEntity();
             //生徒テーブル
             studentEntity.setClassEntity(classRepository.getReferenceById(classId));
-            studentEntity.setAttendanceNumber(count1 + 1);
-            studentEntity.setStudentName(stNames[count1]);
+            studentEntity.setAttendanceNumber(studentNumber + 1);
+            studentEntity.setStudentName(studentNames[studentNumber]);
             studentRepository.saveAndFlush(studentEntity);
-            //成績テーブル
+            //学期別成績テーブル
             int studentId = studentEntity.getId();
-            gradesEntity.setStudentEntity(studentRepository.getReferenceById(studentId));
-            gradesRepository.saveAndFlush(gradesEntity);
-            //学期別成績・授業態度・提出物・テストテーブル
-            int gradesId = gradesEntity.getId();
-            for(int count2 = 0; count2 < 3; count2++){//3は学期数が3だから
-                //学期別成績テーブル
-                GradesBySemesterEntity gradesBySemesterEntity = new GradesBySemesterEntity();
-                gradesBySemesterEntity.setGradesEntity(gradesRepository.getReferenceById(gradesId));
-                gradesBySemesterEntity.setSemesterEntity(semesterRepository.getReferenceById(count2 + 1));
-                gradesBySemesterRepository.saveAndFlush(gradesBySemesterEntity);
-                //授業態度テーブル
-                int gradesBySemesterId = gradesBySemesterEntity.getId();
-                List<Integer > classCurriculumId = classCurriculumRepository.findClassCurriculumId(classId);
+            List<Integer > classCurriculumId = classCurriculumRepository.findClassCurriculumId(classId);
+            //3学期分回す
+            for(int semesterNumber = 1; semesterNumber < 4; semesterNumber++){//条件の値が4なのは3学期分回すため
                 //クラス教科の分だけ回す
                 for(int i = 0; i < classCurriculumId.size(); i++){
+                    GradesBySemesterEntity gradesBySemesterEntity = new GradesBySemesterEntity();
+                    gradesBySemesterEntity.setStudentEntity(studentRepository.getReferenceById(studentId));
+                    gradesBySemesterEntity.setSemesterEntity(semesterRepository.getReferenceById(semesterNumber));
+                    gradesBySemesterEntity.setClassCurriculumEntity(classCurriculumRepository.getReferenceById(classCurriculumId.get(i)));
+                    gradesBySemesterRepository.saveAndFlush(gradesBySemesterEntity);
+                    //授業態度テーブル
+                    int gradesBySemesterId = gradesBySemesterEntity.getId();
                     ClassAttitudeEntity classAttitudeEntity = new ClassAttitudeEntity();
                     classAttitudeEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
-                    classAttitudeEntity.setClassCurriculumEntity(classCurriculumRepository.getReferenceById(classCurriculumId.get(i)));
-                    classAttitudeEntity.setClassAttitude(5);
+                    classAttitudeEntity.setClassAttitudeEvaluation(5);//授業態度は初期値が最大値の5でそこから減点方式で評価するため最初は5をセットする。
                     classAttitudeRepository.saveAndFlush(classAttitudeEntity);
                 }
+
             }
         }
     }
