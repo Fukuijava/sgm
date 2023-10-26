@@ -1,6 +1,7 @@
 package webapp.school_grades_mgmt.sgm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import webapp.school_grades_mgmt.sgm.controller.ClassDetailController;
@@ -60,10 +61,15 @@ public class ClassDetailService {
         return classCurriculumRepository.findClassCurriculumName(classId);
     }
 
-    public ClassAttitudeEntity findClassAttitude(Integer classId){
-        ClassAttitudeEntity classAttitude = new ClassAttitudeEntity();
-        List<Integer > classCurriculumId = classCurriculumRepository.findClassCurriculumId(classId);
-        classAttitudeRepository.findClassAttitude();
+    public List<Integer> findClassAttitude(Integer classId){
+        ClassAttitudeEntity classAttitudeEntity = new ClassAttitudeEntity();
+        List<Integer> classCurriculumId = classCurriculumRepository.findClassCurriculumId(classId);
+//        classAttitudeRepository.findClassAttitude(classId);
+        String query = "SELECT * FROM student " +
+                       "LEFT OUTER JOIN class ON class.class_id = student.class_id " +
+                       "WHERE student.class_id = '" + classId + "'";
+
+
 
 
         return ;

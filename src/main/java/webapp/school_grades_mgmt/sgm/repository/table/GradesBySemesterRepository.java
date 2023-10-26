@@ -8,4 +8,8 @@ import webapp.school_grades_mgmt.sgm.entity.table.GradesBySemesterEntity;
 import java.util.List;
 public interface GradesBySemesterRepository extends JpaRepository<GradesBySemesterEntity,Integer> {
 
+    @Query(value = "SELECT grades_by_semester_id FROM grades_by_semester " +
+                   "WHERE class_id = ?", nativeQuery = true)
+    List<Integer> findGradesBySemester(@Param("classId") Integer classId);
+
 }
