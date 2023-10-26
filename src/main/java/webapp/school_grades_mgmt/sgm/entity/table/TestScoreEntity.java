@@ -21,10 +21,6 @@ public class TestScoreEntity {
     @JoinColumn(name = "test_id")
     private TestEntity testEntity;
 
-    @ManyToOne()
-    @JoinColumn(name = "class_curriculum_id")
-    private ClassCurriculumEntity classCurriculumEntity;
-
     @Column(name="test_score")
     private Integer testScore;
 }

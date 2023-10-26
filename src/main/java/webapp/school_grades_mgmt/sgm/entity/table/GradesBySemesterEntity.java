@@ -15,11 +15,15 @@ public class GradesBySemesterEntity {
         private Integer id;
 
         @ManyToOne()
-        @JoinColumn(name = "grades_id")
-        private GradesEntity gradesEntity;
+        @JoinColumn(name = "student_id")
+        private StudentEntity studentEntity;
 
         @ManyToOne()
         @JoinColumn(name = "semester_id")
         private SemesterEntity semesterEntity;
 
-    }
+        @ManyToOne()
+        @JoinColumn(name = "class_curriculum_id")
+        private ClassCurriculumEntity classCurriculumEntity;
+
+}

@@ -33,7 +33,7 @@
 
     <div class="list_form">
         <h2>授業態度</h2>
-        <form th:action="{/classDetail/{classInfo.id}/classAttitude/update}">
+        <form th:action="@{/classDetail/{classInfo.id}/classAttitude/update}">
         <table class="table table-striped" id="listform">
             <thead>
             <tr>
@@ -44,11 +44,11 @@
             </thead>
 
             <tbody>
-            <tr th:each="student : ${studentList}">
+            <tr th:each="student, st : ${studentList}">
                 <td th:text="${student.attendanceNumber}"></td>
                 <td th:text="${student.studentName}"></td>
-                <td>
-
+                <td th:each="aa : ${classCurriculum}" >
+                    <input type="number"  min="1" max="5" th:value="${classAttitude[__${st.index}__].classAttitudeEvaluation}"/>
                 </td>
             </tr>
             </tbody>

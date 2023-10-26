@@ -15,12 +15,7 @@ public class ClassAttitudeEntity {
     @JoinColumn(name = "grades_by_semester_id")
     private GradesBySemesterEntity gradesBySemesterEntity;
 
-
-    @ManyToOne()
-    @JoinColumn(name = "class_curriculum_id")
-    private ClassCurriculumEntity classCurriculumEntity;
-
-    @Column(name="class_attitude")
-    private Integer classAttitude;
+    @Column(name="class_attitude_evaluation")
+    private Integer classAttitudeEvaluation;
 
 }

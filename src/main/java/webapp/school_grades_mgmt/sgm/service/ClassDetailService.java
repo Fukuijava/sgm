@@ -1,7 +1,6 @@
 package webapp.school_grades_mgmt.sgm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import webapp.school_grades_mgmt.sgm.controller.ClassDetailController;
@@ -10,6 +9,7 @@ import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.GradesBySemesterEntity;
 import webapp.school_grades_mgmt.sgm.repository.table.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +45,7 @@ public class ClassDetailService {
 
     public List<ClassDetailController.studentsRecord> findStudents(Integer classId) {
         String query = "SELECT * FROM student " +
-                        "LEFT OUTER JOIN class ON class.class_id = student.class_id " +
+                        "INNER JOIN class ON class.class_id = student.class_id " +
                         "WHERE student.class_id = '" + classId + "'";
         List<Map<String, Object>> result = jdbcTemplate.queryForList(query);
         List<ClassDetailController.studentsRecord> students = result.stream()
@@ -61,31 +61,19 @@ public class ClassDetailService {
         return classCurriculumRepository.findClassCurriculumName(classId);
     }
 
-    public List<Integer> findClassAttitude(Integer classId){
-        ClassAttitudeEntity classAttitudeEntity = new ClassAttitudeEntity();
-        List<Integer> classCurriculumId = classCurriculumRepository.findClassCurriculumId(classId);
-//        classAttitudeRepository.findClassAttitude(classId);
-        String query = "SELECT * FROM student " +
-                       "LEFT OUTER JOIN class ON class.class_id = student.class_id " +
-                       "WHERE student.class_id = '" + classId + "'";
-
-
-
-
-        return ;
+    public List<ClassAttitudeEntity > findClassAttitude(List<ClassDetailController.studentsRecord> studentsRecords,
+                                            Integer classId){
+        List<Integer> classCurriculumIds = classCurriculumRepository.findClassCurriculumId(classId);
+        List<ClassAttitudeEntity> classAttitudeEntityList = new ArrayList<>();
+        List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
+//        for(int x = 1; x < 4; x++){//3学期分回す
+            for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
+                for(int z = 0; z < classCurriculumIds.size(); z++){//クラスの教科数分回す
+                    Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
+                    classAttitudeEntityList.add(classAttitudeRepository.findClassAttitude(gradesBySemesterId));
+                }
+                classList.add(classAttitudeEntityList);
+            }
+        return classAttitudeEntityList;
     }
-
-
-
-
-//    public ClassAttitudeEntity findClassAttitude(Integer classId){
-//        GradesBySemesterEntity gradesBySemester = new GradesBySemesterEntity();
-//        gradesBySemester.getSemesterEntity().getId();
-//
-//
-
-//        return classCurriculumRepository.findClassIdCurriculum(classId);
-//    }
-
-
 }

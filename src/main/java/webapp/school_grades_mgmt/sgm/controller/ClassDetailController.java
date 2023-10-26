@@ -27,12 +27,8 @@ public class ClassDetailController {
                               Model model) {
         ClassEntity classInfo = service.findClassInfo(classId);
         List<studentsRecord>  classStudents = service.findStudents(classId);
-        List<String > classCurriculum = service.findClassCurriculum(classId);
-//        List<String > gradeslist = service.findGrades(classId);
         model.addAttribute("classInfo", classInfo);
         model.addAttribute("studentList", classStudents);
-        model.addAttribute("classCurriculum", classCurriculum);
-//        model.addAttribute("gradesList", gradeslist);
         return "classDetail";
     }
 
@@ -43,14 +39,11 @@ public class ClassDetailController {
         ClassEntity classInfo = service.findClassInfo(classId);
         List<studentsRecord>  classStudents = service.findStudents(classId);
         List<String > classCurriculum = service.findClassCurriculum(classId);
-
-        ClassAttitudeEntity classAttitude = service.findClassAttitude(classId);
-
+        List<ClassAttitudeEntity> classAttitude = service.findClassAttitude(classStudents, classId);
         model.addAttribute("classInfo", classInfo);
         model.addAttribute("studentList", classStudents);
         model.addAttribute("classCurriculum", classCurriculum);
         model.addAttribute("classAttitude", classAttitude);
-
         return "classAttitude";
     }
 
