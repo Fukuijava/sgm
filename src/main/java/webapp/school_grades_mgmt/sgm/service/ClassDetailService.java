@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import webapp.school_grades_mgmt.sgm.controller.ClassDetailController;
+import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.GradesBySemesterEntity;
@@ -17,6 +18,7 @@ import java.util.Map;
 @Service
 public class ClassDetailService {
     private final ClassRepository classRepository;
+    private final SemesterRepository semesterRepository;
     private final StudentRepository studentRepository;
     private final ClassCurriculumRepository classCurriculumRepository;
     private final GradesBySemesterRepository gradesBySemesterRepository;
@@ -29,13 +31,18 @@ public class ClassDetailService {
                               ClassCurriculumRepository classCurriculumRepository,
                               GradesBySemesterRepository gradesBySemesterRepository,
                               ClassAttitudeRepository classAttitudeRepository,
-                              JdbcTemplate jdbcTemplate) {
+                              SemesterRepository semesterRepository, JdbcTemplate jdbcTemplate) {
         this.classRepository = classRepository;
+        this.semesterRepository = semesterRepository;
         this.studentRepository = studentRepository;
         this.classCurriculumRepository = classCurriculumRepository;
         this.gradesBySemesterRepository = gradesBySemesterRepository;
         this.classAttitudeRepository = classAttitudeRepository;
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<SemesterEntity> findSemester(){
+        return semesterRepository.findAll();
     }
 
     public ClassEntity findClassInfo(Integer classId){
@@ -61,8 +68,8 @@ public class ClassDetailService {
         return classCurriculumRepository.findClassCurriculumName(classId);
     }
 
-    public List<ClassAttitudeEntity > findClassAttitude(List<ClassDetailController.studentsRecord> studentsRecords,
-                                            Integer classId){
+    public List<ClassAttitudeEntity> findClassAttitude(List<ClassDetailController.studentsRecord> studentsRecords,
+                                                       Integer classId){
         List<Integer> classCurriculumIds = classCurriculumRepository.findClassCurriculumId(classId);
         List<ClassAttitudeEntity> classAttitudeEntityList = new ArrayList<>();
         List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
@@ -70,10 +77,24 @@ public class ClassDetailService {
             for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
                 for(int z = 0; z < classCurriculumIds.size(); z++){//クラスの教科数分回す
                     Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
-                    classAttitudeEntityList.add(classAttitudeRepository.findClassAttitude(gradesBySemesterId));
+                    classAttitudeEntityList.add(classAttitudeRepository.findClassAttitude1(gradesBySemesterId));
                 }
                 classList.add(classAttitudeEntityList);
             }
         return classAttitudeEntityList;
+    }
+
+
+    public List<Object> changeSemester(List<ClassDetailController.studentsRecord> studentsRecords,
+                                                        Integer classId, Integer semesterId){
+        List<Integer> classCurriculumIds = classCurriculumRepository.findClassCurriculumId(classId);
+        List<Object> classAttitudeList = new ArrayList<>();
+        for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
+            for(int z = 0; z < classCurriculumIds.size(); z++){//クラスの教科数分回す
+                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
+                classAttitudeList.add(classAttitudeRepository.findClassAttitude2(gradesBySemesterId));
+            }
+        }
+        return classAttitudeList;
     }
 }

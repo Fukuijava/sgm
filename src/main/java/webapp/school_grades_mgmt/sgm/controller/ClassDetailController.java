@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.GradesBySemesterEntity;
@@ -35,11 +36,13 @@ public class ClassDetailController {
     @GetMapping("/classDetail/{classId}/classAttitude")
     public String classAttitude(@RequestParam("classId") Integer classId,
                                 Model model) {
-        //クラスの情報と生徒とクラスの教科を取得
+        //学期とクラスの情報と生徒とクラスの教科を取得
+        List<SemesterEntity> semester = service.findSemester();
         ClassEntity classInfo = service.findClassInfo(classId);
         List<studentsRecord>  classStudents = service.findStudents(classId);
         List<String > classCurriculum = service.findClassCurriculum(classId);
         List<ClassAttitudeEntity> classAttitude = service.findClassAttitude(classStudents, classId);
+        model.addAttribute("semesterNumber", semester);
         model.addAttribute("classInfo", classInfo);
         model.addAttribute("studentList", classStudents);
         model.addAttribute("classCurriculum", classCurriculum);

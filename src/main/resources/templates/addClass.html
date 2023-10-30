@@ -57,7 +57,7 @@
             <select class="form-select" name="schoolYear">
                 <option th:each="schoolYear : ${SchoolYearList}"
                         th:value="${schoolYear.id}"
-                        th:text="${schoolYear.schoolYearNumber}">
+                        th:text="${schoolYear.schoolYearNumber}+年">
                 </option>
             </select>
         </div>
@@ -67,7 +67,7 @@
             <select class="form-select" name="department">
                 <option th:each="deptList : ${DepartmentList}"
                         th:value="${deptList.id}"
-                        th:text="${deptList.departmentName}">
+                        th:text="${deptList.departmentName}+科">
                 </option>
             </select>
         </div>
@@ -77,7 +77,7 @@
             <select class="form-select" name="classNumber">
                 <option th:each="classNumber : ${ClassNumberList}"
                         th:value="${classNumber.id}"
-                        th:text="${classNumber.classNumber}">
+                        th:text="${classNumber.classNumber}+組">
                 </option>
             </select>
         </div>
