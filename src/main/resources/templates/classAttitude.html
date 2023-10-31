@@ -33,20 +33,19 @@
 
     <div class="list_form">
         <h2>授業態度</h2>
+        <form th:action="@{/classDetail/{classInfo.id}/classAttitude/update}" method="post">
 
         <div>
             <label>学期</label>
-            <select id="semester">
+            <select id="semester" name="semesterId">
                 <option th:each="semester : ${semesterNumber}"
                         th:value="${semester.id}"
                         th:text="${semester.semesterNumber}+学期">
                 </option>
             </select>
-            <input id="classId" hidden="hidden" th:value="${classInfo.id}">
-            <input type="button" onclick="changeSemester();" value="更新" />
+            <input type="button" id="aaa" value="更新" />
         </div>
 
-        <form th:action="@{/classDetail/{classInfo.id}/classAttitude/update}">
         <table class="table table-hover" id="listForm">
             <thead>
             <tr>
@@ -57,21 +56,22 @@
             </thead>
 
             <tbody id="classAttitudeBody">
-            <tr th:each="student, studentCount : ${studentList}">
+            <tr th:each="student, studentCount : ${studentList}" th:with="x=0">
                 <td th:text="${student.attendanceNumber}"></td>
                 <td th:text="${student.studentName}"></td>
                 <input hidden="hidden" th:value="${studentCount.size}" id="studentCount"/>
                 <td th:each="curriculum, CurriculumCount : ${classCurriculum}" class="classCurriculum">
-                    <input type="number"  min="1" max="5" th:value="${classAttitude[__${studentCount.index}__].classAttitudeEvaluation}"/>
+                    <input type="number"  min="1" max="5" class="evaluation" onload="count(x);" th:value="${classAttitude[__${x}__].classAttitudeEvaluation}"/>
                     <input hidden="hidden" th:value="${CurriculumCount.size}" id="curriculumCount"/>
                 </td>
             </tr>
             </tbody>
         </table>
+            <div id="output" hidden=""></div>
+            <input id="classId" hidden="hidden"  name="classId" th:value="${classInfo.id}">
+            <button type="submit" class="btn btn-primary" onclick="createEvaluationArray();">評価を更新</button>
         </form>
     </div>
-
-
 </main>
 </body>
 </html>

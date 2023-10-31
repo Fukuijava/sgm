@@ -73,7 +73,6 @@ public class ClassDetailService {
         List<Integer> classCurriculumIds = classCurriculumRepository.findClassCurriculumId(classId);
         List<ClassAttitudeEntity> classAttitudeEntityList = new ArrayList<>();
         List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
-//        for(int x = 1; x < 4; x++){//3学期分回す
             for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
                 for(int z = 0; z < classCurriculumIds.size(); z++){//クラスの教科数分回す
                     Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
@@ -83,7 +82,6 @@ public class ClassDetailService {
             }
         return classAttitudeEntityList;
     }
-
 
     public List<Object> changeSemester(List<ClassDetailController.studentsRecord> studentsRecords,
                                                         Integer classId, Integer semesterId){
@@ -96,5 +94,29 @@ public class ClassDetailService {
             }
         }
         return classAttitudeList;
+    }
+
+    public List<Object> findClassAttitudeIds(List<ClassDetailController.studentsRecord> studentsRecords,
+                                       Integer classId, Integer semesterId){
+        List<Integer> classCurriculumIds = classCurriculumRepository.findClassCurriculumId(classId);
+        List<Object> classAttitudeList = new ArrayList<>();
+        for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
+            for(int z = 0; z < classCurriculumIds.size(); z++){//クラスの教科数分回す
+                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
+                classAttitudeList.add(classAttitudeRepository.findClassAttitude2(gradesBySemesterId));
+            }
+        }
+        return classAttitudeList;
+    }
+
+    public void updateClassAttitude(List<Object> classAttitudeIdList, Integer[] classAttitudesEvaluations){
+        for(int i = 0; i < classAttitudeIdList.size(); i++){
+            jdbcTemplate.update(
+                    "UPDATE class_attitude AS CA " +
+                        "INNER JOIN grades_by_semester AS GBA " +
+                        "ON CA.grades_by_semester_id = GBA.grades_by_semester_id " +
+                        "SET CA.class_attitude_evaluation = '" + classAttitudesEvaluations[i] + "' " +
+                        "WHERE CA.grades_by_semester_id = '" + classAttitudeIdList.stream().toList().get(i) + "'");
+        }
     }
 }

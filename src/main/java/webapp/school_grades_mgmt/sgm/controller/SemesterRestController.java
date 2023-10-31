@@ -24,9 +24,7 @@ public class SemesterRestController {
 
     @PostMapping(value="/changeSemester")
     List<Object> changeSemester(@RequestParam("semesterId") Integer  semesterId,
-                                             @RequestParam("classId") Integer  classId) {
-//        Integer SemesterId = Integer.parseInt(semesterId);
-//        Integer ClassId = Integer.parseInt(classId);
+                                @RequestParam("classId") Integer  classId) {
         List<ClassDetailController.studentsRecord>  classStudents = service.findStudents(classId);
         List<Object> changeSemester = service.changeSemester(classStudents,classId,semesterId);
         return changeSemester;
