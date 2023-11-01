@@ -23,10 +23,10 @@ public class SemesterRestController {
 
 
     @PostMapping(value="/changeSemester")
-    List<Object> changeSemester(@RequestParam("semesterId") Integer  semesterId,
+    List<Integer> changeSemester(@RequestParam("semesterId") Integer  semesterId,
                                 @RequestParam("classId") Integer  classId) {
         List<ClassDetailController.studentsRecord>  classStudents = service.findStudents(classId);
-        List<Object> changeSemester = service.changeSemester(classStudents,classId,semesterId);
+        List<Integer> changeSemester = service.changeSemester(classStudents,classId,semesterId);
         return changeSemester;
     }
 }

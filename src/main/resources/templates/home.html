@@ -46,7 +46,7 @@
             <div class="modal-body">
                 <table id="listform">
                     <tbody>
-                    <tr th:each="class : ${ClassList}">
+                    <tr th:each="class : ${classList}">
                         <form th:action="@{/classDetail/{class.id}}">
 
                             <button type="submit"

@@ -55,7 +55,7 @@
         <div class="col mb-4">
             <label class="form-label">学年</label>
             <select class="form-select" name="schoolYear">
-                <option th:each="schoolYear : ${SchoolYearList}"
+                <option th:each="schoolYear : ${schoolYearList}"
                         th:value="${schoolYear.id}"
                         th:text="${schoolYear.schoolYearNumber}+年">
                 </option>
@@ -65,7 +65,7 @@
         <div class="col mb-4">
             <label class="form-label">学科</label>
             <select class="form-select" name="department">
-                <option th:each="deptList : ${DepartmentList}"
+                <option th:each="deptList : ${departmentList}"
                         th:value="${deptList.id}"
                         th:text="${deptList.departmentName}+科">
                 </option>
@@ -75,7 +75,7 @@
         <div class="col mb-4">
             <label class="form-label">クラス</label>
             <select class="form-select" name="classNumber">
-                <option th:each="classNumber : ${ClassNumberList}"
+                <option th:each="classNumber : ${classNumberList}"
                         th:value="${classNumber.id}"
                         th:text="${classNumber.classNumber}+組">
                 </option>
@@ -95,7 +95,7 @@
             <h2><i class="bi bi-book"></i>登録科目</h2>
             <div class="space"></div>
             <h3>　　　科目名</h3>
-            <div th:each="curriculum : ${CurriculumList}" class="form-check">
+            <div th:each="curriculum : ${curriculumList}" class="form-check">
                 <input  class="form-check-input" th:value="${curriculum.id}" type="checkbox" name="curriculums"/>
                 <label  class="form-check-label" th:text="${curriculum.curriculumName}"></label>
             </div>

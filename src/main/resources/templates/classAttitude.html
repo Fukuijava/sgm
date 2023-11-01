@@ -14,6 +14,7 @@
     <!--     css読み込み -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
     <link th:href="@{/css/classDetail.css}" rel="stylesheet">
+    <link th:href="@{/css/classAttitude.css}" rel="stylesheet">
 </head>
 <body class="bg-success-subtle bg-gradient">
 <header class="p-3 mb-2 bg-dark bg-gradient text-white">
@@ -31,7 +32,14 @@
         <h2 th:text="${classInfo.departmentEntity.departmentName}"></h2>
     </div>
 
-    <div class="list_form">
+    <div id="choiceSemesterDiv">
+        <h1>学期を選択してください</h1>
+        <button class="choiceSemester" value="1">1学期</button>
+        <button class="choiceSemester" value="2">2学期</button>
+        <button class="choiceSemester" value="3">3学期</button>
+    </div>
+
+    <div id="list_form">
         <h2>授業態度</h2>
         <form th:action="@{/classDetail/{classInfo.id}/classAttitude/update}" method="post">
 
@@ -43,10 +51,10 @@
                         th:text="${semester.semesterNumber}+学期">
                 </option>
             </select>
-            <input type="button" id="aaa" value="更新" />
+            <input type="button" id="semesterUpdate" value="更新" />
         </div>
 
-        <table class="table table-hover" id="listForm">
+        <table class="table table-hover" id="listForm" >
             <thead>
             <tr>
                 <th>出席番号</th>
@@ -54,14 +62,13 @@
                 <th th:each="curriculumName : ${classCurriculum}">[[${curriculumName}]]</th>
             </tr>
             </thead>
-
             <tbody id="classAttitudeBody">
             <tr th:each="student, studentCount : ${studentList}" th:with="x=0">
                 <td th:text="${student.attendanceNumber}"></td>
                 <td th:text="${student.studentName}"></td>
                 <input hidden="hidden" th:value="${studentCount.size}" id="studentCount"/>
                 <td th:each="curriculum, CurriculumCount : ${classCurriculum}" class="classCurriculum">
-                    <input type="number"  min="1" max="5" class="evaluation" onload="count(x);" th:value="${classAttitude[__${x}__].classAttitudeEvaluation}"/>
+                    <input id="ClassAttitude" type="number"  min="1" max="5" class="evaluation"  th:value="${classAttitude[__${CurriculumCount.index}__].classAttitudeEvaluation}"/>
                     <input hidden="hidden" th:value="${CurriculumCount.size}" id="curriculumCount"/>
                 </td>
             </tr>

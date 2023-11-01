@@ -83,40 +83,40 @@ public class ClassDetailService {
         return classAttitudeEntityList;
     }
 
-    public List<Object> changeSemester(List<ClassDetailController.studentsRecord> studentsRecords,
+    public List<Integer> changeSemester(List<ClassDetailController.studentsRecord> studentsRecords,
                                                         Integer classId, Integer semesterId){
         List<Integer> classCurriculumIds = classCurriculumRepository.findClassCurriculumId(classId);
-        List<Object> classAttitudeList = new ArrayList<>();
+        List<Integer> classAttitudeList = new ArrayList<>();
         for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
             for(int z = 0; z < classCurriculumIds.size(); z++){//クラスの教科数分回す
                 Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
-                classAttitudeList.add(classAttitudeRepository.findClassAttitude2(gradesBySemesterId));
+                classAttitudeList.add(classAttitudeRepository.findClassAttitude3(gradesBySemesterId));
             }
         }
         return classAttitudeList;
     }
 
-    public List<Object> findClassAttitudeIds(List<ClassDetailController.studentsRecord> studentsRecords,
+    public List<Integer> findClassAttitudeIds(List<ClassDetailController.studentsRecord> studentsRecords,
                                        Integer classId, Integer semesterId){
         List<Integer> classCurriculumIds = classCurriculumRepository.findClassCurriculumId(classId);
-        List<Object> classAttitudeList = new ArrayList<>();
-        for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
-            for(int z = 0; z < classCurriculumIds.size(); z++){//クラスの教科数分回す
-                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
-                classAttitudeList.add(classAttitudeRepository.findClassAttitude2(gradesBySemesterId));
+        List<Integer> classAttitudeIds = new ArrayList<>();
+        for(int x = 0; x < studentsRecords.size(); x++){//クラスの生徒数分回す
+            for(int y = 0; y < classCurriculumIds.size(); y++){//クラスの教科数分回す
+                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecords.get(x).studentId(), classCurriculumIds.get(y));
+                classAttitudeIds.add(classAttitudeRepository.findClassAttitude2(gradesBySemesterId));
             }
         }
-        return classAttitudeList;
+        return classAttitudeIds;
     }
 
-    public void updateClassAttitude(List<Object> classAttitudeIdList, Integer[] classAttitudesEvaluations){
-        for(int i = 0; i < classAttitudeIdList.size(); i++){
+    public void updateClassAttitude(Integer[] IntegerClassAttitudes, List<Integer>  classAttitudeIdList){
+        for(int i = 0; i < IntegerClassAttitudes.length; i++){
             jdbcTemplate.update(
                     "UPDATE class_attitude AS CA " +
                         "INNER JOIN grades_by_semester AS GBA " +
                         "ON CA.grades_by_semester_id = GBA.grades_by_semester_id " +
-                        "SET CA.class_attitude_evaluation = '" + classAttitudesEvaluations[i] + "' " +
-                        "WHERE CA.grades_by_semester_id = '" + classAttitudeIdList.stream().toList().get(i) + "'");
+                        "SET CA.class_attitude_evaluation = '" + IntegerClassAttitudes[i] + "' " +
+                        "WHERE CA.grades_by_semester_id = '" + classAttitudeIdList.get(i) + "'");
         }
     }
 }

@@ -63,8 +63,8 @@ public class ClassDetailController {
             IntegerClassAttitudes[i] = Integer.parseInt(StringClassAttitudes[i]);
         }
         List<studentsRecord>  classStudents = service.findStudents(classId);
-        List<Object> classAttitudeIdList = service.findClassAttitudeIds(classStudents, classId,semesterId);
-        service.updateClassAttitude(classAttitudeIdList, IntegerClassAttitudes);
+        List<Integer> classAttitudeIdList = service.findClassAttitudeIds(classStudents, classId,semesterId);
+        service.updateClassAttitude(IntegerClassAttitudes, classAttitudeIdList);
 
 
         //表示要素取得

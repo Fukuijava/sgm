@@ -25,53 +25,52 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<ClassEntity> classList = service.findClass();
-        model.addAttribute("ClassList", classList);
-        return "home";
+    List<ClassEntity> classList = service.findClass();
+    model.addAttribute("classList", classList);
+    return "home";
     }
 
     @GetMapping("/addClass")
     public String addClass(Model model) {
-        List<SchoolYearEntity> schoolYearList = service.findSchoolYear();
-        List<DepartmentEntity> departmentList = service.findDepartment();
-        List<ClassNumberEntity> classNumberList = service.findClassNumber();
-        List<CurriculumEntity> curriculumList = service.findCurriculum();
-        model.addAttribute("SchoolYearList", schoolYearList);
-        model.addAttribute("DepartmentList", departmentList);
-        model.addAttribute("ClassNumberList", classNumberList);
-        model.addAttribute("CurriculumList", curriculumList);
-        return "addClass";
+    List<SchoolYearEntity> schoolYearList = service.findSchoolYear();
+    List<DepartmentEntity> departmentList = service.findDepartment();
+    List<ClassNumberEntity> classNumberList = service.findClassNumber();
+    List<CurriculumEntity> curriculumArray = service.findCurriculum();
+    model.addAttribute("schoolYearList", schoolYearList);
+    model.addAttribute("departmentList", departmentList);
+    model.addAttribute("classNumberList", classNumberList);
+    model.addAttribute("curriculumArray", curriculumArray);
+    return "addClass";
     }
 
     @PostMapping("/addClass/function")
-    public String addClassFunction(@RequestParam("schoolYear") Integer schoolYear,
-                                   @RequestParam("department") Integer department,
-                                   @RequestParam("classNumber") Integer classNumber,
-                                   @RequestParam("studentNames") String  nameList,
-                                   @RequestParam("curriculums") String  curriculumList,
-                                   Model model){
-        //生徒を配列に直す
-        String[] stNames = nameList.split(",", -1);
-        Arrays.sort(stNames);
-        //クラス教科を配列に直す
-        String[] CurriculumList = curriculumList.split(",", -1);
-        Integer[] classCurriculums = new Integer[CurriculumList.length];
-        for(int i = 0; i < CurriculumList.length; i++){
-            classCurriculums[i] = Integer.parseInt(CurriculumList[i]);
-        }
-        Integer classId = service.addClass(schoolYear,department,classNumber);
-        service.addClassCurriculum(classId, classCurriculums);
-        service.addStudent(classId,stNames);
-        model.addAttribute("classRegistered","登録完了");
-        //ホーム画面に登録されてるクラスの一覧を表示させる
-        List<ClassEntity> classList = service.findClass();
-        model.addAttribute("ClassList", classList);
-        return "home";
+    public String addClassFunction( @RequestParam("schoolYear") Integer schoolYear,
+                                    @RequestParam("department") Integer department,
+                                    @RequestParam("classNumber") Integer classNumber,
+                                    @RequestParam("studentNames") String  studentNames,
+                                    @RequestParam("curriculums") String  curriculums,
+                                    Model model){
+    //生徒を配列に直す
+    String[] studentArray = studentNames.split(",", -1);
+    Arrays.sort(studentArray);
+    //クラス教科を配列に直す
+    String[] strCurriculumArray = curriculums.split(",", -1);
+    Integer[] CurriculumArray = new Integer[curriculumArray.length];
+    for(int i = 0; i < curriculumArray.length; i++){
+    classCurriculums[i] = Integer.parseInt(curriculumArray[i]);
     }
-
+    Integer classId = service.addClass(schoolYear,department,classNumber);
+    service.addClassCurriculum(classId, classCurriculums);
+    service.addStudent(classId,studentArray);
+    model.addAttribute("classRegistered","登録完了");
+    //ホーム画面に登録されてるクラスの一覧を表示させる
+    List<ClassEntity> classList = service.findClass();
+    model.addAttribute("ClassList", classList);
+    return "home";
+    }
 
     @GetMapping("/updateCurriculum")
     public String updateCurriculum(Model model) {
-        return "updateCurriculum";
+    return "updateCurriculum";
     }
 }
