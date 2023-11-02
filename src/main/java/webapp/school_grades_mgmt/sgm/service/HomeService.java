@@ -134,4 +134,14 @@ public class HomeService {
         classAttitudeEntity.setClassAttitudeEvaluation(5);//授業態度は初期値が最大値の5でそこから減点方式で評価するため最初は5をセットする。
         classAttitudeRepository.saveAndFlush(classAttitudeEntity);
     }
+
+    /**
+     * 提出物テーブルの登録処理
+     */
+    public void setSubmission(Integer gradesBySemesterId) {
+        SubmissionEntity submissionEntity = new SubmissionEntity();
+        submissionEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
+        submissionEntity.set(5);//授業態度は初期値が最大値の5でそこから減点方式で評価するため最初は5をセットする。
+        classAttitudeRepository.saveAndFlush(classAttitudeEntity);
+    }
 }
