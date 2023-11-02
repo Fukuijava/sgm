@@ -9,63 +9,59 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <!-- JQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
-    <!--  js読み込み  -->
-    <script th:src="@{/js/home.js}"></script>
     <!--     css読み込み -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
     <link th:href="@{/css/home.css}" rel="stylesheet">
 </head>
 <body class="bg-success-subtle bg-gradient">
-<header class="p-3 mb-2 bg-dark bg-gradient text-white">
-    <h1 class="headline">
-        <a class="title" href="/home/">成績管理アプリケーション</a>
-    </h1>
-    <ul class="nav-list">
-        <li class="nav-list-item">aaa</li>
-        <li class="nav-list-item">???</li>
-    </ul>
-</header>
-<main>
-    <form action="/home/addClass">
-        <button id="addClassButton"  type="submit" class="btn btn-success">クラスを作成</button>
-    </form>
-    <div id="choiceClassDiv">
-    <button id="choiceClassButton" data-bs-toggle="modal" data-bs-target="#choiceClass" class="btn btn-primary">クラスを選択</button>
-    </div>
-    <form action="/home/updateCurriculum">
-        <button id="updateCurriculumButton" type="submit" class="btn btn-info">教科の編集</button>
-    </form>
-</main>
+    <header class="p-3 mb-2 bg-dark bg-gradient text-white">
+        <h1 class="headline">
+            <a class="title" href="/home/">成績管理アプリケーション</a>
+        </h1>
+        <ul class="nav-list">
+            <li class="nav-list-item">aaa</li>
+            <li class="nav-list-item">???</li>
+        </ul>
+    </header>
+    <main>
+        <form action="/home/addClass">
+            <button id="addClassButton"  type="submit" class="btn btn-success">クラスを作成</button>
+        </form>
+        <div id="choiceClassDiv">
+        <button id="choiceClassButton" data-bs-toggle="modal" data-bs-target="#choiceClass" class="btn btn-primary">クラスを選択</button>
+        </div>
+        <form action="/home/updateCurriculum">
+            <button id="updateCurriculumButton" type="submit" class="btn btn-info">教科の編集</button>
+        </form>
 
-<div class="modal fade" id="choiceClass">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>クラスを選んでください</h2>
-            </div>
-            <div class="modal-body">
-                <table id="listform">
-                    <tbody>
-                    <tr th:each="class : ${classList}">
-                        <form th:action="@{/classDetail/{class.id}}">
+        <h1 th:text="${classRegistered}" id="classRegistered"></h1>
+    </main>
+    <div class="modal fade" id="choiceClass">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>クラスを選んでください</h2>
+                </div>
+                <div class="modal-body">
+                    <table id="listform">
+                        <tbody>
+                        <tr th:each="class : ${classList}">
+                            <form th:action="@{/classDetail/{class.id}}">
 
-                            <button type="submit"
-                                    th:text="${class.schoolYearEntity.schoolYearNumber} + '-' + ${class.classNumberEntity.classNumber}">
-                            </button>
-                            <input type="hidden" name="classId" th:value="${class.id}" />
-                        </form>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                                <button type="submit"
+                                        th:text="${class.schoolYearEntity.schoolYearNumber} + '-' + ${class.classNumberEntity.classNumber}">
+                                </button>
+                                <input type="hidden" name="classId" th:value="${class.id}" />
+                            </form>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<h1 th:text="${classRegistered}" id="classRegistered"></h1>
-
 </body>
 </html>

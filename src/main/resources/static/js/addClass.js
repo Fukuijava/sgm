@@ -111,5 +111,5 @@ function createNameArray(){
     nameArray[i] = ItemList.item(i).value;
     }
     console.log(nameArray);
-    document.getElementById("out").innerHTML = '<label><input name="studentNames" value="'+nameArray+'"></label>';
+    document.getElementById("output").innerHTML = '<label><input name="studentNames" value="'+nameArray+'"></label>';
 }

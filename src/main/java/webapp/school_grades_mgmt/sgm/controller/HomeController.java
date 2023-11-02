@@ -23,6 +23,9 @@ public class HomeController {
     @Autowired
     private HomeService service;
 
+    /**
+     * ホーム画面
+     */
     @GetMapping("/")
     public String home(Model model) {
     List<ClassEntity> classList = service.findClass();
@@ -30,6 +33,9 @@ public class HomeController {
     return "home";
     }
 
+    /**
+     * クラス登録画面
+     */
     @GetMapping("/addClass")
     public String addClass(Model model) {
     List<SchoolYearEntity> schoolYearList = service.findSchoolYear();
@@ -43,6 +49,9 @@ public class HomeController {
     return "addClass";
     }
 
+    /**
+     * クラス登録処理
+     */
     @PostMapping("/addClass/function")
     public String addClassFunction( @RequestParam("schoolYear") Integer schoolYear,
                                     @RequestParam("department") Integer department,
@@ -55,13 +64,13 @@ public class HomeController {
     Arrays.sort(studentArray);
     //クラス教科を配列に直す
     String[] strCurriculumArray = curriculums.split(",", -1);
-    Integer[] CurriculumArray = new Integer[curriculumArray.length];
+    Integer[] curriculumArray = new Integer[strCurriculumArray.length];
     for(int i = 0; i < curriculumArray.length; i++){
-    classCurriculums[i] = Integer.parseInt(curriculumArray[i]);
+        curriculumArray[i] = Integer.parseInt(strCurriculumArray[i]);
     }
-    Integer classId = service.addClass(schoolYear,department,classNumber);
-    service.addClassCurriculum(classId, classCurriculums);
-    service.addStudent(classId,studentArray);
+    Integer classId = service.setClass(schoolYear,department,classNumber);
+    service.setClassCurriculum(classId, curriculumArray);
+    service.setStudent(classId,studentArray);
     model.addAttribute("classRegistered","登録完了");
     //ホーム画面に登録されてるクラスの一覧を表示させる
     List<ClassEntity> classList = service.findClass();
@@ -69,6 +78,10 @@ public class HomeController {
     return "home";
     }
 
+    /**
+     * 教科の編集画面
+     * 機能未実装
+     */
     @GetMapping("/updateCurriculum")
     public String updateCurriculum(Model model) {
     return "updateCurriculum";

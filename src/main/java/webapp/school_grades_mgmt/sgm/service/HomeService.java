@@ -46,24 +46,30 @@ public class HomeService {
         this.classAttitudeRepository = classAttitudeRepository;
     }
 
-    public List<SchoolYearEntity> findSchoolYear(){
+    public List<SchoolYearEntity> findSchoolYear() {
         return schoolYearRepository.findAll();
     }
-    public List<DepartmentEntity> findDepartment(){
+
+    public List<DepartmentEntity> findDepartment() {
         return departmentRepository.findAll();
     }
-    public List<ClassNumberEntity> findClassNumber(){
+
+    public List<ClassNumberEntity> findClassNumber() {
         return classNumberRepository.findAll();
     }
-    public List<CurriculumEntity> findCurriculum(){
+
+    public List<CurriculumEntity> findCurriculum() {
         return curriculumRepository.findAll();
     }
 
-    public List<ClassEntity> findClass(){
+    public List<ClassEntity> findClass() {
         return classRepository.findAll();
     }
 
-    public Integer addClass(Integer schoolYear, Integer department, Integer classNumber) {
+    /**
+     * クラステーブルの登録処理
+     */
+    public Integer setClass(Integer schoolYear, Integer department, Integer classNumber) {
         ClassEntity classEntity = new ClassEntity();
         classEntity.setSchoolYearEntity(schoolYearRepository.getReferenceById(schoolYear));
         classEntity.setDepartmentEntity(departmentRepository.getReferenceById(department));
@@ -72,7 +78,10 @@ public class HomeService {
         return classEntity.getId();
     }
 
-    public void addClassCurriculum(Integer classId, Integer[] classCurriculums) {
+    /**
+     * クラスカリキュラムテーブルの登録処理
+     */
+    public void setClassCurriculum(Integer classId, Integer[] classCurriculums) {
         for (Integer classCurriculum : classCurriculums) {
             ClassCurriculumEntity classCurriculumEntity = new ClassCurriculumEntity();
             classCurriculumEntity.setClassEntity(classRepository.getReferenceById(classId));
@@ -81,35 +90,48 @@ public class HomeService {
         }
     }
 
-    public void addStudent(Integer classId, String[] studentNames) {
-        for (int studentNumber = 0; studentNumber < studentNames.length; studentNumber++) {
+    /**
+     * 生徒テーブルの登録処理
+     */
+    public void setStudent(Integer classId, String[] studentNames) {
+        for (int i = 0; i < studentNames.length; i++) {
             StudentEntity studentEntity = new StudentEntity();
-            //生徒テーブル
             studentEntity.setClassEntity(classRepository.getReferenceById(classId));
-            studentEntity.setAttendanceNumber(studentNumber + 1);
-            studentEntity.setStudentName(studentNames[studentNumber]);
+            studentEntity.setAttendanceNumber(i + 1);
+            studentEntity.setStudentName(studentNames[i]);
             studentRepository.saveAndFlush(studentEntity);
-            //学期別成績テーブル
+            //生徒IDとクラスカリキュラムを取得し、setGradesBySemesterへ投げる。
             int studentId = studentEntity.getId();
-            List<Integer > classCurriculumId = classCurriculumRepository.findClassCurriculumId(classId);
-            //3学期分回す
-            for(int semesterNumber = 1; semesterNumber < 4; semesterNumber++){//条件の値が4なのは3学期分回すため
-                //クラス教科の分だけ回す
-                for(int i = 0; i < classCurriculumId.size(); i++){
-                    GradesBySemesterEntity gradesBySemesterEntity = new GradesBySemesterEntity();
-                    gradesBySemesterEntity.setStudentEntity(studentRepository.getReferenceById(studentId));
-                    gradesBySemesterEntity.setSemesterEntity(semesterRepository.getReferenceById(semesterNumber));
-                    gradesBySemesterEntity.setClassCurriculumEntity(classCurriculumRepository.getReferenceById(classCurriculumId.get(i)));
-                    gradesBySemesterRepository.saveAndFlush(gradesBySemesterEntity);
-                    //授業態度テーブル
-                    int gradesBySemesterId = gradesBySemesterEntity.getId();
-                    ClassAttitudeEntity classAttitudeEntity = new ClassAttitudeEntity();
-                    classAttitudeEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
-                    classAttitudeEntity.setClassAttitudeEvaluation(5);//授業態度は初期値が最大値の5でそこから減点方式で評価するため最初は5をセットする。
-                    classAttitudeRepository.saveAndFlush(classAttitudeEntity);
-                }
+            List<Integer> curriculumIdList = classCurriculumRepository.findId(classId);
+            setGradesBySemester(studentId, curriculumIdList);
+        }
+    }
 
+    /**
+     * 学期別成績テーブルの登録処理
+     */
+    public void setGradesBySemester(Integer studentId, List<Integer> curriculumIdList) {
+        for(int semesterNumber = 1; semesterNumber < 4; semesterNumber++){//3学期分回す//条件の値が4なのは、初期値が1のため、3学期分回すため
+            for(int i = 0; i < curriculumIdList.size(); i++){//クラス教科の分だけ回す
+                GradesBySemesterEntity gradesBySemesterEntity = new GradesBySemesterEntity();
+                gradesBySemesterEntity.setStudentEntity(studentRepository.getReferenceById(studentId));
+                gradesBySemesterEntity.setSemesterEntity(semesterRepository.getReferenceById(semesterNumber));
+                gradesBySemesterEntity.setClassCurriculumEntity(classCurriculumRepository.getReferenceById(curriculumIdList.get(i)));
+                gradesBySemesterRepository.saveAndFlush(gradesBySemesterEntity);
+                //学期別成績IDを取得し、setGradesBySemesterへ投げる。
+                Integer gradesBySemesterId = gradesBySemesterEntity.getId();
+                setClassAttitude(gradesBySemesterId);
             }
         }
+    }
+
+    /**
+     * 授業態度テーブルの登録処理
+     */
+    public void setClassAttitude(Integer gradesBySemesterId) {
+        ClassAttitudeEntity classAttitudeEntity = new ClassAttitudeEntity();
+        classAttitudeEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
+        classAttitudeEntity.setClassAttitudeEvaluation(5);//授業態度は初期値が最大値の5でそこから減点方式で評価するため最初は5をセットする。
+        classAttitudeRepository.saveAndFlush(classAttitudeEntity);
     }
 }

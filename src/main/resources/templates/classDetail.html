@@ -9,75 +9,72 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <!-- JQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
-    <!--  js読み込み  -->
-<!--    <script th:src="@{/js/home.js}"></script>-->
     <!--     css読み込み -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
     <link th:href="@{/css/classDetail.css}" rel="stylesheet">
 </head>
-
 <body class="bg-success-subtle bg-gradient">
-<header class="p-3 mb-2 bg-dark bg-gradient text-white">
-    <h1 class="headline">
-        <a class="title" href="/home/">成績管理アプリケーション</a>
-    </h1>
-    <ul class="nav-list">
-        <li class="nav-list-item">aaa</li>
-        <li class="nav-list-item">???</li>
-    </ul>
-</header>
-<main>
-    <div>
-        <h2 th:text="${classInfo.schoolYearEntity.schoolYearNumber} + '-' + ${classInfo.classNumberEntity.classNumber}"></h2>
-        <h2 th:text="${classInfo.departmentEntity.departmentName}"></h2>
-    </div>
+    <header class="p-3 mb-2 bg-dark bg-gradient text-white">
+        <h1 class="headline">
+            <a class="title" href="/home/">成績管理アプリケーション</a>
+        </h1>
+        <ul class="nav-list">
+            <li class="nav-list-item">aaa</li>
+            <li class="nav-list-item">???</li>
+        </ul>
+    </header>
+    <main>
+        <div>
+            <h2 th:text="${classEntity.schoolYearEntity.schoolYearNumber} + '-' + ${classEntity.classNumberEntity.classNumber}"></h2>
+            <h2 th:text="${classEntity.departmentEntity.departmentName}"></h2>
+        </div>
 
-    <div class="list_form">
-        <h2>成績一覧</h2>
-        <table class="table table-striped" id="listform">
-            <thead>
-            <tr>
-                <th>出席番号</th>
-                <th>名前</th>
-                <th>評定平均</th>
-                <th>クラス内順位</th>
-                <th>成績画面</th>
-            </tr>
-            </thead>
+        <div class="list_form">
+            <h2>成績一覧</h2>
+            <table class="table table-striped" id="listform">
+                <thead>
+                <tr>
+                    <th>出席番号</th>
+                    <th>名前</th>
+                    <th>評定平均</th>
+                    <th>クラス内順位</th>
+                    <th>成績画面</th>
+                </tr>
+                </thead>
 
-            <tbody>
-            <tr th:each="student : ${studentList}">
-                <td th:text="${student.attendanceNumber}"></td>
-                <td th:text="${student.studentName}"></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <form th:action="@{/classDetail/studentGrades/{classInfo.id}}">
-                        <button type="submit" class="btn btn-primary">成績</button>
-                        <input type="hidden" name="submission" th:value="${classInfo.id}" />
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                <tbody>
+                <tr th:each="student : ${studentList}">
+                    <td th:text="${student.attendanceNumber}"></td>
+                    <td th:text="${student.studentName}"></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form th:action="@{/classDetail/studentGrades/{classEntity.id}}">
+                            <button type="submit" class="btn btn-primary">成績</button>
+                            <input type="hidden" name="submission" th:value="${classEntity.id}" />
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div id="buttonForm">
-        <form th:action="@{/classDetail/{classInfo.id}/classAttitude}">
-            <button id="classAttitudeButton" type="submit" class="btn btn-success">授業態度管理</button>
-            <input type="hidden" name="classId" th:value="${classInfo.id}" />
-        </form>
+        <div id="buttonForm">
+            <form th:action="@{/classDetail/{classEntity.id}/classAttitude}">
+                <button id="classAttitudeButton" type="submit" class="btn btn-success">授業態度管理</button>
+                <input type="hidden" name="classId" th:value="${classEntity.id}" />
+            </form>
 
-        <form th:action="@{/classDetail/{classInfo.id}/submission}">
-            <button id="submissionButton" type="submit" class="btn btn-success">提出物管理</button>
-            <input type="hidden" name="classId" th:value="${classInfo.id}" />
-        </form>
+            <form th:action="@{/classDetail/{classEntity.id}/submission}">
+                <button id="submissionButton" type="submit" class="btn btn-success">提出物管理</button>
+                <input type="hidden" name="classId" th:value="${classEntity.id}" />
+            </form>
 
-        <form th:action="@{/classDetail/{classInfo.id}/testScore}">
-            <button id="testScoreButton" type="submit" class="btn btn-success">テスト管理</button>
-            <input type="hidden" name="classId" th:value="${classInfo.id}" />
-        </form>
-    </div>
-</main>
+            <form th:action="@{/classDetail/{classEntity.id}/testScore}">
+                <button id="testScoreButton" type="submit" class="btn btn-success">テスト管理</button>
+                <input type="hidden" name="classId" th:value="${classEntity.id}" />
+            </form>
+        </div>
+    </main>
 </body>
 </html>

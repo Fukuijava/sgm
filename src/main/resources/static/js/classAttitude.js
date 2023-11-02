@@ -33,8 +33,6 @@ $(function() {
         var Semester = document.getElementById('semester');
         var selectSemester = Semester.selectedIndex;
         var semesterId = Semester.options[selectSemester].value;
-//            var semesterId = $(this).val();
-
         $.ajax({
             type: "POST",
             url: "/changeSemester",
