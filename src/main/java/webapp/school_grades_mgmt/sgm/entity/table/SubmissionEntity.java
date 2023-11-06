@@ -13,13 +13,13 @@ public class SubmissionEntity {
     private Integer id;
 
     @ManyToOne()
-    @JoinColumn(name = "grades_by_semester_id")
-    private GradesBySemesterEntity gradesBySemesterEntity;
+    @JoinColumn(name = "submission_evaluation_id")
+    private SubmissionEvaluationEntity submissionEvaluationEntity;
 
     @Column(name="submission_name")
     private String submissionName;
 
-    @Column(name="submission_evaluation")
-    private Integer submissionEvaluation;
+    @Column(name="submission_status")
+    private Boolean submissionStatus;
 
 }

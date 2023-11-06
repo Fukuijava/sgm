@@ -7,6 +7,7 @@ import webapp.school_grades_mgmt.sgm.controller.ClassDetailController;
 import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
+import webapp.school_grades_mgmt.sgm.entity.table.SubmissionEvaluationEntity;
 import webapp.school_grades_mgmt.sgm.repository.table.*;
 
 import java.util.ArrayList;
@@ -131,5 +132,19 @@ public class ClassDetailService {
                         "SET CA.class_attitude_evaluation = '" + ClassAttitudeArray[i] + "' " +
                         "WHERE CA.grades_by_semester_id = '" + classAttitudeIdList.get(i) + "'");
         }
+    }
+
+
+    public List<SubmissionEvaluationEntity> findSubmissionEvaluation(List<ClassDetailController.studentsRecord> studentsRecords,
+                                                                     Integer classId){
+        List<Integer> classCurriculumIds = classCurriculumRepository.findId(classId);
+        List<ClassAttitudeEntity> classAttitudeEntityList = new ArrayList<>();
+        List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
+        for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
+                Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
+                classAttitudeEntityList.add(classAttitudeRepository.findEntity(gradesBySemesterId));
+            classList.add(classAttitudeEntityList);
+        }
+        return classAttitudeEntityList;
     }
 }

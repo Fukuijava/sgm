@@ -3,9 +3,6 @@
     height:auto;
     float: left;
 }
-#listForm tr td:hover{
-    background-color: #ffdaf8;
-}
 #buttonForm{
     float: right
 }

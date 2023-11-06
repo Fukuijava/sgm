@@ -65,7 +65,7 @@
                 <input type="hidden" name="classId" th:value="${classEntity.id}" />
             </form>
 
-            <form th:action="@{/classDetail/{classEntity.id}/submission}">
+            <form th:action="@{/classDetail/{classEntity.id}/submission/choice}">
                 <button id="submissionButton" type="submit" class="btn btn-success">提出物管理</button>
                 <input type="hidden" name="classId" th:value="${classEntity.id}" />
             </form>

@@ -26,13 +26,14 @@ public class HomeService {
     private final GradesBySemesterRepository gradesBySemesterRepository;
     private final SemesterRepository semesterRepository;
     private final ClassAttitudeRepository classAttitudeRepository;
+    private final SubmissionEvaluationRepository submissionEvaluationRepository;
 
     @Autowired
     public HomeService(CurriculumRepository curriculumRepository, SchoolYearRepository schoolYearRepository,
                        DepartmentRepository departmentRepository, ClassNumberRepository classNumberRepository,
                        ClassRepository classRepository, StudentRepository studentRepository,
                        ClassCurriculumRepository classCurriculumRepository, SemesterRepository semesterRepository,
-                       GradesBySemesterRepository gradesBySemesterRepository,
+                       GradesBySemesterRepository gradesBySemesterRepository, SubmissionEvaluationRepository submissionEvaluationRepository,
                        ClassAttitudeRepository classAttitudeRepository) {
         this.curriculumRepository = curriculumRepository;
         this.schoolYearRepository = schoolYearRepository;
@@ -44,6 +45,7 @@ public class HomeService {
         this.gradesBySemesterRepository = gradesBySemesterRepository;
         this.semesterRepository = semesterRepository;
         this.classAttitudeRepository = classAttitudeRepository;
+        this.submissionEvaluationRepository = submissionEvaluationRepository;
     }
 
     public List<SchoolYearEntity> findSchoolYear() {
@@ -118,9 +120,10 @@ public class HomeService {
                 gradesBySemesterEntity.setSemesterEntity(semesterRepository.getReferenceById(semesterNumber));
                 gradesBySemesterEntity.setClassCurriculumEntity(classCurriculumRepository.getReferenceById(curriculumIdList.get(i)));
                 gradesBySemesterRepository.saveAndFlush(gradesBySemesterEntity);
-                //学期別成績IDを取得し、setGradesBySemesterへ投げる。
+                //学期別成績IDを取得し、授業態度、提出物評価、テストの点数テーブルに登録
                 Integer gradesBySemesterId = gradesBySemesterEntity.getId();
                 setClassAttitude(gradesBySemesterId);
+                setSubmissionEvaluation(gradesBySemesterId);
             }
         }
     }
@@ -138,10 +141,22 @@ public class HomeService {
     /**
      * 提出物テーブルの登録処理
      */
-    public void setSubmission(Integer gradesBySemesterId) {
-        SubmissionEntity submissionEntity = new SubmissionEntity();
-        submissionEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
-        submissionEntity.set(5);//授業態度は初期値が最大値の5でそこから減点方式で評価するため最初は5をセットする。
-        classAttitudeRepository.saveAndFlush(classAttitudeEntity);
+    public void setSubmissionEvaluation(Integer gradesBySemesterId) {
+        SubmissionEvaluationEntity submissionEvaluationEntity = new SubmissionEvaluationEntity();
+        submissionEvaluationEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
+        //提出物が一回もない教科もあるため、初期値最大値の5をセット。
+        submissionEvaluationEntity.setSubmissionEvaluation(5);
+        submissionEvaluationRepository.saveAndFlush(submissionEvaluationEntity);
+        //提出物評価テーブルのIDを取得し、・・・
+//        Integer submissionEvaluationId = submissionEvaluationEntity.getId();
+
+
+    }
+
+    /**
+     * テストの点数テーブルの登録処理
+     * 【未実装】
+     */
+    public void setTestScore(Integer gradesBySemesterId) {
     }
 }

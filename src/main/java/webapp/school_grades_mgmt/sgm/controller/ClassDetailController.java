@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
+import webapp.school_grades_mgmt.sgm.entity.table.SubmissionEvaluationEntity;
 import webapp.school_grades_mgmt.sgm.service.ClassDetailService;
 
 import java.util.List;
@@ -88,19 +89,38 @@ public class ClassDetailController {
 
     /**
      * 提出物画面
-     * 機能未実装
+     * 学期、教科選択画面
+     */
+    @GetMapping("/classDetail/{classId}/submission/choice")
+    public String submissionChoice(@RequestParam("classId") Integer classId,
+                             Model model) {
+        List<SemesterEntity> semesterEntityList = service.findSemesterEntity();
+        ClassEntity classEntity = service.findClassEntity(classId);
+        List<String > curriculumNameList = service.findClassCurriculumName(classId);
+        model.addAttribute("semesterEntityList", semesterEntityList);
+        model.addAttribute("classEntity", classEntity);
+        model.addAttribute("curriculumNameList", curriculumNameList);
+        return "submission";
+    }
+
+    /**
+     * 提出物画面
      */
     @GetMapping("/classDetail/{classId}/submission")
     public String submission(@RequestParam("classId") Integer classId,
+                             @RequestParam("semesterId") Integer semesterId,
+                             @RequestParam("curriculumId") Integer curriculumId,
                              Model model) {
         ClassEntity classEntity = service.findClassEntity(classId);
-        List<studentsRecord> studentList = service.findStudents(classId);
         List<String > curriculumNameList = service.findClassCurriculumName(classId);
-        model.addAttribute("classInfo", classEntity);
-        model.addAttribute("studentList", studentList);
-        model.addAttribute("classCurriculum", curriculumNameList);
-        return "classDetail";
+        List<studentsRecord>  studentList = service.findStudents(classId);
+        List<SubmissionEvaluationEntity> submissionEvaluationList = service.findSubmissionEvaluation(studentList, classId);
+        model.addAttribute("classEntity", classEntity);
+        model.addAttribute("curriculumNameList", curriculumNameList);
+        return "submission";
     }
+
+
 
     /**
      * テスト画面
@@ -109,12 +129,6 @@ public class ClassDetailController {
     @GetMapping("/classDetail/{classId}/testScore")
     public String testScore(@RequestParam("classId") Integer classId,
                             Model model) {
-        ClassEntity classEntity = service.findClassEntity(classId);
-        List<studentsRecord> studentList = service.findStudents(classId);
-        List<String > curriculumNameList = service.findClassCurriculumName(classId);
-        model.addAttribute("classInfo", classEntity);
-        model.addAttribute("studentList", studentList);
-        model.addAttribute("classCurriculum", curriculumNameList);
         return "classDetail";
         }
 }
