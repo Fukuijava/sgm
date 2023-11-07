@@ -7,7 +7,6 @@ import webapp.school_grades_mgmt.sgm.controller.ClassDetailController;
 import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
-import webapp.school_grades_mgmt.sgm.entity.table.SubmissionEvaluationEntity;
 import webapp.school_grades_mgmt.sgm.repository.table.*;
 
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ public class ClassDetailService {
     private final ClassCurriculumRepository classCurriculumRepository;
     private final GradesBySemesterRepository gradesBySemesterRepository;
     private final ClassAttitudeRepository classAttitudeRepository;
+    private final OverallSubmissionEvaluationRepository overallSubmissionEvaluationRepository;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -31,13 +31,15 @@ public class ClassDetailService {
                               ClassCurriculumRepository classCurriculumRepository,
                               GradesBySemesterRepository gradesBySemesterRepository,
                               ClassAttitudeRepository classAttitudeRepository,
-                              SemesterRepository semesterRepository, JdbcTemplate jdbcTemplate) {
+                              SemesterRepository semesterRepository, OverallSubmissionEvaluationRepository overallSubmissionEvaluationRepository,
+                              JdbcTemplate jdbcTemplate) {
         this.classRepository = classRepository;
         this.semesterRepository = semesterRepository;
         this.studentRepository = studentRepository;
         this.classCurriculumRepository = classCurriculumRepository;
         this.gradesBySemesterRepository = gradesBySemesterRepository;
         this.classAttitudeRepository = classAttitudeRepository;
+        this.overallSubmissionEvaluationRepository = overallSubmissionEvaluationRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -78,9 +80,9 @@ public class ClassDetailService {
         List<Integer> classCurriculumIds = classCurriculumRepository.findId(classId);
         List<ClassAttitudeEntity> classAttitudeEntityList = new ArrayList<>();
         List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
-            for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
-                for(int z = 0; z < classCurriculumIds.size(); z++){//クラスの教科数分回す
-                    Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
+            for(int i = 0; i < studentsRecords.size(); i++){//クラスの生徒数分回す
+                for(int j = 0; j < classCurriculumIds.size(); j++){//クラスの教科数分回す
+                    Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(i).studentId(), classCurriculumIds.get(j));
                     classAttitudeEntityList.add(classAttitudeRepository.findEntity(gradesBySemesterId));
                 }
                 classList.add(classAttitudeEntityList);
@@ -95,9 +97,9 @@ public class ClassDetailService {
                                         Integer classId, Integer semesterId){
         List<Integer> curriculumIdList = classCurriculumRepository.findId(classId);
         List<Integer> classAttitudeEvaluationList = new ArrayList<>();
-        for(int x = 0; x < studentsRecordList.size(); x++){//クラスの生徒数分回す
-            for(int y = 0; y < curriculumIdList.size(); y++){//クラスの教科数分回す
-                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecordList.get(x).studentId(), curriculumIdList.get(y));
+        for(int i = 0; i < studentsRecordList.size(); i++){//クラスの生徒数分回す
+            for(int j = 0; j < curriculumIdList.size(); j++){//クラスの教科数分回す
+                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecordList.get(i).studentId(), curriculumIdList.get(j));
                 classAttitudeEvaluationList.add(classAttitudeRepository.findEvaluation(gradesBySemesterId));
             }
         }
@@ -111,9 +113,9 @@ public class ClassDetailService {
                                               Integer classId, Integer semesterId){
         List<Integer> classCurriculumIdList = classCurriculumRepository.findId(classId);
         List<Integer> classAttitudeIdList = new ArrayList<>();
-        for(int x = 0; x < studentsRecords.size(); x++){//クラスの生徒数分回す
-            for(int y = 0; y < classCurriculumIdList.size(); y++){//クラスの教科数分回す
-                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecords.get(x).studentId(), classCurriculumIdList.get(y));
+        for(int i = 0; i < studentsRecords.size(); i++){//クラスの生徒数分回す
+            for(int j = 0; j < classCurriculumIdList.size(); j++){//クラスの教科数分回す
+                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecords.get(i).studentId(), classCurriculumIdList.get(j));
                 classAttitudeIdList.add(classAttitudeRepository.findId(gradesBySemesterId));
             }
         }
@@ -134,17 +136,21 @@ public class ClassDetailService {
         }
     }
 
+    public String findCurriculum(Integer curriculumId){
+        return classCurriculumRepository.findById(curriculumId).get().getCurriculumEntity().getCurriculumName();
+    }
 
-    public List<SubmissionEvaluationEntity> findSubmissionEvaluation(List<ClassDetailController.studentsRecord> studentsRecords,
-                                                                     Integer classId){
-        List<Integer> classCurriculumIds = classCurriculumRepository.findId(classId);
-        List<ClassAttitudeEntity> classAttitudeEntityList = new ArrayList<>();
-        List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
-        for(int y = 0; y < studentsRecords.size(); y++){//クラスの生徒数分回す
-                Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(y).studentId(), classCurriculumIds.get(z));
-                classAttitudeEntityList.add(classAttitudeRepository.findEntity(gradesBySemesterId));
-            classList.add(classAttitudeEntityList);
+    /**
+     *提出物評価の取得
+     */
+
+    public List<Integer> findSubmissionEvaluation(List<ClassDetailController.studentsRecord> studentsRecords,
+                                                                     Integer semesterId, Integer curriculumId){
+        List<Integer> submissionEvaluationList = new ArrayList<>();
+        for(int i = 0; i < studentsRecords.size(); i++){//クラスの生徒数分回す
+            Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentsRecords.get(i).studentId(), curriculumId);
+            submissionEvaluationList.add(overallSubmissionEvaluationRepository.findEvaluation(gradesBySemesterId));
         }
-        return classAttitudeEntityList;
+        return submissionEvaluationList;
     }
 }

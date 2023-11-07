@@ -13,8 +13,8 @@ public class SubmissionEntity {
     private Integer id;
 
     @ManyToOne()
-    @JoinColumn(name = "submission_evaluation_id")
-    private SubmissionEvaluationEntity submissionEvaluationEntity;
+    @JoinColumn(name = "overall_submission_evaluation_id")
+    private OverallSubmissionEvaluationEntity submissionEvaluationEntity;
 
     @Column(name="submission_name")
     private String submissionName;

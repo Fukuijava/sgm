@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
-import webapp.school_grades_mgmt.sgm.entity.table.SubmissionEvaluationEntity;
 import webapp.school_grades_mgmt.sgm.service.ClassDetailService;
 
 import java.util.List;
@@ -100,7 +99,7 @@ public class ClassDetailController {
         model.addAttribute("semesterEntityList", semesterEntityList);
         model.addAttribute("classEntity", classEntity);
         model.addAttribute("curriculumNameList", curriculumNameList);
-        return "submission";
+        return "submissionChoice";
     }
 
     /**
@@ -112,11 +111,16 @@ public class ClassDetailController {
                              @RequestParam("curriculumId") Integer curriculumId,
                              Model model) {
         ClassEntity classEntity = service.findClassEntity(classId);
+        String curriculum = service.findCurriculum(curriculumId);
         List<String > curriculumNameList = service.findClassCurriculumName(classId);
         List<studentsRecord>  studentList = service.findStudents(classId);
-        List<SubmissionEvaluationEntity> submissionEvaluationList = service.findSubmissionEvaluation(studentList, classId);
+        List<Integer> submissionEvaluationEntityList = service.findSubmissionEvaluation(studentList, semesterId, curriculumId);
+//        List<SubmissionEntity> submissionEntityList = service.findSubmission(submissionEvaluationEntityList)
         model.addAttribute("classEntity", classEntity);
+        model.addAttribute("semester", semesterId);
+        model.addAttribute("curriculum", curriculum);
         model.addAttribute("curriculumNameList", curriculumNameList);
+        model.addAttribute("submissionEvaluationEntityList", submissionEvaluationEntityList);
         return "submission";
     }
 
@@ -129,6 +133,7 @@ public class ClassDetailController {
     @GetMapping("/classDetail/{classId}/testScore")
     public String testScore(@RequestParam("classId") Integer classId,
                             Model model) {
+
         return "classDetail";
         }
 }

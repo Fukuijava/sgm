@@ -3,13 +3,13 @@ package webapp.school_grades_mgmt.sgm.entity.table;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Table(name = "submission_evaluation")
+@Table(name = "overall_submission_evaluation")
 @Data
 @Entity
-public class SubmissionEvaluationEntity {
+public class OverallSubmissionEvaluationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="submission_evaluation_id")
+    @Column(name="overall_submission_evaluation_id")
     private Integer id;
 
     @ManyToOne()
