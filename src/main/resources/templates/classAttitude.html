@@ -62,7 +62,7 @@
                 </tr>
                 </thead>
                 <tbody id="classAttitudeBody">
-                <tr th:each="student, studentCount : ${studentList}" th:with="x=0">
+                <tr th:each="student, studentCount : ${studentList}">
                     <td th:text="${student.attendanceNumber}"></td>
                     <td th:text="${student.studentName}"></td>
                     <input hidden="hidden" th:value="${studentCount.size}" id="studentCount"/>

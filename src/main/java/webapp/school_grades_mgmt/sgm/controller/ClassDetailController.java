@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
+import webapp.school_grades_mgmt.sgm.entity.table.ClassCurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
 import webapp.school_grades_mgmt.sgm.service.ClassDetailService;
 
@@ -92,13 +93,13 @@ public class ClassDetailController {
      */
     @GetMapping("/classDetail/{classId}/submission/choice")
     public String submissionChoice(@RequestParam("classId") Integer classId,
-                             Model model) {
+                                   Model model) {
         List<SemesterEntity> semesterEntityList = service.findSemesterEntity();
         ClassEntity classEntity = service.findClassEntity(classId);
-        List<String > curriculumNameList = service.findClassCurriculumName(classId);
+        List<ClassCurriculumEntity> curriculumEntityList = service.findClassCurriculumEntity(classId);
         model.addAttribute("semesterEntityList", semesterEntityList);
         model.addAttribute("classEntity", classEntity);
-        model.addAttribute("curriculumNameList", curriculumNameList);
+        model.addAttribute("curriculumEntityList", curriculumEntityList);
         return "submissionChoice";
     }
 
@@ -117,6 +118,7 @@ public class ClassDetailController {
         List<Integer> submissionEvaluationEntityList = service.findSubmissionEvaluation(studentList, semesterId, curriculumId);
 //        List<SubmissionEntity> submissionEntityList = service.findSubmission(submissionEvaluationEntityList)
         model.addAttribute("classEntity", classEntity);
+        model.addAttribute("studentList", studentList);
         model.addAttribute("semester", semesterId);
         model.addAttribute("curriculum", curriculum);
         model.addAttribute("curriculumNameList", curriculumNameList);

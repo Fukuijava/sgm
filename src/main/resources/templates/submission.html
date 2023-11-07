@@ -27,9 +27,28 @@
     <div>
         <h2 th:text="${classEntity.schoolYearEntity.schoolYearNumber} + '-' + ${classEntity.classNumberEntity.classNumber}"></h2>
         <h2 th:text="${classEntity.departmentEntity.departmentName}"></h2>
-        <h2 th:text="${semester}"></h2>
+        <h2 th:text="${semester}+学期"></h2>
         <h2 th:text="${curriculum}"></h2>
     </div>
+
+    <table class="table table-hover" id="listForm" >
+        <thead>
+        <tr>
+            <th>出席番号</th>
+            <th>名前</th>
+            <th>評価</th>
+<!--            <th th:each="curriculumName : ${curriculumNameList}">[[${curriculumName}]]</th>-->
+        </tr>
+        </thead>
+        <tbody id="classAttitudeBody">
+        <tr th:each="student, studentCount : ${studentList}">
+            <td th:text="${student.attendanceNumber}"></td>
+            <td th:text="${student.studentName}"></td>
+<!--            <input hidden="hidden" th:value="${studentCount.size}" id="studentCount"/>-->
+            <td th:text="${submissionEvaluationEntityList}"></td>
+        </tr>
+        </tbody>
+    </table>
 
 
 </main>

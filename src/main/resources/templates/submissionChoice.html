@@ -41,13 +41,14 @@
     <div id="choiceCurriculumDiv">
       <h1>教科を選択してください</h1>
       <select id="curriculum" name="curriculumId">
-        <option th:each="curriculum : ${curriculumNameList}"
+        <option th:each="curriculum : ${curriculumEntityList}"
                 th:value="${curriculum.id}"
-                th:text="${curriculum.curriculumName}">
+                th:text="${curriculum.curriculumEntity.curriculumName}">
         </option>
       </select>
     </div>
 
+    <input hidden="hidden"  name="classId" th:value="${classEntity.id}">
     <input type="submit" value="決定" />
   </form>
 </main>

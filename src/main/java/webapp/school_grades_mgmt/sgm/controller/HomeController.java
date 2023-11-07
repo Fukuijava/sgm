@@ -74,7 +74,7 @@ public class HomeController {
     model.addAttribute("classRegistered","登録完了");
     //ホーム画面に登録されてるクラスの一覧を表示させる
     List<ClassEntity> classList = service.findClass();
-    model.addAttribute("ClassList", classList);
+    model.addAttribute("classList", classList);
     return "home";
     }
 

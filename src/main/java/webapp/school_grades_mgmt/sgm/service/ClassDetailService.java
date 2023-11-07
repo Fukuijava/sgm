@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import webapp.school_grades_mgmt.sgm.controller.ClassDetailController;
 import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
+import webapp.school_grades_mgmt.sgm.entity.table.ClassCurriculumEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
 import webapp.school_grades_mgmt.sgm.repository.table.*;
 
@@ -68,8 +69,15 @@ public class ClassDetailService {
         return students;
     }
 
+    /**
+     *クラスカリキュラムの名前を取得
+     */
     public List<String > findClassCurriculumName(Integer classId){
         return classCurriculumRepository.findName(classId);
+    }
+
+    public List<ClassCurriculumEntity> findClassCurriculumEntity(Integer classId){
+        return classCurriculumRepository.findClassCurriculumEntity(classId);
     }
 
     /**
