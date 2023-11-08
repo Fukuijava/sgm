@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
-import webapp.school_grades_mgmt.sgm.entity.table.ClassAttitudeEntity;
-import webapp.school_grades_mgmt.sgm.entity.table.ClassCurriculumEntity;
-import webapp.school_grades_mgmt.sgm.entity.table.ClassEntity;
+import webapp.school_grades_mgmt.sgm.entity.table.*;
 import webapp.school_grades_mgmt.sgm.service.ClassDetailService;
 
 import java.util.List;
@@ -115,16 +113,57 @@ public class ClassDetailController {
         String curriculum = service.findCurriculum(curriculumId);
         List<String > curriculumNameList = service.findClassCurriculumName(classId);
         List<studentsRecord>  studentList = service.findStudents(classId);
-        List<Integer> submissionEvaluationEntityList = service.findSubmissionEvaluation(studentList, semesterId, curriculumId);
-//        List<SubmissionEntity> submissionEntityList = service.findSubmission(submissionEvaluationEntityList)
+        List<OverallSubmissionEvaluationEntity> submissionEvaluationEntityList = service.findSubmissionEvaluation(studentList, semesterId, curriculumId);
+        List<SubmissionEntity> submissionEntityList = service.findSubmission(submissionEvaluationEntityList);
+        List<String> submissionNameList = service.findSubmissionName(submissionEntityList);
         model.addAttribute("classEntity", classEntity);
         model.addAttribute("studentList", studentList);
         model.addAttribute("semester", semesterId);
         model.addAttribute("curriculum", curriculum);
+        model.addAttribute("curriculumId", curriculumId);
         model.addAttribute("curriculumNameList", curriculumNameList);
         model.addAttribute("submissionEvaluationEntityList", submissionEvaluationEntityList);
+        model.addAttribute("submissionEntityList", submissionEntityList);
+        model.addAttribute("submissionNameList", submissionNameList);
         return "submission";
     }
+
+    /**
+     * 提出物追加処理
+     */
+    @PostMapping("/classDetail/{classId}/submission/addSubmission")
+    public String addSubmission(@RequestParam("classId") Integer classId,
+                                @RequestParam("semesterId") Integer semesterId,
+                                @RequestParam("curriculumId") Integer curriculumId,
+                                @RequestParam("curriculumName") String curriculumName,
+                                @RequestParam("submissionName") String submissionName,
+                                @RequestParam("submissionDeadline") String submissionDeadline,
+                                @RequestParam("submissionEvaluationId") String submissionEvaluationId,
+                                Model model) {
+        String[] strSubmissionEvaluationId = submissionEvaluationId.split(",", -1);
+        Integer[] submissionArray = new Integer[strSubmissionEvaluationId.length];
+        for(int i = 0; i < submissionArray.length; i++){
+            submissionArray[i] = Integer.parseInt(strSubmissionEvaluationId[i]);
+        }
+        ClassEntity classEntity = service.findClassEntity(classId);
+        List<String > curriculumNameList = service.findClassCurriculumName(classId);
+        List<studentsRecord>  studentList = service.findStudents(classId);
+        List<OverallSubmissionEvaluationEntity> submissionEvaluationEntityList = service.findSubmissionEvaluation(studentList, semesterId, curriculumId);
+        service.setSubmission(submissionName, submissionDeadline, studentList, submissionEvaluationEntityList);
+        List<SubmissionEntity> submissionEntityList = service.findSubmission(submissionEvaluationEntityList);
+        model.addAttribute("submission", submissionEntityList);
+        model.addAttribute("classEntity", classEntity);
+        model.addAttribute("studentList", studentList);
+        model.addAttribute("semester", semesterId);
+        model.addAttribute("curriculumId", curriculumId);
+        model.addAttribute("curriculum", curriculumName);
+        model.addAttribute("curriculumNameList", curriculumNameList);
+        model.addAttribute("submissionEvaluationEntityList", submissionEvaluationEntityList);
+        model.addAttribute("submissionEntityList", submissionEntityList);
+        return "submission";
+    }
+
+
 
 
 

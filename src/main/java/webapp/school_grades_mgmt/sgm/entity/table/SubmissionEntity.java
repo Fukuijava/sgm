@@ -19,7 +19,6 @@ public class SubmissionEntity {
     @Column(name="submission_name")
     private String submissionName;
 
-    @Column(name="submission_status")
-    private Boolean submissionStatus;
-
+    @Column(name="submission_deadline")
+    private String submissionDeadline;
 }
