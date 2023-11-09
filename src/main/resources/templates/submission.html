@@ -52,7 +52,7 @@
                         <input type="hidden" name="semesterId" th:value="${semester}"/>
                         <input type="hidden" name="curriculumName" th:value="${curriculum}"/>
                         <input type="hidden" name="curriculumId" th:value="${curriculumId}"/>
-                        <ul  th:each="submissionEvaluation : ${submissionEvaluationEntityList}">
+                        <ul  th:each="submissionEvaluation : ${overallSubmissionEvaluationEntityList}">
                             <input type="hidden" class="submissionEvaluationId" th:value="${submissionEvaluation.id}"/>
                         </ul>
                         <div id="output" hidden=""></div>
@@ -72,8 +72,8 @@
             <th>出席番号</th>
             <th>名前</th>
             <th>総合評価</th>
-            <th th:each="submission : ${submissionNameList}">
-                <p th:text="${submission}"></p>
+            <th th:each="classSubmission : ${classSubmissionEntityList}">
+                <p th:text="${classSubmission.submissionEntity.submissionName}"></p>
             </th>
         </tr>
         </thead>
@@ -81,10 +81,9 @@
         <tr th:each="student, studentCount : ${studentList}">
             <td th:text="${student.attendanceNumber}"></td>
             <td th:text="${student.studentName}"></td>
-<!--            <input hidden="hidden" th:value="${studentCount.size}" id="studentCount"/>-->
-            <td th:text="${submissionEvaluationEntityList[__${studentCount.index}__].submissionEvaluation}"></td>
-            <td th:each="submissionEntity : ${submissionEntityList}">
-                <input type="checkbox" th:value="${submissionEntity.submissionStatus}">
+            <td th:text="${overallSubmissionEvaluationEntityList[__${studentCount.index}__].submissionEvaluation}"></td>
+            <td th:each="status : ${submissionStatusList}">
+                <input type="checkbox" th:value="${status}">
 
             </td>
         </tr>
