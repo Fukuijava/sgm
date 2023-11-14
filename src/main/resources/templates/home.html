@@ -2,16 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>SGM-ホーム</title>
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <!-- JQuery -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
-    <!--     css読み込み -->
+   <!-- CSS読込 -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <link th:href="@{/css/header.css}" rel="stylesheet">
     <link th:href="@{/css/home.css}" rel="stylesheet">
+    <!-- JS読込 -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}" defer></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
 </head>
 <body class="bg-success-subtle bg-gradient">
     <header class="p-3 mb-2 bg-dark bg-gradient text-white">
@@ -43,13 +42,12 @@
                     <h2>クラスを選んでください</h2>
                 </div>
                 <div class="modal-body">
-                    <table id="listform">
+                    <table>
                         <tbody>
                         <tr th:each="class : ${classList}">
                             <form th:action="@{/classDetail/{class.id}}">
-
                                 <button type="submit"
-                                        th:text="${class.schoolYearEntity.schoolYearNumber} + '-' + ${class.classNumberEntity.classNumber}">
+                                        th:text="${class.schoolYearEntity.number} + '-' + ${class.classNumberEntity.number}">
                                 </button>
                                 <input type="hidden" name="classId" th:value="${class.id}" />
                             </form>

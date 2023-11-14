@@ -13,7 +13,6 @@ public class TestEntity {
     @Column(name="test_id")
     private Integer id;
 
-    @Column(name="test_name")
-    private String  testName;
+    private String  name;
 
 }

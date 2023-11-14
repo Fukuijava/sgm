@@ -3,9 +3,6 @@ package webapp.school_grades_mgmt.sgm.repository.table;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import webapp.school_grades_mgmt.sgm.entity.table.SubmissionEvaluationEntity;
-
-import java.util.List;
 
 public interface SubmissionEvaluationRepository extends JpaRepository<SubmissionEvaluationEntity,Integer> {
         @Query(value =  "SELECT submission_evaluation.submission_status FROM submission_evaluation " +

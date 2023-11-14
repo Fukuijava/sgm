@@ -13,7 +13,6 @@ public class CurriculumEntity {
     @Column(name="curriculum_id")
     private Integer id;
 
-    @Column(name="curriculum_name")
-    private String curriculumName;
+    private String name;
 
 }

@@ -15,9 +15,7 @@ public class SubmissionEntity {
     @Column(name="submission_id")
     private Integer id;
 
-    @Column(name="submission_name")
-    private String submissionName;
+    private String name;
 
-    @Column(name="submission_deadline")
-    private String submissionDeadline;
+    private String deadline;
 }

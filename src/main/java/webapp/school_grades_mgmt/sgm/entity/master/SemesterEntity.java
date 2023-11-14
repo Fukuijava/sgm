@@ -12,6 +12,5 @@ public class SemesterEntity {
     @Column(name="semester_id")
     private Integer id;
 
-    @Column(name="semester_number")
-    private Integer semesterNumber;
+    private Integer number;
 }

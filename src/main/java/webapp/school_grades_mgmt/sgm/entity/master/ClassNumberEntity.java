@@ -13,6 +13,5 @@ public class ClassNumberEntity {
     @Column(name="class_number_id")
     private Integer id;
 
-    @Column(name="class_number")
-    private Integer classNumber;
+    private Integer number;
 }

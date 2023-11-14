@@ -2,7 +2,6 @@ var thisCount;
 var countEvent;
 var nameArray = new Array();
 $(function() {
-
     thisCount = $("#nameLabel").html();
     thisCount = Number(thisCount);
     $("#count").html(thisCount);

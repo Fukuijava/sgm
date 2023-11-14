@@ -21,6 +21,5 @@ public class TestScoreEntity {
     @JoinColumn(name = "test_id")
     private TestEntity testEntity;
 
-    @Column(name="test_score")
-    private Integer testScore;
+    private Integer score;
 }

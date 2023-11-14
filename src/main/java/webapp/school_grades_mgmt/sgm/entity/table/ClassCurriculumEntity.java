@@ -18,10 +18,10 @@ public class ClassCurriculumEntity {
     private Integer id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "class_id")
-    private ClassEntity classEntity;
-
-    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "curriculum_id")
     private CurriculumEntity curriculumEntity;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "class_id")
+    private ClassEntity classEntity;
 }

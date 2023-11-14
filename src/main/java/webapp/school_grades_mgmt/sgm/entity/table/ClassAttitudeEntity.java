@@ -15,7 +15,6 @@ public class ClassAttitudeEntity {
     @JoinColumn(name = "grades_by_semester_id")
     private GradesBySemesterEntity gradesBySemesterEntity;
 
-    @Column(name="class_attitude_evaluation")
-    private Integer classAttitudeEvaluation;
+    private Integer evaluation;
 
 }

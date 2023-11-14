@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<!-- Bootstrap(アイコン) -->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">-->
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>SGM-クラスの登録</title>
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <!-- Bootstrap(アイコン) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <!-- JQuery -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
-    <!--  js読み込み  -->
-    <script th:src="@{/js/addClass.js}"></script>
-    <!--     css読み込み -->
+    <!-- CSS読込 -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <link th:href="@{/css/header.css}" rel="stylesheet">
     <link th:href="@{/css/addClass.css}" rel="stylesheet">
+    <!-- JS読込 -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}" defer></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/addClass.js}"></script>
 </head>
 <body class="bg-success-subtle bg-gradient">
     <header class="p-3 mb-2 bg-dark bg-gradient text-white">
@@ -46,34 +44,34 @@
     </div>
     <main id="mainForm">
         <h2><i class="bi bi-pencil"></i>クラスの登録</h2>
-        <form  class="row g-3" th:action="@{/home/addClass/function}" method="post" id="formId">
+        <form  class="row g-3" th:action="@{/home/addClass/function}" method="post">
         <div class="row">
             <div class="col mb-4">
                 <label class="form-label">学年</label>
-                <select class="form-select" name="schoolYear">
+                <select class="form-select" name="schoolYearId">
                     <option th:each="schoolYear : ${schoolYearList}"
                             th:value="${schoolYear.id}"
-                            th:text="${schoolYear.schoolYearNumber}+年">
+                            th:text="${schoolYear.number}+年">
                     </option>
                 </select>
             </div>
 
             <div class="col mb-4">
                 <label class="form-label">学科</label>
-                <select class="form-select" name="department">
-                    <option th:each="deptList : ${departmentList}"
-                            th:value="${deptList.id}"
-                            th:text="${deptList.departmentName}+科">
+                <select class="form-select" name="departmentId">
+                    <option th:each="department : ${departmentList}"
+                            th:value="${department.id}"
+                            th:text="${department.name}+科">
                     </option>
                 </select>
             </div>
 
             <div class="col mb-4">
                 <label class="form-label">クラス</label>
-                <select class="form-select" name="classNumber">
+                <select class="form-select" name="classNumberId">
                     <option th:each="classNumber : ${classNumberList}"
                             th:value="${classNumber.id}"
-                            th:text="${classNumber.classNumber}+組">
+                            th:text="${classNumber.number}+組">
                     </option>
                 </select>
             </div>
@@ -92,8 +90,8 @@
                 <div class="space"></div>
                 <h3>　　　科目名</h3>
                 <div th:each="curriculum : ${curriculumArray}" class="form-check">
-                    <input  class="form-check-input" th:value="${curriculum.id}" type="checkbox" name="curriculums"/>
-                    <label  class="form-check-label" th:text="${curriculum.curriculumName}"></label>
+                    <input  class="form-check-input" th:value="${curriculum.id}" type="checkbox" name="curriculumNames"/>
+                    <label  class="form-check-label" th:text="${curriculum.name}"></label>
                 </div>
             </div>
         </div>

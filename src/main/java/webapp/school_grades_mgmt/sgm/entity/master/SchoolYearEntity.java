@@ -13,6 +13,5 @@ public class SchoolYearEntity {
     @Column(name="school_year_id")
     private Integer id;
 
-    @Column(name="school_year_number")
-    private Integer schoolYearNumber;
+    private Integer number;
 }

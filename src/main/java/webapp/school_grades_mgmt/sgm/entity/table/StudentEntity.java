@@ -19,7 +19,6 @@ public class StudentEntity {
     @Column(name="attendance_number")
     private Integer attendanceNumber;
 
-    @Column(name="student_name")
-    private String studentName;
+    private String name;
 
 }

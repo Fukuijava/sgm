@@ -53,29 +53,31 @@ public class HomeController {
      * クラス登録処理
      */
     @PostMapping("/addClass/function")
-    public String addClassFunction( @RequestParam("schoolYear") Integer schoolYear,
-                                    @RequestParam("department") Integer department,
-                                    @RequestParam("classNumber") Integer classNumber,
+    public String addClassFunction( @RequestParam("schoolYearId") Integer schoolYearId,
+                                    @RequestParam("departmentId") Integer departmentId,
+                                    @RequestParam("classNumberId") Integer classNumberId,
                                     @RequestParam("studentNames") String  studentNames,
-                                    @RequestParam("curriculums") String  curriculums,
+                                    @RequestParam("curriculumIds") String  curriculumIds,
                                     Model model){
     //生徒を配列に直す
-    String[] studentArray = studentNames.split(",", -1);
-    Arrays.sort(studentArray);
+    String[] studentNameArray = studentNames.split(",", -1);
+    Arrays.sort(studentNameArray);
     //クラス教科を配列に直す
-    String[] strCurriculumArray = curriculums.split(",", -1);
-    Integer[] curriculumArray = new Integer[strCurriculumArray.length];
-    for(int i = 0; i < curriculumArray.length; i++){
-        curriculumArray[i] = Integer.parseInt(strCurriculumArray[i]);
+    String[] string_curriculumIdArray = curriculumIds.split(",", -1);
+    Integer[] curriculumIdArray = new Integer[string_curriculumIdArray.length];
+    for(int i = 0; i < curriculumIdArray.length; i++){
+        curriculumIdArray[i] = Integer.parseInt(string_curriculumIdArray[i]);
     }
-    Integer classId = service.setClass(schoolYear,department,classNumber);
-    service.setClassCurriculum(classId, curriculumArray);
-    service.setStudent(classId,studentArray);
+
+    service.setClass(schoolYearId,departmentId,classNumberId);
+    Integer classId = service.getClassId(schoolYearId,departmentId,classNumberId);
+    service.setClassCurriculum(classId, curriculumIdArray);
+    service.setStudent(classId,studentNameArray);
     model.addAttribute("classRegistered","登録完了");
     //ホーム画面に登録されてるクラスの一覧を表示させる
-    List<ClassEntity> classList = service.findClass();
-    model.addAttribute("classList", classList);
-    return "home";
+//    List<ClassEntity> classList = service.findClass();
+//    model.addAttribute("classList", classList);
+    return "redirect:/home/";
     }
 
     /**

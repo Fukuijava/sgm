@@ -16,7 +16,7 @@ public class OverallSubmissionEvaluationEntity {
     @JoinColumn(name = "grades_by_semester_id")
     private GradesBySemesterEntity gradesBySemesterEntity;
 
-    @Column(name="submission_evaluation")
-    private Integer submissionEvaluation;
+    @Column(name="overall_evaluation")
+    private Integer overallEvaluation;
 
 }

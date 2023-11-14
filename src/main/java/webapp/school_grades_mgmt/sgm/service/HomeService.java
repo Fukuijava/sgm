@@ -22,7 +22,6 @@ public class HomeService {
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
     private final ClassCurriculumRepository classCurriculumRepository;
-
     private final GradesBySemesterRepository gradesBySemesterRepository;
     private final SemesterRepository semesterRepository;
     private final ClassAttitudeRepository classAttitudeRepository;
@@ -71,13 +70,19 @@ public class HomeService {
     /**
      * クラステーブルの登録処理
      */
-    public Integer setClass(Integer schoolYear, Integer department, Integer classNumber) {
+    public void setClass(Integer schoolYear, Integer department, Integer classNumber) {
         ClassEntity classEntity = new ClassEntity();
         classEntity.setSchoolYearEntity(schoolYearRepository.getReferenceById(schoolYear));
         classEntity.setDepartmentEntity(departmentRepository.getReferenceById(department));
         classEntity.setClassNumberEntity(classNumberRepository.getReferenceById(classNumber));
         classRepository.saveAndFlush(classEntity);
-        return classEntity.getId();
+    }
+
+    /**
+     *クラスID取得
+     */
+    public Integer getClassId(Integer schoolYear, Integer department, Integer classNumber){
+        return classRepository.findId(schoolYear,department,classNumber);
     }
 
     /**
@@ -100,10 +105,10 @@ public class HomeService {
             StudentEntity studentEntity = new StudentEntity();
             studentEntity.setClassEntity(classRepository.getReferenceById(classId));
             studentEntity.setAttendanceNumber(i + 1);
-            studentEntity.setStudentName(studentNames[i]);
+            studentEntity.setName(studentNames[i]);
             studentRepository.saveAndFlush(studentEntity);
             //生徒IDとクラスカリキュラムを取得し、setGradesBySemesterへ投げる。
-            int studentId = studentEntity.getId();
+            Integer studentId = studentEntity.getId();
             List<Integer> curriculumIdList = classCurriculumRepository.findId(classId);
             setGradesBySemester(studentId, curriculumIdList);
         }
@@ -134,7 +139,7 @@ public class HomeService {
     public void setClassAttitude(Integer gradesBySemesterId) {
         ClassAttitudeEntity classAttitudeEntity = new ClassAttitudeEntity();
         classAttitudeEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
-        classAttitudeEntity.setClassAttitudeEvaluation(5);//授業態度は初期値が最大値の5でそこから減点方式で評価するため最初は5をセットする。
+        classAttitudeEntity.setEvaluation(5);//授業態度は初期値が最大値の5でそこから減点方式で評価するため最初は5をセットする。
         classAttitudeRepository.saveAndFlush(classAttitudeEntity);
     }
 
@@ -144,11 +149,8 @@ public class HomeService {
     public void setSubmissionEvaluation(Integer gradesBySemesterId) {
         OverallSubmissionEvaluationEntity overallSubmissionEvaluationEntity = new OverallSubmissionEvaluationEntity();
         overallSubmissionEvaluationEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
-        //提出物が一回もない教科もあるため、初期値最大値の5をセット。
-        overallSubmissionEvaluationEntity.setSubmissionEvaluation(5);
+        overallSubmissionEvaluationEntity.setOverallEvaluation(5);//提出物が一回もない教科もあるため、初期値に最大値の5をセット。
         overallSubmissionEvaluationRepository.saveAndFlush(overallSubmissionEvaluationEntity);
-        //提出物評価テーブルのIDを取得し、・・・
-//        Integer submissionEvaluationId = submissionEvaluationEntity.getId();
     }
 
     /**

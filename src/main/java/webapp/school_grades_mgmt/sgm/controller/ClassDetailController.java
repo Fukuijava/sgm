@@ -10,15 +10,13 @@ import webapp.school_grades_mgmt.sgm.entity.master.SemesterEntity;
 import webapp.school_grades_mgmt.sgm.entity.table.*;
 import webapp.school_grades_mgmt.sgm.service.ClassDetailService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ClassDetailController {
 
     public record studentsRecord(
-    Integer studentId, Integer attendanceNumber, String studentName){
+    Integer studentId, Integer attendanceNumber, String name){
     }
 
     @Autowired
@@ -43,12 +41,12 @@ public class ClassDetailController {
     @GetMapping("/classDetail/{classId}/classAttitude")
     public String classAttitude(@RequestParam("classId") Integer classId,
                                 Model model) {
-    List<SemesterEntity> semesterEntityList = service.findSemesterEntity();
     ClassEntity classEntity = service.findClassEntity(classId);
-    List<studentsRecord>  studentList = service.findStudents(classId);
+    List<SemesterEntity> semesterList = service.findSemesterEntity();
+    List<studentsRecord> studentList = service.findStudents(classId);
     List<String > curriculumNameList = service.findClassCurriculumName(classId);
     List<ClassAttitudeEntity> classAttitudeEntityList = service.findClassAttitude(studentList, classId);
-    model.addAttribute("semesterEntityList", semesterEntityList);
+    model.addAttribute("semesterEntityList", semesterList);
     model.addAttribute("classEntity", classEntity);
     model.addAttribute("studentList", studentList);
     model.addAttribute("curriculumNameList", curriculumNameList);

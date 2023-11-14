@@ -13,7 +13,6 @@ public class DepartmentEntity {
     @Column(name="department_id")
     private Integer id;
 
-    @Column(name="department_name")
-    private String  departmentName;
+    private String  name;
 
 }

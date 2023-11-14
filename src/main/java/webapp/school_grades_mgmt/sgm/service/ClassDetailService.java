@@ -68,7 +68,7 @@ public class ClassDetailService {
                 .map((Map<String, Object> row) -> new ClassDetailController.studentsRecord(
                         (Integer) row.get("student_id"),
                         (Integer) row.get("attendance_number"),
-                        (String) row.get("student_name")
+                        (String) row.get("name")
                 )).toList();
         return students;
     }
@@ -90,16 +90,16 @@ public class ClassDetailService {
     public List<ClassAttitudeEntity> findClassAttitude(List<ClassDetailController.studentsRecord> studentsRecords,
                                                        Integer classId){
         List<Integer> classCurriculumIds = classCurriculumRepository.findId(classId);
-        List<ClassAttitudeEntity> classAttitudeEntityList = new ArrayList<>();
+        List<ClassAttitudeEntity> classAttitudeList = new ArrayList<>();
         List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
             for(int i = 0; i < studentsRecords.size(); i++){//クラスの生徒数分回す
                 for(int j = 0; j < classCurriculumIds.size(); j++){//クラスの教科数分回す
                     Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(i).studentId(), classCurriculumIds.get(j));
-                    classAttitudeEntityList.add(classAttitudeRepository.findEntity(gradesBySemesterId));
+                    classAttitudeList.add(classAttitudeRepository.findEntity(gradesBySemesterId));
                 }
-                classList.add(classAttitudeEntityList);
+                classList.add(classAttitudeList);
             }
-        return classAttitudeEntityList;
+        return classAttitudeList;
     }
 
     /**
