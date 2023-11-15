@@ -25,8 +25,8 @@
     </header>
     <main>
         <div>
-            <h2 th:text="${classEntity.schoolYearEntity.schoolYearNumber} + '-' + ${classEntity.classNumberEntity.classNumber}"></h2>
-            <h2 th:text="${classEntity.departmentEntity.departmentName}"></h2>
+            <h2 th:text="${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
+            <h2 th:text="${classEntity.departmentEntity.name}"></h2>
         </div>
 
         <div class="list_form">
@@ -45,7 +45,7 @@
                 <tbody>
                 <tr th:each="student : ${studentList}">
                     <td th:text="${student.attendanceNumber}"></td>
-                    <td th:text="${student.studentName}"></td>
+                    <td th:text="${student.name}"></td>
                     <td></td>
                     <td></td>
                     <td>

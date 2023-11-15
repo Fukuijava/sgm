@@ -1,7 +1,8 @@
 var thisCount;
 var countEvent;
 var nameArray = new Array();
-$(function() {
+//$(function() {
+window.addEventListener('DOMContentLoaded', function(){
     thisCount = $("#nameLabel").html();
     thisCount = Number(thisCount);
     $("#count").html(thisCount);

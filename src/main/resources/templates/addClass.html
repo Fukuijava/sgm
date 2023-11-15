@@ -90,7 +90,7 @@
                 <div class="space"></div>
                 <h3>　　　科目名</h3>
                 <div th:each="curriculum : ${curriculumArray}" class="form-check">
-                    <input  class="form-check-input" th:value="${curriculum.id}" type="checkbox" name="curriculumNames"/>
+                    <input  class="form-check-input" th:value="${curriculum.id}" type="checkbox" name="curriculumIds"/>
                     <label  class="form-check-label" th:text="${curriculum.name}"></label>
                 </div>
             </div>

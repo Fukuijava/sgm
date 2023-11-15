@@ -2,17 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>SGM-提出物管理</title>
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <!-- JQuery -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
-    <!--  js読み込み  -->
-    <script th:src="@{/js/submission.js}"></script>
-    <!--  css読み込み -->
+    <!-- CSS読込 -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <link th:href="@{/css/header.css}" rel="stylesheet">
+    <!-- JS読込 -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}" defer></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/submission.js}"></script>
 </head>
 <body class="bg-success-subtle bg-gradient">
 <header class="p-3 mb-2 bg-dark bg-gradient text-white">
@@ -26,8 +24,8 @@
 </header>
 <main>
     <div>
-        <h2 th:text="${classEntity.schoolYearEntity.schoolYearNumber} + '-' + ${classEntity.classNumberEntity.classNumber}"></h2>
-        <h2 th:text="${classEntity.departmentEntity.departmentName}"></h2>
+        <h2 th:text="${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
+        <h2 th:text="${classEntity.departmentEntity.name}"></h2>
         <h2 th:text="${semester}+学期"></h2>
         <h2 th:text="${curriculum}"></h2>
     </div>
@@ -52,8 +50,8 @@
                         <input type="hidden" name="semesterId" th:value="${semester}"/>
                         <input type="hidden" name="curriculumName" th:value="${curriculum}"/>
                         <input type="hidden" name="curriculumId" th:value="${curriculumId}"/>
-                        <ul  th:each="submissionEvaluation : ${overallSubmissionEvaluationEntityList}">
-                            <input type="hidden" class="submissionEvaluationId" th:value="${submissionEvaluation.id}"/>
+                        <ul  th:each="overallSubmissionEvaluation : ${overallSubmissionEvaluationEntityList}">
+                            <input type="hidden" class="submissionEvaluationId" th:value="${overallSubmissionEvaluation.id}"/>
                         </ul>
                         <div id="output" hidden=""></div>
                         <button type="submit" onclick="createIdArray();">追加</button>
@@ -80,8 +78,8 @@
         <tbody id="classAttitudeBody">
         <tr th:each="student, studentCount : ${studentList}">
             <td th:text="${student.attendanceNumber}"></td>
-            <td th:text="${student.studentName}"></td>
-            <td th:text="${overallSubmissionEvaluationEntityList[__${studentCount.index}__].submissionEvaluation}"></td>
+            <td th:text="${student.name}"></td>
+            <td th:text="${overallSubmissionEvaluationEntityList[__${studentCount.index}__].evaluation}"></td>
             <td th:each="status : ${submissionStatusList}">
                 <input type="checkbox" th:value="${status}">
 
@@ -89,8 +87,6 @@
         </tr>
         </tbody>
     </table>
-
-
 </main>
 </body>
 </html>

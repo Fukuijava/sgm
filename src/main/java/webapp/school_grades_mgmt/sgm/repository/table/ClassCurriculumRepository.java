@@ -22,6 +22,6 @@ public interface ClassCurriculumRepository extends JpaRepository<ClassCurriculum
 
     @Query(value = "SELECT class_curriculum_entity.* FROM class_curriculum_entity " +
                     "WHERE class_id = ?", nativeQuery = true)
-    List<ClassCurriculumEntity> findClassCurriculumEntity(@Param("classId") Integer classId);
+    List<ClassCurriculumEntity> findEntity(@Param("classId") Integer classId);
 
 }

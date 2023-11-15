@@ -44,7 +44,7 @@ public class ClassDetailController {
     ClassEntity classEntity = service.findClassEntity(classId);
     List<SemesterEntity> semesterList = service.findSemesterEntity();
     List<studentsRecord> studentList = service.findStudents(classId);
-    List<String > curriculumNameList = service.findClassCurriculumName(classId);
+    List<String > curriculumNameList = service.findClassCurriculumNames(classId);
     List<ClassAttitudeEntity> classAttitudeEntityList = service.findClassAttitude(studentList, classId);
     model.addAttribute("semesterEntityList", semesterList);
     model.addAttribute("classEntity", classEntity);
@@ -75,7 +75,7 @@ public class ClassDetailController {
     //画面表示部
     List<SemesterEntity> semesterEntityList = service.findSemesterEntity();
     ClassEntity classEntity = service.findClassEntity(classId);
-    List<String > curriculumNameList = service.findClassCurriculumName(classId);
+    List<String > curriculumNameList = service.findClassCurriculumNames(classId);
     List<ClassAttitudeEntity> classAttitudeEntityList = service.findClassAttitude(studentList, classId);
     model.addAttribute("semesterEntityList", semesterEntityList);
     model.addAttribute("classEntity", classEntity);
@@ -111,69 +111,68 @@ public class ClassDetailController {
                              Model model) {
         ClassEntity classEntity = service.findClassEntity(classId);
         String curriculum = service.findCurriculum(curriculumId);
-        List<String > curriculumNameList = service.findClassCurriculumName(classId);
+        List<String > curriculumNameList = service.findClassCurriculumNames(classId);
         List<studentsRecord>  studentList = service.findStudents(classId);
-        List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList = service.findOverallSubmissionEvaluation(studentList, semesterId, curriculumId);
-        List<ClassSubmissionEntity> classSubmissionEntityList = service.findClassSubmissionEntity(classId);
-        List<Boolean> submissionStatusList = service.findSubmissionStatus(overallSubmissionEvaluationEntityList, classSubmissionEntityList);
-        List<SubmissionEvaluationEntity> submissionEvaluationEntityList = service.findSubmissionEvaluationId(overallSubmissionEvaluationEntityList);
+        List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationList = service.findOverallSubmissionEvaluations(studentList, semesterId, curriculumId);
+        List<IndividualSubmissionEvaluationEntity> individualSubmissionEvaluationList = service.findIndividualSubmissionEvaluations(overallSubmissionEvaluationEntityList);
+//        List<String> submissionNameList = service.findSubmissionNames();
         model.addAttribute("classEntity", classEntity);
         model.addAttribute("studentList", studentList);
         model.addAttribute("semester", semesterId);
         model.addAttribute("curriculum", curriculum);
         model.addAttribute("curriculumId", curriculumId);
-//        model.addAttribute("curriculumNameList", curriculumNameList);
+
+        model.addAttribute("curriculumNameList", curriculumNameList);
         model.addAttribute("overallSubmissionEvaluationEntityList", overallSubmissionEvaluationEntityList);
         model.addAttribute("submissionStatusList", submissionStatusList);
-        model.addAttribute("classSubmissionEntityList", classSubmissionEntityList);
+        model.addAttribute("classSubmissionEntityList", submissionNameList);
         model.addAttribute("submissionEvaluationEntityList", submissionEvaluationEntityList);
-
         return "submission";
     }
 
-    /**
-     * 提出物追加処理
-     */
-    @PostMapping("/classDetail/{classId}/submission/addSubmission")
-    public String addSubmission(@RequestParam("classId") Integer classId,
-                                @RequestParam("semesterId") Integer semesterId,
-                                @RequestParam("curriculumId") Integer curriculumId,
-                                @RequestParam("curriculumName") String curriculumName,
-                                @RequestParam("submissionName") String submissionName,
-                                @RequestParam("submissionDeadline") String submissionDeadline,
-                                @RequestParam("submissionEvaluationId") String submissionEvaluationId,
-                                Model model) {
-        String[] strSubmissionEvaluationId = submissionEvaluationId.split(",", -1);
-        Integer[] submissionArray = new Integer[strSubmissionEvaluationId.length];
-        for(int i = 0; i < submissionArray.length; i++){
-            submissionArray[i] = Integer.parseInt(strSubmissionEvaluationId[i]);
-        }
-        ClassEntity classEntity = service.findClassEntity(classId);
-        List<String > curriculumNameList = service.findClassCurriculumName(classId);
-        List<studentsRecord>  studentList = service.findStudents(classId);
-        List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList = service.findOverallSubmissionEvaluation(studentList, semesterId, curriculumId);
-        Integer submissionId = service.setSubmission(submissionName, submissionDeadline);
-        Integer classSubmissionId = service.setClassSubmission(submissionId, );
-
-        service.setSubmissionEvaluation(overallSubmissionEvaluationEntityList);
-        List<SubmissionEvaluationEntity> submissionEvaluationEntityList = service.findSubmissionEvaluationId(overallSubmissionEvaluationEntityList);
-        List<ClassSubmissionEntity> classSubmissionEntityList = service.findClassSubmissionEntity(classId);
-        List<Boolean> submissionStatusList = service.findSubmissionStatus(overallSubmissionEvaluationEntityList, classSubmissionEntityList);
-//        model.addAttribute("submission", submissionEntityList);
-        model.addAttribute("classEntity", classEntity);
-        model.addAttribute("studentList", studentList);
-        model.addAttribute("semester", semesterId);
-        model.addAttribute("curriculumId", curriculumId);
-        model.addAttribute("curriculum", curriculumName);
-//        model.addAttribute("curriculumNameList", curriculumNameList);
-        model.addAttribute("overallSubmissionEvaluationEntityList", overallSubmissionEvaluationEntityList);
-        model.addAttribute("submissionEntityList", submissionStatusList);
-        model.addAttribute("classSubmissionEntityList", classSubmissionEntityList);
-        model.addAttribute("submissionEvaluationEntityList", submissionEvaluationEntityList);
-
-        return "submission";
-    }
-
+//    /**
+//     * 提出物追加処理
+//     */
+//    @PostMapping("/classDetail/{classId}/submission/addSubmission")
+//    public String addSubmission(@RequestParam("classId") Integer classId,
+//                                @RequestParam("semesterId") Integer semesterId,
+//                                @RequestParam("curriculumId") Integer curriculumId,
+//                                @RequestParam("curriculumName") String curriculumName,
+//                                @RequestParam("submissionName") String submissionName,
+//                                @RequestParam("submissionDeadline") String submissionDeadline,
+//                                @RequestParam("submissionEvaluationId") String submissionEvaluationId,
+//                                Model model) {
+//        String[] strSubmissionEvaluationId = submissionEvaluationId.split(",", -1);
+//        Integer[] submissionArray = new Integer[strSubmissionEvaluationId.length];
+//        for(int i = 0; i < submissionArray.length; i++){
+//            submissionArray[i] = Integer.parseInt(strSubmissionEvaluationId[i]);
+//        }
+//        ClassEntity classEntity = service.findClassEntity(classId);
+//        List<String > curriculumNameList = service.findClassCurriculumNames(classId);
+//        List<studentsRecord>  studentList = service.findStudents(classId);
+//        List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList = service.findOverallSubmissionEvaluations(studentList, semesterId, curriculumId);
+//        Integer submissionId = service.setSubmission(submissionName, submissionDeadline);
+//        Integer classSubmissionId = service.setClassSubmission(submissionId, );
+//
+//        service.setSubmissionEvaluation(overallSubmissionEvaluationEntityList);
+//        List<SubmissionEvaluationEntity> submissionEvaluationEntityList = service.findSubmissionEvaluationId(overallSubmissionEvaluationEntityList);
+//        List<ClassSubmissionEntity> classSubmissionEntityList = service.findClassSubmissionEntity(classId);
+//        List<Boolean> submissionStatusList = service.findSubmissionStatus(overallSubmissionEvaluationEntityList, classSubmissionEntityList);
+////        model.addAttribute("submission", submissionEntityList);
+//        model.addAttribute("classEntity", classEntity);
+//        model.addAttribute("studentList", studentList);
+//        model.addAttribute("semester", semesterId);
+//        model.addAttribute("curriculumId", curriculumId);
+//        model.addAttribute("curriculum", curriculumName);
+////        model.addAttribute("curriculumNameList", curriculumNameList);
+//        model.addAttribute("overallSubmissionEvaluationEntityList", overallSubmissionEvaluationEntityList);
+//        model.addAttribute("submissionEntityList", submissionStatusList);
+//        model.addAttribute("classSubmissionEntityList", classSubmissionEntityList);
+//        model.addAttribute("submissionEvaluationEntityList", submissionEvaluationEntityList);
+//
+//        return "submission";
+//    }
+//
     /**
      * テスト画面
      * 機能未実装

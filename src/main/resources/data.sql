@@ -1,12 +1,12 @@
 INSERT IGNORE INTO sgmdb.school_year
-(school_year_id,school_year_number)
+(school_year_id,number)
 VALUES
  (1,1)
 ,(2,2)
 ,(3,3);
 
 INSERT IGNORE INTO sgmdb.department
-(department_id,department_name)
+(department_id,name)
 VALUES
  (1,'機械科')
 ,(2,'機械システム科')
@@ -16,7 +16,7 @@ VALUES
 ,(6,'建築科');
 
 INSERT IGNORE INTO sgmdb.class_number
-(class_number_id,class_number)
+(class_number_id,number)
 VALUES
  (1,1)
 ,(2,2)
@@ -26,7 +26,7 @@ VALUES
 ,(6,6);
 
 INSERT IGNORE INTO sgmdb.curriculum
-(curriculum_id,curriculum_name)
+(curriculum_id,name)
 VALUES
  (1,'言語文化')
 ,(2,'現代の国語')
@@ -77,14 +77,14 @@ VALUES
 ,(47,'建築施工');
 
 INSERT IGNORE INTO sgmdb.semester
-(semester_id,semester_number)
+(semester_id,number)
 VALUES
  (1,1)
 ,(2,2)
 ,(3,3);
 
 INSERT IGNORE INTO sgmdb.test
-(test_id,test_name)
+(test_id,name)
 VALUES
  (1,"中間テスト")
 ,(2,"期末テスト")

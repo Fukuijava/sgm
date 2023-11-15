@@ -81,8 +81,8 @@ public class HomeService {
     /**
      *クラスID取得
      */
-    public Integer getClassId(Integer schoolYear, Integer department, Integer classNumber){
-        return classRepository.findId(schoolYear,department,classNumber);
+    public Integer getClassId(Integer schoolYearId, Integer departmentId, Integer classNumberId){
+        return classRepository.findId(schoolYearId,departmentId,classNumberId);
     }
 
     /**
