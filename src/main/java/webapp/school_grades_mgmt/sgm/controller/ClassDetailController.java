@@ -114,7 +114,8 @@ public class ClassDetailController {
         List<String > curriculumNameList = service.findClassCurriculumNames(classId);
         List<studentsRecord>  studentList = service.findStudents(classId);
         List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationList = service.findOverallSubmissionEvaluations(studentList, semesterId, curriculumId);
-        List<IndividualSubmissionEvaluationEntity> individualSubmissionEvaluationList = service.findIndividualSubmissionEvaluations(overallSubmissionEvaluationEntityList);
+        List<IndividualSubmissionEvaluationEntity> individualSubmissionEvaluationList = service.findIndividualSubmissionEvaluations(overallSubmissionEvaluationList);
+        List<SubmissionEntity> submissionList = service.findSubmissions(individualSubmissionEvaluationList);
 //        List<String> submissionNameList = service.findSubmissionNames();
         model.addAttribute("classEntity", classEntity);
         model.addAttribute("studentList", studentList);

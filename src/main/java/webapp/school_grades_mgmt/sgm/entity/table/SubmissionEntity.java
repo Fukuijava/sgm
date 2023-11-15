@@ -15,6 +15,10 @@ public class SubmissionEntity {
     @Column(name="submission_id")
     private Integer id;
 
+    @ManyToOne()
+    @JoinColumn(name = "individual_submission_evaluation_id")
+    private OverallSubmissionEvaluationEntity overallSubmissionEvaluationEntity;
+
     private String name;
 
     private String deadline;

@@ -23,12 +23,13 @@ public class ClassDetailService {
     private final ClassAttitudeRepository classAttitudeRepository;
     private final OverallSubmissionEvaluationRepository overallSubmissionEvaluationRepository;
     private final SubmissionRepository submissionRepository;
-
+    private final IndividualSubmissionEvaluationRepository individualSubmissionEvaluationRepository;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public ClassDetailService(ClassRepository classRepository, StudentRepository studentRepository,
                               ClassCurriculumRepository classCurriculumRepository,
+                              IndividualSubmissionEvaluationRepository individualSubmissionEvaluationRepository,
                               GradesBySemesterRepository gradesBySemesterRepository,
                               ClassAttitudeRepository classAttitudeRepository, SubmissionRepository submissionRepository,
                               SemesterRepository semesterRepository, OverallSubmissionEvaluationRepository overallSubmissionEvaluationRepository,
@@ -40,6 +41,7 @@ public class ClassDetailService {
         this.gradesBySemesterRepository = gradesBySemesterRepository;
         this.classAttitudeRepository = classAttitudeRepository;
         this.overallSubmissionEvaluationRepository = overallSubmissionEvaluationRepository;
+        this.individualSubmissionEvaluationRepository = individualSubmissionEvaluationRepository;
         this.submissionRepository = submissionRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -174,18 +176,26 @@ public class ClassDetailService {
     }
 
     /**
-     * List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList
+     *
      */
-    public List<Boolean> findIndividualSubmissionEvaluations(List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList) {
-        List<Boolean> submissionStatusList = new ArrayList<>();
+    public List<IndividualSubmissionEvaluationEntity> findIndividualSubmissionEvaluations(List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList) {
+        List<IndividualSubmissionEvaluationEntity> individualSubmissionEvaluationList = new ArrayList<>();
         for(int i = 0; i < overallSubmissionEvaluationEntityList.size(); i++){
-            Integer
-
+            individualSubmissionEvaluationList.add(
+                    individualSubmissionEvaluationRepository.findEntity(
+                            overallSubmissionEvaluationEntityList.get(i).getId()));
         }
+        return individualSubmissionEvaluationList;
+    }
 
-
-
-        return  submissionStatusList;
+    public List<SubmissionEntity> findSubmission(List<IndividualSubmissionEvaluationEntity> individualSubmissionEvaluationList) {
+        List<SubmissionEntity> submissionList = new ArrayList<>();
+        for(int i = 0; i < overallSubmissionEvaluationEntityList.size(); i++){
+            submissionList.add(
+                    individualSubmissionEvaluationRepository.findEntity(
+                            overallSubmissionEvaluationEntityList.get(i).getId()));
+        }
+        return submissionList;
     }
 
 //    /**

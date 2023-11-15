@@ -12,10 +12,6 @@ public class SubmissionStatusEntity {
     private Integer id;
 
     @ManyToOne()
-    @JoinColumn(name = "individual_submission_evaluation_id")
-    private OverallSubmissionEvaluationEntity overallSubmissionEvaluationEntity;
-
-    @ManyToOne()
     @JoinColumn(name = "submission_id")
     private SubmissionEntity submissionEntity;
 
