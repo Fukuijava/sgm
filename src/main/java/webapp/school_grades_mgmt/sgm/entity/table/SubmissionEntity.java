@@ -3,9 +3,6 @@ package webapp.school_grades_mgmt.sgm.entity.table;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Table(name = "submission")
 @Data
 @Entity
@@ -16,10 +13,12 @@ public class SubmissionEntity {
     private Integer id;
 
     @ManyToOne()
-    @JoinColumn(name = "individual_submission_evaluation_id")
-    private OverallSubmissionEvaluationEntity overallSubmissionEvaluationEntity;
+    @JoinColumn(name = "submission_evaluation_id")
+    private SubmissionEvaluationEntity submissionEvaluationEntity;
 
     private String name;
 
     private String deadline;
+
+    private Boolean status;
 }

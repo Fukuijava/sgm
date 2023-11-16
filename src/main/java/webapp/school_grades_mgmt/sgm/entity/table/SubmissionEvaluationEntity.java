@@ -3,20 +3,20 @@ package webapp.school_grades_mgmt.sgm.entity.table;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Table(name = "overall_submission_evaluation")
+@Table(name = "submission_evaluation")
 @Data
 @Entity
-public class OverallSubmissionEvaluationEntity {
+public class SubmissionEvaluationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="overall_submission_evaluation_id")
+    @Column(name="submission_evaluation_id")
     private Integer id;
 
     @ManyToOne()
     @JoinColumn(name = "grades_by_semester_id")
     private GradesBySemesterEntity gradesBySemesterEntity;
 
-    @Column(name="overall_evaluation")
-    private Integer overallEvaluation;
+    @Column(name="evaluation")
+    private Integer evaluation;
 
 }

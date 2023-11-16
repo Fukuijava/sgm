@@ -9,6 +9,7 @@ import webapp.school_grades_mgmt.sgm.entity.table.*;
 import webapp.school_grades_mgmt.sgm.repository.table.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -21,18 +22,16 @@ public class ClassDetailService {
     private final ClassCurriculumRepository classCurriculumRepository;
     private final GradesBySemesterRepository gradesBySemesterRepository;
     private final ClassAttitudeRepository classAttitudeRepository;
-    private final OverallSubmissionEvaluationRepository overallSubmissionEvaluationRepository;
+    private final SubmissionEvaluationRepository submissionEvaluationRepository;
     private final SubmissionRepository submissionRepository;
-    private final IndividualSubmissionEvaluationRepository individualSubmissionEvaluationRepository;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public ClassDetailService(ClassRepository classRepository, StudentRepository studentRepository,
                               ClassCurriculumRepository classCurriculumRepository,
-                              IndividualSubmissionEvaluationRepository individualSubmissionEvaluationRepository,
                               GradesBySemesterRepository gradesBySemesterRepository,
                               ClassAttitudeRepository classAttitudeRepository, SubmissionRepository submissionRepository,
-                              SemesterRepository semesterRepository, OverallSubmissionEvaluationRepository overallSubmissionEvaluationRepository,
+                              SemesterRepository semesterRepository, SubmissionEvaluationRepository submissionEvaluationRepository,
                               JdbcTemplate jdbcTemplate) {
         this.classRepository = classRepository;
         this.semesterRepository = semesterRepository;
@@ -40,8 +39,7 @@ public class ClassDetailService {
         this.classCurriculumRepository = classCurriculumRepository;
         this.gradesBySemesterRepository = gradesBySemesterRepository;
         this.classAttitudeRepository = classAttitudeRepository;
-        this.overallSubmissionEvaluationRepository = overallSubmissionEvaluationRepository;
-        this.individualSubmissionEvaluationRepository = individualSubmissionEvaluationRepository;
+        this.submissionEvaluationRepository = submissionEvaluationRepository;
         this.submissionRepository = submissionRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -98,13 +96,13 @@ public class ClassDetailService {
                                                        Integer classId){
         List<Integer> classCurriculumIds = classCurriculumRepository.findId(classId);
         List<ClassAttitudeEntity> classAttitudeList = new ArrayList<>();
-        List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
+//        List<List<ClassAttitudeEntity>>  classList = new ArrayList<>();
             for(int i = 0; i < studentsRecords.size(); i++){//クラスの生徒数分回す
                 for(int j = 0; j < classCurriculumIds.size(); j++){//クラスの教科数分回す
                     Integer gradesBySemesterId = gradesBySemesterRepository.findId(1, studentsRecords.get(i).studentId(), classCurriculumIds.get(j));
                     classAttitudeList.add(classAttitudeRepository.findEntity(gradesBySemesterId));
                 }
-                classList.add(classAttitudeList);
+//                classList.add(classAttitudeList);
             }
         return classAttitudeList;
     }
@@ -165,38 +163,80 @@ public class ClassDetailService {
     /**
      *提出物評価の取得
      */
-    public List<OverallSubmissionEvaluationEntity> findOverallSubmissionEvaluations(List<ClassDetailController.studentsRecord> studentList,
-                                                                     Integer semesterId, Integer curriculumId){
-        List<OverallSubmissionEvaluationEntity> submissionEvaluationList = new ArrayList<>();
+    public List<SubmissionEvaluationEntity> findSubmissionEvaluations(List<ClassDetailController.studentsRecord> studentList,
+                                                                      Integer semesterId, Integer curriculumId){
+        List<SubmissionEvaluationEntity> submissionEvaluationList = new ArrayList<>();
         for(int i = 0; i < studentList.size(); i++){//クラスの生徒数分回す
             Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentList.get(i).studentId(), curriculumId);
-            submissionEvaluationList.add(overallSubmissionEvaluationRepository.findEvaluation(gradesBySemesterId));
+            submissionEvaluationList.add(submissionEvaluationRepository.findEvaluation(gradesBySemesterId));
         }
         return submissionEvaluationList;
     }
 
     /**
-     *
+     *提出物の取得
      */
-    public List<IndividualSubmissionEvaluationEntity> findIndividualSubmissionEvaluations(List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList) {
-        List<IndividualSubmissionEvaluationEntity> individualSubmissionEvaluationList = new ArrayList<>();
-        for(int i = 0; i < overallSubmissionEvaluationEntityList.size(); i++){
-            individualSubmissionEvaluationList.add(
-                    individualSubmissionEvaluationRepository.findEntity(
-                            overallSubmissionEvaluationEntityList.get(i).getId()));
-        }
-        return individualSubmissionEvaluationList;
-    }
-
-    public List<SubmissionEntity> findSubmission(List<IndividualSubmissionEvaluationEntity> individualSubmissionEvaluationList) {
+    public List<SubmissionEntity> findSubmissions(List<SubmissionEvaluationEntity> submissionEvaluationList) {
         List<SubmissionEntity> submissionList = new ArrayList<>();
-        for(int i = 0; i < overallSubmissionEvaluationEntityList.size(); i++){
+        for(int i = 0; i < submissionEvaluationList.size(); i++){
             submissionList.add(
-                    individualSubmissionEvaluationRepository.findEntity(
-                            overallSubmissionEvaluationEntityList.get(i).getId()));
+                    submissionRepository.findEntity(
+                            submissionEvaluationList.get(i).getId()));
         }
         return submissionList;
     }
+
+    /**
+     *提出状況を取得
+     */
+    public List<List<Boolean>> findSubmissionStatuses(List<String> submissionNameList, List<String> submissionDeadlineList, List<SubmissionEvaluationEntity> submissionEvaluationList) {
+        List<Boolean> statusList = new ArrayList<>();
+        List<List<Boolean>> submissionStatusList = new ArrayList<>();
+        for(int i = 0; i < submissionNameList.size(); i++){
+            for(int j = 0; j < submissionEvaluationList.size(); j++){
+                statusList.add(
+                        submissionRepository.findStatus(submissionEvaluationList.get(j).getId(),
+                                                        submissionNameList.get(i),
+                                                        submissionDeadlineList.get(i)));
+            }
+            submissionStatusList.add(statusList);
+
+        }
+        return submissionStatusList;
+    }
+
+    /**
+     *提出物の名前を取得
+     */
+    public List<String> findSubmissionNames(List<SubmissionEvaluationEntity> submissionEvaluationList) {
+        List<String> submissionNameList = submissionRepository.findName(submissionEvaluationList.get(0).getId());
+        return submissionNameList;
+    }
+
+    /**
+     *提出物の期限を取得
+     */
+    public List<String> findSubmissionDeadlines(List<SubmissionEvaluationEntity> submissionEvaluationList) {
+        List<String> submissionDeadlineList = submissionRepository.findDeadline(submissionEvaluationList.get(0).getId());
+        return submissionDeadlineList;
+    }
+
+    /**
+     *提出物追加処理
+     */
+    public void setSubmission(List<SubmissionEvaluationEntity> submissionEvaluationList,
+                              String submissionName, String submissionDeadline) {
+        for(int i = 0; i < submissionEvaluationList.size(); i++){
+            SubmissionEntity submissionEntity = new SubmissionEntity();
+            submissionEntity.setSubmissionEvaluationEntity(submissionEvaluationRepository.getReferenceById(submissionEvaluationList.get(i).getId()));
+            submissionEntity.setName(submissionName);
+            submissionEntity.setDeadline(submissionDeadline);
+            submissionEntity.setStatus(false);
+            submissionRepository.saveAndFlush(submissionEntity);
+        }
+    }
+
+
 
 //    /**
 //     *提出物追加処理

@@ -25,14 +25,14 @@ public class HomeService {
     private final GradesBySemesterRepository gradesBySemesterRepository;
     private final SemesterRepository semesterRepository;
     private final ClassAttitudeRepository classAttitudeRepository;
-    private final OverallSubmissionEvaluationRepository overallSubmissionEvaluationRepository;
+    private final SubmissionEvaluationRepository submissionEvaluationRepository;
 
     @Autowired
     public HomeService(CurriculumRepository curriculumRepository, SchoolYearRepository schoolYearRepository,
                        DepartmentRepository departmentRepository, ClassNumberRepository classNumberRepository,
                        ClassRepository classRepository, StudentRepository studentRepository,
                        ClassCurriculumRepository classCurriculumRepository, SemesterRepository semesterRepository,
-                       GradesBySemesterRepository gradesBySemesterRepository, OverallSubmissionEvaluationRepository overallSubmissionEvaluationRepository,
+                       GradesBySemesterRepository gradesBySemesterRepository, SubmissionEvaluationRepository submissionEvaluationRepository,
                        ClassAttitudeRepository classAttitudeRepository) {
         this.curriculumRepository = curriculumRepository;
         this.schoolYearRepository = schoolYearRepository;
@@ -44,7 +44,7 @@ public class HomeService {
         this.gradesBySemesterRepository = gradesBySemesterRepository;
         this.semesterRepository = semesterRepository;
         this.classAttitudeRepository = classAttitudeRepository;
-        this.overallSubmissionEvaluationRepository = overallSubmissionEvaluationRepository;
+        this.submissionEvaluationRepository = submissionEvaluationRepository;
     }
 
     public List<SchoolYearEntity> findSchoolYear() {
@@ -144,13 +144,13 @@ public class HomeService {
     }
 
     /**
-     * 提出物テーブルの登録処理
+     * 総合的な提出物評価テーブルの登録処理
      */
     public void setSubmissionEvaluation(Integer gradesBySemesterId) {
-        OverallSubmissionEvaluationEntity overallSubmissionEvaluationEntity = new OverallSubmissionEvaluationEntity();
-        overallSubmissionEvaluationEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
-        overallSubmissionEvaluationEntity.setOverallEvaluation(5);//提出物が一回もない教科もあるため、初期値に最大値の5をセット。
-        overallSubmissionEvaluationRepository.saveAndFlush(overallSubmissionEvaluationEntity);
+        SubmissionEvaluationEntity submissionEvaluationEntity = new SubmissionEvaluationEntity();
+        submissionEvaluationEntity.setGradesBySemesterEntity(gradesBySemesterRepository.getReferenceById(gradesBySemesterId));
+        submissionEvaluationEntity.setEvaluation(5);//提出物が一回もない教科もあるため、初期値に最大値の5をセット。
+        submissionEvaluationRepository.saveAndFlush(submissionEvaluationEntity);
     }
 
     /**

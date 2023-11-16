@@ -23,9 +23,9 @@ public interface ClassAttitudeRepository extends JpaRepository<ClassAttitudeEnti
     Integer findId(@Param("gradesBySemesterId") Integer gradesBySemesterId);
 
     @Query(value = "SELECT class_attitude.evaluation FROM class_attitude " +
-            "INNER JOIN grades_by_semester " +
-            "ON class_attitude.grades_by_semester_id = grades_by_semester.grades_by_semester_id " +
-            "WHERE class_attitude.grades_by_semester_id = ?", nativeQuery = true)
+                    "INNER JOIN grades_by_semester " +
+                    "ON class_attitude.grades_by_semester_id = grades_by_semester.grades_by_semester_id " +
+                    "WHERE class_attitude.grades_by_semester_id = ?", nativeQuery = true)
     Integer findEvaluation(@Param("gradesBySemesterId") Integer gradesBySemesterId);
 
 }

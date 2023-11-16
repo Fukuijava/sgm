@@ -7,6 +7,7 @@
     <!-- CSS読込 -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/submission.css}" rel="stylesheet">
     <!-- JS読込 -->
     <script th:src="@{/webjars/jquery/jquery.min.js}" defer></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
@@ -26,8 +27,8 @@
     <div>
         <h2 th:text="${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
         <h2 th:text="${classEntity.departmentEntity.name}"></h2>
-        <h2 th:text="${semester}+学期"></h2>
-        <h2 th:text="${curriculum}"></h2>
+        <h2 th:text="${semesterId}+学期"></h2>
+        <h2 th:text="${curriculumName}"></h2>
     </div>
 
     <div id="addSubmissionDiv">
@@ -40,38 +41,34 @@
                 <div class="modal-header">
                     <h2>提出物の情報</h2>
                 </div>
-                <div class="modal-body">
-                    <form th:action="@{/classDetail/{classEntity.id}/submission/addSubmission}" method="post">
-                        <label >提出物名</label>
-                        <input name="submissionName" type="text"/>
-                        <label >期限</label>
-                        <input name="submissionDeadline" type="date"/>
-                        <input type="hidden" name="classId" th:value="${classEntity.id}"/>
-                        <input type="hidden" name="semesterId" th:value="${semester}"/>
-                        <input type="hidden" name="curriculumName" th:value="${curriculum}"/>
-                        <input type="hidden" name="curriculumId" th:value="${curriculumId}"/>
-                        <ul  th:each="overallSubmissionEvaluation : ${overallSubmissionEvaluationEntityList}">
-                            <input type="hidden" class="submissionEvaluationId" th:value="${overallSubmissionEvaluation.id}"/>
-                        </ul>
-                        <div id="output" hidden=""></div>
-                        <button type="submit" onclick="createIdArray();">追加</button>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                </div>
+                <form th:action="@{/classDetail/{classEntity.id}/submission/addSubmission}" method="post">
+                    <div class="modal-body">
+                            <label >提出物名</label>
+                            <input name="submissionName" type="text"/>
+                            <label >期限</label>
+                            <input name="submissionDeadline" type="date"/>
+                            <input type="hidden" name="classId" th:value="${classEntity.id}"/>
+                            <input type="hidden" name="semesterId" th:value="${semesterId}"/>
+                            <input type="hidden" name="curriculumId" th:value="${curriculumId}"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="">追加</button>
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
+    <form th:action="@{/classDetail/{classEntity.id}/submission/updateSubmission}" method="post">
     <table class="table table-hover" id="listForm" >
         <thead>
         <tr>
             <th>出席番号</th>
             <th>名前</th>
-            <th>総合評価</th>
-            <th th:each="classSubmission : ${classSubmissionEntityList}">
-                <p th:text="${classSubmission.submissionEntity.submissionName}"></p>
+            <th>評価</th>
+            <th th:each="submissionName : ${submissionNameList}">
+                <p th:text="${submissionName}"></p>
             </th>
         </tr>
         </thead>
@@ -79,14 +76,30 @@
         <tr th:each="student, studentCount : ${studentList}">
             <td th:text="${student.attendanceNumber}"></td>
             <td th:text="${student.name}"></td>
-            <td th:text="${overallSubmissionEvaluationEntityList[__${studentCount.index}__].evaluation}"></td>
+            <td th:text="${submissionEvaluationList[__${studentCount.index}__].evaluation}"></td>
             <td th:each="status : ${submissionStatusList}">
                 <input type="checkbox" th:value="${status}">
-
             </td>
         </tr>
         </tbody>
+
+<!--        <ul  th:each="submissionEvaluation : ${submissionEvaluationList}">-->
+<!--            <input type="hidden" class="submissionEvaluationId" th:value="${submissionEvaluation.id}"/>-->
+<!--        </ul>-->
+        <div id="output" hidden=""></div>
+        <input type="hidden" name="classId" th:value="${classEntity.id}"/>
+        <input type="hidden" name="semesterId" th:value="${semesterId}"/>
+        <input type="hidden" name="curriculumId" th:value="${curriculumId}"/>
+        <button type="submit" onclick="createIdArray();">更新</button>
     </table>
+    </form>
+
 </main>
 </body>
 </html>
+
+<!--<ul  th:each="submissionEvaluation : ${submissionEvaluationList}">-->
+<!--    <input type="hidden" class="submissionEvaluationId" th:value="${submissionEvaluation.id}"/>-->
+<!--</ul>-->
+<!--<div id="output" hidden=""></div>-->
+<!--<button type="submit" onclick="createIdArray();">追加</button>-->
