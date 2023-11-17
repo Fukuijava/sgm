@@ -13,4 +13,4 @@
 4. 起動
 
 ## URL
-http://localhost:8080/home/
+* ホーム画面 http://localhost:8080/home/
