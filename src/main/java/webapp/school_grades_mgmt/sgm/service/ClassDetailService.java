@@ -176,12 +176,17 @@ public class ClassDetailService {
     /**
      *提出物の取得
      */
-    public List<SubmissionEntity> findSubmissions(List<SubmissionEvaluationEntity> submissionEvaluationList) {
+    public List<SubmissionEntity> findSubmissions(List<SubmissionEvaluationEntity> submissionEvaluationList,
+                                                  List<String> submissionNameList, List<String> submissionDeadlineList) {
         List<SubmissionEntity> submissionList = new ArrayList<>();
-        for(int i = 0; i < submissionEvaluationList.size(); i++){
-            submissionList.add(
-                    submissionRepository.findEntity(
-                            submissionEvaluationList.get(i).getId()));
+        for (int i = 0; i < submissionNameList.size(); i++) {
+            for (int j = 0; j < submissionEvaluationList.size(); j++) {
+                submissionList.add(
+                        submissionRepository.findEntity(
+                                submissionEvaluationList.get(j).getId(),
+                                submissionNameList.get(i),
+                                submissionDeadlineList.get(i)));
+            }
         }
         return submissionList;
     }
@@ -191,7 +196,6 @@ public class ClassDetailService {
      */
     public List<Boolean> findSubmissionStatuses(List<String> submissionNameList, List<String> submissionDeadlineList, List<SubmissionEvaluationEntity> submissionEvaluationList) {
         List<Boolean> statusList = new ArrayList<>();
-//        List<List<Boolean>> submissionStatusList = new ArrayList<>();
         for(int i = 0; i < submissionNameList.size(); i++){
             for(int j = 0; j < submissionEvaluationList.size(); j++){
                 statusList.add(
@@ -199,8 +203,6 @@ public class ClassDetailService {
                                                         submissionNameList.get(i),
                                                         submissionDeadlineList.get(i)));
             }
-//            submissionStatusList.add(statusList);
-
         }
         return statusList;
     }
@@ -236,65 +238,14 @@ public class ClassDetailService {
         }
     }
 
-
-
-//    /**
-//     *提出物追加処理
-//     */
-//    public Integer setSubmission(String submissionName, String submissionDeadline) {
-//        SubmissionEntity submissionEntity = new SubmissionEntity();
-//        submissionEntity.setSubmissionName(submissionName);
-//        submissionEntity.setSubmissionDeadline(submissionDeadline);
-//        submissionRepository.saveAndFlush(submissionEntity);
-//        Integer submissionId = submissionEntity.getId();
-//        return submissionId;
-//    }
-//
-//    /**
-//     *提出物評価テーブル登録
-//     */
-//    public void setSubmissionEvaluation(List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList){
-//        for(int i = 0; i < overallSubmissionEvaluationEntityList.size(); i++) {
-//            SubmissionEvaluationEntity submissionEvaluationEntity = new SubmissionEvaluationEntity();
-//            submissionEvaluationEntity.setOverallSubmissionEvaluationEntity(overallSubmissionEvaluationRepository.getReferenceById(overallSubmissionEvaluationEntityList.get(i).getId()));
-//            submissionEvaluationEntity.setSubmissionStatus(false);
-//            submissionEvaluationRepository.saveAndFlush(submissionEvaluationEntity);
-//        }
-//    }
-//
-//    public List<SubmissionEvaluationEntity> findSubmissionEvaluationId(List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList){
-//        List<SubmissionEvaluationEntity> submissionEvaluationEntityList = new ArrayList<>();
-//        for(int i = 0; i <overallSubmissionEvaluationEntityList.size(); i++){
-//            submissionEvaluationEntityList.add(submissionEvaluationRepository.getReferenceById(overallSubmissionEvaluationEntityList.get(i).getId()));
-//        }
-//        return submissionEvaluationEntityList;
-//    }
-//
-//
-//
-//    /**
-//     *提出物取得処理
-//     */
-//    public List<Boolean> findSubmissionStatus(List<OverallSubmissionEvaluationEntity> overallSubmissionEvaluationEntityList,
-//                                              List<ClassSubmissionEntity> classSubmissionEntityList){
-//        List<Boolean> submissionStatusList = new ArrayList<>();
-//        List<List<Boolean>> statusList = new ArrayList<>();
-//        for(int i = 0; i < overallSubmissionEvaluationEntityList.size(); i++){//生徒の数と考えていい
-//            for(int j = 0; j < classSubmissionEntityList.size(); j++){//クラス教科の数
-//                submissionStatusList.add(submissionEvaluationRepository.findStatus(
-//                        overallSubmissionEvaluationEntityList.get(i).getId(),
-//                        classSubmissionEntityList.get(j).getId()));
-//            }
-//            statusList.add(submissionStatusList);
-//        }
-//        return submissionStatusList;
-//    }
-//
-//    /**
-//     *提出物名取得処理
-//     */
-//    public List<ClassSubmissionEntity> findClassSubmissionEntity(Integer classId){
-//        return classSubmissionRepository.findEntity(classId);
-//    }
-
+    /**
+     *提出状況の更新処理
+     */
+    public void updateStatus(List<SubmissionEntity> submissionList,Boolean[] status){
+        for(int i = 0; submissionList.size() > i; i++) {
+            SubmissionEntity s = submissionRepository.findBySubId(submissionList.get(i).getId());
+            s.setStatus(status[i]);
+            submissionRepository.save(s);
+        }
+    }
 }

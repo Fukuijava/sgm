@@ -77,8 +77,8 @@
             <td th:text="${student.attendanceNumber}"></td>
             <td th:text="${student.name}"></td>
             <td th:text="${submissionEvaluationList[__${studentCount.index}__].evaluation}"></td>
-            <td th:each="submission, submissionCount : ${submissionNameList}">
-                <input class="status" type="checkbox" th:value="${submissionStatusList[__${submissionCount.index}__].status}">
+            <td th:each="submission : ${submissionNameList}">
+                <input class="status" type="checkbox" th:value="${submissionStatusList[__${studentCount.index}__]}">
             </td>
         </tr>
         </tbody>

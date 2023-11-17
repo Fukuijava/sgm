@@ -11,8 +11,12 @@ public interface SubmissionRepository extends JpaRepository<SubmissionEntity,Int
     @Query(value =  "SELECT submission.* FROM submission " +
                     "INNER JOIN submission_evaluation " +
                     "ON submission.submission_evaluation_id = submission_evaluation.submission_evaluation_id " +
-                    "WHERE submission.submission_evaluation_id = ?", nativeQuery = true)
-    SubmissionEntity findEntity(@Param("submissionEvaluationId") Integer submissionEvaluationId);
+                    "WHERE submission.submission_evaluation_id = ?1 " +
+                    "AND submission.name = ?2 " +
+                    "AND submission.deadline = ?3 ", nativeQuery = true)
+    SubmissionEntity findEntity(@Param("submissionEvaluationId") Integer submissionEvaluationId,
+                                @Param("submissionName") String submissionName,
+                                @Param("submissionDeadline") String submissionDeadline);
 
     @Query(value =  "SELECT submission.name FROM submission " +
                     "INNER JOIN submission_evaluation " +
@@ -35,4 +39,6 @@ public interface SubmissionRepository extends JpaRepository<SubmissionEntity,Int
     Boolean findStatus(@Param("submissionEvaluationId") Integer submissionEvaluationId,
                        @Param("submissionName") String submissionName,
                        @Param("submissionDeadline") String submissionDeadline);
+    @Query(value = "SELECT * FROM submission WHERE submission.submission_id = :id", nativeQuery = true)
+    SubmissionEntity findBySubId(@Param("id")Integer id);
 }

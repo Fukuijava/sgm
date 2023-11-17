@@ -159,12 +159,17 @@ public class ClassDetailController {
                                    Model model) {
         String[] stringStatusArray = statuses.split(",", -1);
         Boolean[] statusArray = new Boolean[stringStatusArray.length];
-//        for(int i = 0; i < stringStatusArray.length; i++){
-//            statusArray[i] = Integer.parseInt(stringStatusArray[i]);
-//        }
+        for(int i = 0; i < stringStatusArray.length; i++){
+            statusArray[i] = Boolean.parseBoolean(stringStatusArray[i]);
+        }
+        List<studentsRecord>  studentList = service.findStudents(classId);
+        List<SubmissionEvaluationEntity> submissionEvaluationList = service.findSubmissionEvaluations(studentList, semesterId, curriculumId);
+        List<String> submissionNameList = service.findSubmissionNames(submissionEvaluationList);
+        List<String> submissionDeadlineList = service.findSubmissionDeadlines(submissionEvaluationList);
+        List<SubmissionEntity> submissionList = service.findSubmissions(submissionEvaluationList, submissionNameList, submissionDeadlineList);
+        service.updateStatus(submissionList, statusArray);
         return submission(classId, semesterId, curriculumId, model);
     }
-
 
 
     /**
