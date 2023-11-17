@@ -12,7 +12,7 @@ public class SubmissionEvaluationEntity {
     @Column(name="submission_evaluation_id")
     private Integer id;
 
-    @ManyToOne()
+    @OneToOne()
     @JoinColumn(name = "grades_by_semester_id")
     private GradesBySemesterEntity gradesBySemesterEntity;
 

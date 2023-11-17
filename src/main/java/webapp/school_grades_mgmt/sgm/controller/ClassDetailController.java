@@ -116,10 +116,9 @@ public class ClassDetailController {
         List<String > curriculumNameList = service.findClassCurriculumNames(classId);
         List<studentsRecord>  studentList = service.findStudents(classId);
         List<SubmissionEvaluationEntity> submissionEvaluationList = service.findSubmissionEvaluations(studentList, semesterId, curriculumId);
-//        List<SubmissionEntity> submissionList = service.findSubmissions(submissionEvaluationList);
         List<String> submissionNameList = service.findSubmissionNames(submissionEvaluationList);
         List<String> submissionDeadlineList = service.findSubmissionDeadlines(submissionEvaluationList);
-        List<List<Boolean>> submissionStatusList = service.findSubmissionStatuses(submissionNameList, submissionDeadlineList, submissionEvaluationList);
+        List<Boolean> submissionStatusList = service.findSubmissionStatuses(submissionNameList, submissionDeadlineList, submissionEvaluationList);
         model.addAttribute("classEntity", classEntity);
         model.addAttribute("studentList", studentList);
         model.addAttribute("semesterId", semesterId);
@@ -140,7 +139,8 @@ public class ClassDetailController {
     public String addSubmission(@RequestParam("classId") Integer classId,
                                 @RequestParam("semesterId") Integer semesterId,
                                 @RequestParam("curriculumId") Integer curriculumId,
-                                @RequestParam("submissionStatusId") Integer submissionStatusIds,
+                                @RequestParam("submissionName") String submissionName,
+                                @RequestParam("submissionDeadline") String submissionDeadline,
                                 Model model) {
         List<studentsRecord>  studentList = service.findStudents(classId);
         List<SubmissionEvaluationEntity> submissionEvaluationList = service.findSubmissionEvaluations(studentList, semesterId, curriculumId);
@@ -151,32 +151,18 @@ public class ClassDetailController {
     /**
      * 提出状態更新
      */
-    @GetMapping("/classDetail/{classEntity.id}/submission/updateSubmission")
+    @PostMapping("/classDetail/{classId}/submission/updateSubmission")
     public String updateSubmission(@RequestParam("classId") Integer classId,
                                    @RequestParam("semesterId") Integer semesterId,
                                    @RequestParam("curriculumId") Integer curriculumId,
-
+                                   @RequestParam("statuses") String statuses,
                                    Model model) {
-        ClassEntity classEntity = service.findClassEntity(classId);
-        String curriculumName = service.findCurriculum(curriculumId);
-        List<String > curriculumNameList = service.findClassCurriculumNames(classId);
-        List<studentsRecord>  studentList = service.findStudents(classId);
-        List<SubmissionEvaluationEntity> submissionEvaluationList = service.findSubmissionEvaluations(studentList, semesterId, curriculumId);
-//        List<SubmissionEntity> submissionList = service.findSubmissions(submissionEvaluationList);
-        List<String> submissionNameList = service.findSubmissionNames(submissionEvaluationList);
-        List<String> submissionDeadlineList = service.findSubmissionDeadlines(submissionEvaluationList);
-        List<List<Boolean>> submissionStatusList = service.findSubmissionStatuses(submissionNameList, submissionDeadlineList, submissionEvaluationList);
-        model.addAttribute("classEntity", classEntity);
-        model.addAttribute("studentList", studentList);
-        model.addAttribute("semesterId", semesterId);
-        model.addAttribute("curriculumName", curriculumName);
-        model.addAttribute("curriculumId", curriculumId);
-        model.addAttribute("curriculumNameList", curriculumNameList);
-        model.addAttribute("submissionEvaluationList", submissionEvaluationList);
-        model.addAttribute("submissionStatusList", submissionStatusList);
-        model.addAttribute("submissionNameList", submissionNameList);
-        model.addAttribute("submissionDeadlineList", submissionDeadlineList);
-        return "submission";
+        String[] stringStatusArray = statuses.split(",", -1);
+        Boolean[] statusArray = new Boolean[stringStatusArray.length];
+//        for(int i = 0; i < stringStatusArray.length; i++){
+//            statusArray[i] = Integer.parseInt(stringStatusArray[i]);
+//        }
+        return submission(classId, semesterId, curriculumId, model);
     }
 
 

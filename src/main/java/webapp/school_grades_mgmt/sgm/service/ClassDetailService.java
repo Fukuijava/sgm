@@ -189,9 +189,9 @@ public class ClassDetailService {
     /**
      *提出状況を取得
      */
-    public List<List<Boolean>> findSubmissionStatuses(List<String> submissionNameList, List<String> submissionDeadlineList, List<SubmissionEvaluationEntity> submissionEvaluationList) {
+    public List<Boolean> findSubmissionStatuses(List<String> submissionNameList, List<String> submissionDeadlineList, List<SubmissionEvaluationEntity> submissionEvaluationList) {
         List<Boolean> statusList = new ArrayList<>();
-        List<List<Boolean>> submissionStatusList = new ArrayList<>();
+//        List<List<Boolean>> submissionStatusList = new ArrayList<>();
         for(int i = 0; i < submissionNameList.size(); i++){
             for(int j = 0; j < submissionEvaluationList.size(); j++){
                 statusList.add(
@@ -199,10 +199,10 @@ public class ClassDetailService {
                                                         submissionNameList.get(i),
                                                         submissionDeadlineList.get(i)));
             }
-            submissionStatusList.add(statusList);
+//            submissionStatusList.add(statusList);
 
         }
-        return submissionStatusList;
+        return statusList;
     }
 
     /**

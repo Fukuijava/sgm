@@ -13,7 +13,7 @@ public class TestScoreEntity {
     @Column(name="test_score_id")
     private Integer id;
 
-    @ManyToOne()
+    @OneToOne()
     @JoinColumn(name = "grades_by_semester_id")
     private GradesBySemesterEntity gradesBySemesterEntity;
 

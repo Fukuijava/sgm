@@ -11,7 +11,7 @@ public class ClassAttitudeEntity {
     @Column(name="class_attitude_id")
     private Integer id;
 
-    @ManyToOne()
+    @OneToOne()
     @JoinColumn(name = "grades_by_semester_id")
     private GradesBySemesterEntity gradesBySemesterEntity;
 
