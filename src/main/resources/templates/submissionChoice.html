@@ -30,9 +30,13 @@
   <form th:action="@{/classDetail/{classEntity.id}/submission}">
     <div id="choiceSemesterDiv">
       <h1>学期を選択してください</h1>
-      <div th:each="semester : ${semesterEntityList}">
-        <label th:text="${semester.number}+学期"></label>
-        <input type="radio" name="semesterId" th:value="${semester.id}" />
+      <div>
+        <label th:text="${semesterEntityList[0].number}+学期"></label>
+        <input type="radio" name="semesterId" th:value="${semesterEntityList[0].id}" checked/>
+        <label th:text="${semesterEntityList[1].number}+学期"></label>
+        <input type="radio" name="semesterId" th:value="${semesterEntityList[1].id}"/>
+        <label th:text="${semesterEntityList[2].number}+学期"></label>
+        <input type="radio" name="semesterId" th:value="${semesterEntityList[2].id}"/>
       </div>
     </div>
 

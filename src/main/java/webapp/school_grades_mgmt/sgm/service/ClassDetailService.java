@@ -196,12 +196,12 @@ public class ClassDetailService {
      */
     public List<Boolean> findSubmissionStatuses(List<String> submissionNameList, List<String> submissionDeadlineList, List<SubmissionEvaluationEntity> submissionEvaluationList) {
         List<Boolean> statusList = new ArrayList<>();
-        for(int i = 0; i < submissionNameList.size(); i++){
-            for(int j = 0; j < submissionEvaluationList.size(); j++){
-                statusList.add(
-                        submissionRepository.findStatus(submissionEvaluationList.get(j).getId(),
-                                                        submissionNameList.get(i),
-                                                        submissionDeadlineList.get(i)));
+            for(int i = 0; i < submissionEvaluationList.size(); i++){
+                for(int j = 0; j < submissionNameList.size(); j++){
+                    statusList.add(
+                        submissionRepository.findStatus(submissionEvaluationList.get(i).getId(),
+                                                        submissionNameList.get(j),
+                                                        submissionDeadlineList.get(j)));
             }
         }
         return statusList;
@@ -241,11 +241,14 @@ public class ClassDetailService {
     /**
      *提出状況の更新処理
      */
-    public void updateStatus(List<SubmissionEntity> submissionList,Boolean[] status){
-        for(int i = 0; submissionList.size() > i; i++) {
-            SubmissionEntity s = submissionRepository.findBySubId(submissionList.get(i).getId());
-            s.setStatus(status[i]);
-            submissionRepository.save(s);
+    public void updateStatus(List<SubmissionEntity> submissionList,Boolean[] status,
+                             List<String> submissionNameList, List<ClassDetailController.studentsRecord>  studentList){
+        for(int i = 0; i < studentList.size(); i++) {
+            for(int j = 0; j < submissionNameList.size(); j++){
+                SubmissionEntity s = submissionRepository.findBySubId(submissionList.get(j * studentList.size() + i).getId());
+                s.setStatus(status[i * submissionNameList.size() + j]);
+                submissionRepository.saveAndFlush(s);
+            }
         }
     }
 }

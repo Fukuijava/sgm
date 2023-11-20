@@ -52,7 +52,7 @@
                             <input type="hidden" name="curriculumId" th:value="${curriculumId}"/>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="">追加</button>
+                        <button type="submit" class="btn btn-primary">追加</button>
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                     </div>
                 </form>
@@ -77,8 +77,12 @@
             <td th:text="${student.attendanceNumber}"></td>
             <td th:text="${student.name}"></td>
             <td th:text="${submissionEvaluationList[__${studentCount.index}__].evaluation}"></td>
-            <td th:each="submission : ${submissionNameList}">
-                <input class="status" type="checkbox" th:value="${submissionStatusList[__${studentCount.index}__]}">
+            <input hidden="hidden" th:value="${studentCount.size}" id="studentCount"/>
+            <td th:each="submission, submissionCount : ${submissionNameList}">
+                <div th:id="${studentCount.index * submissionCount.size + submissionCount.index}">
+                    <input class="status" type="checkbox" th:value="${submissionStatusList[__${studentCount.index * submissionCount.size + submissionCount.index}__]}">
+                </div>
+                <input hidden="hidden" th:value="${submissionCount.size}" id="submissionCount"/>
             </td>
         </tr>
         </tbody>
@@ -89,7 +93,6 @@
         <input type="hidden" name="curriculumId" th:value="${curriculumId}"/>
         <button type="submit" onclick="createStatusArray();">更新</button>
     </form>
-
 </main>
 </body>
 </html>
