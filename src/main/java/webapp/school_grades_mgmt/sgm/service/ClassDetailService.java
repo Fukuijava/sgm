@@ -168,7 +168,7 @@ public class ClassDetailService {
         List<SubmissionEvaluationEntity> submissionEvaluationList = new ArrayList<>();
         for(int i = 0; i < studentList.size(); i++){//クラスの生徒数分回す
             Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentList.get(i).studentId(), curriculumId);
-            submissionEvaluationList.add(submissionEvaluationRepository.findSubmissionEvaluation(gradesBySemesterId));
+            submissionEvaluationList.add(submissionEvaluationRepository.findEntity(gradesBySemesterId));
         }
         return submissionEvaluationList;
     }
@@ -259,22 +259,26 @@ public class ClassDetailService {
                                  List<String> submissionNameList, List<ClassDetailController.studentsRecord>  studentList,
                                  Integer semesterId, Integer curriculumId){
         for(int i = 0; i < studentList.size(); i++) {
-            for(int j = 0; j < submissionNameList.size(); j++){
+            for(int j = 0, trueCount = 0; j < submissionNameList.size(); j++){
                 Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentList.get(i).studentId(), curriculumId);
-                Integer evaluation = submissionEvaluationRepository.findEvaluation(gradesBySemesterId);
-                int trueCount = 0;
+                int evaluation = 0;
                 if(status[i * submissionNameList.size() + j]) {//中身がtrueの場合
-                    trueCount += 1;
+                    trueCount++;
                 }
 
-                if(submissionNameList.size() == 1 && j == 0 && trueCount == 0){
-                    evaluation = 4;
-                } else {
-                    evaluation = (5/submissionNameList.size()) * trueCount;
+                if(j == submissionNameList.size()-1){//submissionNameList.size()の最後に起動する処理
+                    if(submissionNameList.size() == 1 && j == 0 && trueCount == 0) {//提出物が一個で未提出の場合
+                        evaluation = 4;
+                    } else if (submissionNameList.size() != 1 && trueCount == 0) {//提出物が2個以上ですべて未提出の場合
+                        evaluation = 1;
+                    } else {//上記２つ以外の場合
+                        float floatEvaluation = (((float)5 / submissionNameList.size()) * trueCount);
+                        evaluation = Math.round(floatEvaluation);
+                    }
+                    SubmissionEvaluationEntity se = submissionEvaluationRepository.findEntity(gradesBySemesterId);
+                    se.setEvaluation(evaluation);
+                    submissionEvaluationRepository.saveAndFlush(se);
                 }
-                SubmissionEvaluationEntity se = submissionEvaluationRepository.findSubmissionEvaluation(gradesBySemesterId);
-                se.setEvaluation(evaluation);
-                submissionEvaluationRepository.saveAndFlush(se);
             }
         }
     }

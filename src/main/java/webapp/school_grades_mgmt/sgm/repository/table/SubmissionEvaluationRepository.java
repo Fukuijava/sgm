@@ -10,7 +10,7 @@ public interface SubmissionEvaluationRepository extends JpaRepository<Submission
                     "INNER JOIN grades_by_semester " +
                     "ON submission_evaluation.grades_by_semester_id = grades_by_semester.grades_by_semester_id " +
                     "WHERE submission_evaluation.grades_by_semester_id = ?", nativeQuery = true)
-    SubmissionEvaluationEntity findSubmissionEvaluation(@Param("gradesBySemesterId") Integer gradesBySemesterId);
+    SubmissionEvaluationEntity findEntity(@Param("gradesBySemesterId") Integer gradesBySemesterId);
 
     @Query(value =  "SELECT submission_evaluation.evaluation FROM submission_evaluation " +
                     "INNER JOIN grades_by_semester " +
