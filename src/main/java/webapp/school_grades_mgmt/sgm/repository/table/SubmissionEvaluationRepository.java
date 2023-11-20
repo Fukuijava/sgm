@@ -10,5 +10,25 @@ public interface SubmissionEvaluationRepository extends JpaRepository<Submission
                     "INNER JOIN grades_by_semester " +
                     "ON submission_evaluation.grades_by_semester_id = grades_by_semester.grades_by_semester_id " +
                     "WHERE submission_evaluation.grades_by_semester_id = ?", nativeQuery = true)
-    SubmissionEvaluationEntity findEvaluation(@Param("gradesBySemesterId") Integer gradesBySemesterId);
+    SubmissionEvaluationEntity findSubmissionEvaluation(@Param("gradesBySemesterId") Integer gradesBySemesterId);
+
+    @Query(value =  "SELECT submission_evaluation.evaluation FROM submission_evaluation " +
+                    "INNER JOIN grades_by_semester " +
+                    "ON submission_evaluation.grades_by_semester_id = grades_by_semester.grades_by_semester_id " +
+                    "WHERE submission_evaluation.grades_by_semester_id = ?", nativeQuery = true)
+    Integer findEvaluation(@Param("gradesBySemesterId") Integer gradesBySemesterId);
+
+    @Query(value =  "SELECT submission_evaluation.submission_evaluation_id FROM submission_evaluation " +
+                    "INNER JOIN grades_by_semester " +
+                    "ON submission_evaluation.grades_by_semester_id = grades_by_semester.grades_by_semester_id " +
+                    "WHERE submission_evaluation.grades_by_semester_id = ?", nativeQuery = true)
+    Integer findId(@Param("gradesBySemesterId") Integer gradesBySemesterId);
+
+    @Query(value =  "UPDATE submission_evaluation " +
+                    "LEFT JOIN grades_by_semester " +
+                    "ON submission_evaluation.grades_by_semester_id = grades_by_semester.grades_by_semester_id " +
+                    "SET submission_evaluation.evaluation = ? " +
+                    "WHERE submission_evaluation.submission_evaluation_id = ?", nativeQuery = true)
+    void updateEvaluation(@Param("evaluation") Integer evaluation,
+                          @Param("submissionEvaluationId") Integer submissionEvaluationId);
 }

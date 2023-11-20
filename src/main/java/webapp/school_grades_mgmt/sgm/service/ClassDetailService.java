@@ -168,7 +168,7 @@ public class ClassDetailService {
         List<SubmissionEvaluationEntity> submissionEvaluationList = new ArrayList<>();
         for(int i = 0; i < studentList.size(); i++){//クラスの生徒数分回す
             Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentList.get(i).studentId(), curriculumId);
-            submissionEvaluationList.add(submissionEvaluationRepository.findEvaluation(gradesBySemesterId));
+            submissionEvaluationList.add(submissionEvaluationRepository.findSubmissionEvaluation(gradesBySemesterId));
         }
         return submissionEvaluationList;
     }
@@ -248,6 +248,33 @@ public class ClassDetailService {
                 SubmissionEntity s = submissionRepository.findBySubId(submissionList.get(j * studentList.size() + i).getId());
                 s.setStatus(status[i * submissionNameList.size() + j]);
                 submissionRepository.saveAndFlush(s);
+            }
+        }
+    }
+
+    /**
+     *提出物評価の更新
+     */
+    public void updateEvaluation(Boolean[] status,
+                                 List<String> submissionNameList, List<ClassDetailController.studentsRecord>  studentList,
+                                 Integer semesterId, Integer curriculumId){
+        for(int i = 0; i < studentList.size(); i++) {
+            for(int j = 0; j < submissionNameList.size(); j++){
+                Integer gradesBySemesterId = gradesBySemesterRepository.findId(semesterId, studentList.get(i).studentId(), curriculumId);
+                Integer evaluation = submissionEvaluationRepository.findEvaluation(gradesBySemesterId);
+                int trueCount = 0;
+                if(status[i * submissionNameList.size() + j]) {//中身がtrueの場合
+                    trueCount += 1;
+                }
+
+                if(submissionNameList.size() == 1 && j == 0 && trueCount == 0){
+                    evaluation = 4;
+                } else {
+                    evaluation = (5/submissionNameList.size()) * trueCount;
+                }
+                SubmissionEvaluationEntity se = submissionEvaluationRepository.findSubmissionEvaluation(gradesBySemesterId);
+                se.setEvaluation(evaluation);
+                submissionEvaluationRepository.saveAndFlush(se);
             }
         }
     }

@@ -168,6 +168,7 @@ public class ClassDetailController {
         List<String> submissionDeadlineList = service.findSubmissionDeadlines(submissionEvaluationList);
         List<SubmissionEntity> submissionList = service.findSubmissions(submissionEvaluationList, submissionNameList, submissionDeadlineList);
         service.updateStatus(submissionList, statusArray, submissionNameList, studentList);
+        service.updateEvaluation(statusArray, submissionNameList, studentList, semesterId, curriculumId);
         return submission(classId, semesterId, curriculumId, model);
     }
 
