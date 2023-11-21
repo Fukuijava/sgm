@@ -88,9 +88,9 @@
                 <h2><i class="bi bi-book"></i>登録科目</h2>
                 <div class="space"></div>
                 <h3>　　　科目名</h3>
-                <div th:each="curriculum : ${curriculumArray}" class="form-check">
-                    <input  class="form-check-input" th:value="${curriculum.id}" type="checkbox" name="curriculumIds"/>
-                    <label  class="form-check-label" th:text="${curriculum.name}"></label>
+                <div th:each="curriculum , curriculumCount: ${curriculumArray}" class="form-check">
+                    <input  th:id="${curriculumCount.index}" class="form-check-input" th:value="${curriculum.id}" type="checkbox" name="curriculumIds"/>
+                    <label  th:for="${curriculumCount.index}" class="form-check-label" th:text="${curriculum.name}"></label>
                 </div>
             </div>
         </div>
