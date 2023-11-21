@@ -19,62 +19,72 @@
             <a class="title" href="/home/">成績管理アプリケーション</a>
         </h1>
         <ul class="nav-list">
-            <li class="nav-list-item">aaa</li>
-            <li class="nav-list-item">???</li>
+            <li class="nav-list-item">
+                <form th:action="@{/classDetail/{classEntity.id}}" name="formLink">
+                    <input type="hidden" name="classId" th:value="${classEntity.id}" />
+                    <a class="li_a" href="javascript:formLink.submit()">クラス画面へ</a>
+                </form>
+            </li>
         </ul>
     </header>
     <main>
-        <div>
-            <h2 th:text="${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
-            <h2 th:text="${classEntity.departmentEntity.name}"></h2>
+        <div class="divFrame">
+            <h2>授業態度</h2>
+            <br>
+            <h2 th:text="'クラス : ' + ${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
+            <h2 th:text="'学科名 : ' + ${classEntity.departmentEntity.name}"></h2>
+            <br>
         </div>
 
-        <div id="choiceSemesterDiv">
+        <div  style="background-color:#20a128; width:10px; height:auto;"></div>
+
+        <div class="divFrame" id="choiceSemesterDiv">
             <h1>学期を選択してください</h1>
             <button class="choiceSemester" value="1">1学期</button>
             <button class="choiceSemester" value="2">2学期</button>
             <button class="choiceSemester" value="3">3学期</button>
         </div>
 
-        <div id="list_form">
-            <h2>授業態度</h2>
-            <form th:action="@{/classDetail/{classEntity.id}/classAttitude/update}" method="post">
+        <div class="divFrame">
+            <div id="list_form">
+                <form th:action="@{/classDetail/{classEntity.id}/classAttitude/update}" method="post">
 
-            <div>
-                <label>学期</label>
-                <select id="semester" name="semesterId">
-                    <option th:each="semester : ${semesterEntityList}"
-                            th:value="${semester.id}"
-                            th:text="${semester.number}+学期">
-                    </option>
-                </select>
-                <input type="button" id="semesterUpdate" value="更新" />
+                <div>
+                    <label>学期</label>
+                    <select id="semester" name="semesterId">
+                        <option th:each="semester : ${semesterEntityList}"
+                                th:value="${semester.id}"
+                                th:text="${semester.number}+学期">
+                        </option>
+                    </select>
+                    <button class="btn btn-secondary" type="button" id="semesterUpdate">更新</button>
+                </div>
+
+                <table class="table table-hover" id="listForm" >
+                    <thead>
+                    <tr>
+                        <th>出席番号</th>
+                        <th>名前</th>
+                        <th th:each="curriculumName : ${curriculumNameList}">[[${curriculumName}]]</th>
+                    </tr>
+                    </thead>
+                    <tbody id="classAttitudeBody">
+                    <tr th:each="student, studentCount : ${studentList}">
+                        <td th:text="${student.attendanceNumber}"></td>
+                        <td th:text="${student.name}"></td>
+                        <input hidden="hidden" th:value="${studentCount.size}" id="studentCount"/>
+                        <td th:each="curriculum, CurriculumCount : ${curriculumNameList}" class="classCurriculum">
+                            <input id="ClassAttitude" type="number"  min="1" max="5" class="evaluation"  th:value="${classAttitudeEntityList[__${CurriculumCount.index}__].evaluation}"/>
+                            <input hidden="hidden" th:value="${CurriculumCount.size}" id="curriculumCount"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                    <div id="output" hidden=""></div>
+                    <input id="classId" hidden="hidden"  name="classId" th:value="${classEntity.id}">
+                    <button type="submit" class="btn btn-success" onclick="createEvaluationArray();">評価を更新</button>
+                </form>
             </div>
-
-            <table class="table table-hover" id="listForm" >
-                <thead>
-                <tr>
-                    <th>出席番号</th>
-                    <th>名前</th>
-                    <th th:each="curriculumName : ${curriculumNameList}">[[${curriculumName}]]</th>
-                </tr>
-                </thead>
-                <tbody id="classAttitudeBody">
-                <tr th:each="student, studentCount : ${studentList}">
-                    <td th:text="${student.attendanceNumber}"></td>
-                    <td th:text="${student.name}"></td>
-                    <input hidden="hidden" th:value="${studentCount.size}" id="studentCount"/>
-                    <td th:each="curriculum, CurriculumCount : ${curriculumNameList}" class="classCurriculum">
-                        <input id="ClassAttitude" type="number"  min="1" max="5" class="evaluation"  th:value="${classAttitudeEntityList[__${CurriculumCount.index}__].evaluation}"/>
-                        <input hidden="hidden" th:value="${CurriculumCount.size}" id="curriculumCount"/>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-                <div id="output" hidden=""></div>
-                <input id="classId" hidden="hidden"  name="classId" th:value="${classEntity.id}">
-                <button type="submit" class="btn btn-primary" onclick="createEvaluationArray();">評価を更新</button>
-            </form>
         </div>
     </main>
 </body>

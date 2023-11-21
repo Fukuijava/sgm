@@ -18,15 +18,18 @@
             <a class="title" href="/home/">成績管理アプリケーション</a>
         </h1>
         <ul class="nav-list">
-            <li class="nav-list-item">aaa</li>
-            <li class="nav-list-item">???</li>
+            <li class="nav-list-item">---</li>
         </ul>
     </header>
     <main>
-        <div>
-            <h2 th:text="${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
-            <h2 th:text="${classEntity.departmentEntity.name}"></h2>
+        <div >
+            <h2>クラス画面</h2>
+            <br>
+            <h2 th:text="'クラス : ' + ${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
+            <h2 th:text="'学科名 : ' + ${classEntity.departmentEntity.name}"></h2>
         </div>
+
+        <div style="border:8px solid #20a128; margin: 8px 0px;"></div>
 
         <div class="list_form">
             <h2>成績一覧</h2>

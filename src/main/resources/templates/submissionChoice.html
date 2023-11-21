@@ -7,6 +7,7 @@
   <!-- CSS読込 -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
   <link th:href="@{/css/header.css}" rel="stylesheet">
+  <link th:href="@{/css/submission.css}" rel="stylesheet">
   <!-- JS読込 -->
   <script th:src="@{/webjars/jquery/jquery.min.js}" defer></script>
   <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
@@ -17,41 +18,55 @@
     <a class="title" href="/home/">成績管理アプリケーション</a>
   </h1>
   <ul class="nav-list">
-    <li class="nav-list-item">aaa</li>
-    <li class="nav-list-item">???</li>
+    <li class="nav-list-item">
+      <form th:action="@{/classDetail/{classEntity.id}}" name="formLink">
+        <input type="hidden" name="classId" th:value="${classEntity.id}" />
+        <a class="li_a" href="javascript:formLink.submit()">クラス画面へ</a>
+      </form>
+    </li>
   </ul>
 </header>
 <main>
-  <div>
-    <h2 th:text="${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
-    <h2 th:text="${classEntity.departmentEntity.name}"></h2>
+  <div class="divFrame">
+    <h2>提出物</h2>
+    <br>
+    <h2 th:text="'クラス : ' + ${classEntity.schoolYearEntity.number} + '-' + ${classEntity.classNumberEntity.number}"></h2>
+    <h2 th:text="'学科名 : ' + ${classEntity.departmentEntity.name}"></h2>
   </div>
 
-  <form th:action="@{/classDetail/{classEntity.id}/submission}">
-    <div id="choiceSemesterDiv">
-      <h1>学期を選択してください</h1>
-      <div>
-        <label th:text="${semesterEntityList[0].number}+学期"></label>
-        <input type="radio" name="semesterId" th:value="${semesterEntityList[0].id}" checked/>
-        <label th:text="${semesterEntityList[1].number}+学期"></label>
-        <input type="radio" name="semesterId" th:value="${semesterEntityList[1].id}"/>
-        <label th:text="${semesterEntityList[2].number}+学期"></label>
-        <input type="radio" name="semesterId" th:value="${semesterEntityList[2].id}"/>
+  <div  style="background-color:#20a128; width:10px; height:auto;"></div>
+
+  <div class="divFrame">
+    <form th:action="@{/classDetail/{classEntity.id}/submission}">
+      <div id="choiceSemesterDiv">
+        <h1>学期を選択してください</h1>
+        <div>
+          <label for="link1" th:text="${semesterEntityList[0].number}+学期"></label>
+          <input id="link1" type="radio" name="semesterId" th:value="${semesterEntityList[0].id}" checked/>
+          <br>
+          <label for="link2" th:text="${semesterEntityList[1].number}+学期"></label>
+          <input id="link2" type="radio" name="semesterId" th:value="${semesterEntityList[1].id}"/>
+          <br>
+          <label for="link3" th:text="${semesterEntityList[2].number}+学期"></label>
+          <input id="link3" type="radio" name="semesterId" th:value="${semesterEntityList[2].id}"/>
+        </div>
       </div>
+
+      <div id="choiceCurriculumDiv">
+        <h1>教科を選択してください</h1>
+        <select id="curriculum" name="curriculumId">
+          <option th:each="curriculum : ${curriculumEntityList}"
+                  th:value="${curriculum.id}"
+                  th:text="${curriculum.curriculumEntity.name}">
+          </option>
+        </select>
+      </div>
+      <input hidden="hidden"  name="classId" th:value="${classEntity.id}">
+      <br>
+      <button class="btn btn-success" type="submit">決定</button>
+    </form>
     </div>
 
-    <div id="choiceCurriculumDiv">
-      <h1>教科を選択してください</h1>
-      <select id="curriculum" name="curriculumId">
-        <option th:each="curriculum : ${curriculumEntityList}"
-                th:value="${curriculum.id}"
-                th:text="${curriculum.curriculumEntity.name}">
-        </option>
-      </select>
-    </div>
-    <input hidden="hidden"  name="classId" th:value="${classEntity.id}">
-    <input type="submit" value="決定" />
-  </form>
 </main>
 </body>
 </html>

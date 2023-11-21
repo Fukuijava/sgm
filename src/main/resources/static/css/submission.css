@@ -1,3 +1,12 @@
 #listForm tr td:hover{
     background-color: #ffdaf8;
 }
+main{
+    display: flex;
+}
+.divFrame{
+    margin: 20px;
+}
+.tableButton{
+    margin: 8px;
+}
